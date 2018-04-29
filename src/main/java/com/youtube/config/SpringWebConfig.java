@@ -19,14 +19,16 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("com.example")
+@ComponentScan("com.youtube")
 public class SpringWebConfig extends WebMvcConfigurerAdapter {
 	
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
     	registry.addResourceHandler("/uploaded/**").addResourceLocations("file:///C:\\uploaded\\");
-    	registry.addResourceHandler("/img/**").addResourceLocations("/static/images/");
+    	registry.addResourceHandler("/images/**").addResourceLocations("/static/images/");
         registry.addResourceHandler("/css/**").addResourceLocations("/static/css/");
+        registry.addResourceHandler("/js/**").addResourceLocations("/static/js/");
+        registry.addResourceHandler("/fonts/**").addResourceLocations("/static/fonts/");
         registry.addResourceHandler("/pdfs/**").addResourceLocations("/static/pdf/");
     }
 	
