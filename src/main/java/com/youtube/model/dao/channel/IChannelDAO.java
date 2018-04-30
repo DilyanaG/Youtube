@@ -10,11 +10,8 @@ import com.youtube.model.pojo.Channel;
 public interface IChannelDAO {
 
 
-	void addNewChannelToDB(int userId) throws DataBaseException;
-
 	Channel getChannelById(int id) throws IllegalInputException, DataBaseException;
 
-	
 	Map<String, Channel> getAllChannels() throws IllegalInputException, DataBaseException;
 
 	Channel getChannelByUserId(int userId) throws IllegalInputException, DataBaseException;
@@ -26,7 +23,4 @@ public interface IChannelDAO {
 	void followChannel(int followerChannelId, int followedChannelId) throws IllegalInputException, DataBaseException;
 
 	void unfollowChannel(int followerChannelId, int followedChannelId) throws IllegalInputException, DataBaseException;
-
-	void deleteUserProfile(int userId) throws IllegalInputException, DataBaseException;
-
 }

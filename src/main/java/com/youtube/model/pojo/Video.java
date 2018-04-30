@@ -1,11 +1,8 @@
 package com.youtube.model.pojo;
 
-
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
-
 
 public class Video {
 
@@ -13,56 +10,87 @@ public class Video {
 	private static final int DEFAULT_DISLIKES_TO_VIDEO = 0;
 	private static final int DEFAULT_LIKES_TO_VIDEO = 0;
 	private static final int DEFAULT_VIEWS_TO_VIDEO = 0;
-    
+	private static final int DEFAULT_IS_DELETED = 0;
+
 	private int videoId;
-	private final String url;
-	private final Channel channel;
+	private Channel channel;
+	private String videoUrl;
+	private String photoUrl;
 	private String title;
-	private String description;
 	private LocalDateTime uploadDate;
-	private Set<String> tags;
-	private int countOfLikes;
-	private int countOfDislikes;
+	private String description;
 	private int views;
+	private int isDeleted;
+	private Set<Tag> tags;
+	private int likes;
+	private int dislikes;
 
-//	TODO remove this?
-	public Video(int videoId, String url, 
-				Channel channel, String title, String description, 
-				LocalDateTime uploadDate,
-							int countOfLikes, int countOfDislikes, int views) {
-		this(url,channel,title,description);
-		this.uploadDate=uploadDate;
-		this.countOfLikes=countOfDislikes;
-		this.countOfDislikes = countOfDislikes;
+	public Video() {
+		super();
+	}
+
+	public Video(int videoId, Channel channel, String videoUrl, String photoUrl, String title, LocalDateTime uploadDate,
+			String description, int views, int isDeleted, int likes, int dislikes) {
+		this(videoId, channel, videoUrl, photoUrl, title, description);
+		
+		this.uploadDate = uploadDate;
+		this.likes = likes;
+		this.dislikes = dislikes;
+		this.isDeleted = isDeleted;
 		this.views = views;
-		this.videoId= videoId;
-		
 	}
-	public Video(String url, Channel channel, String title, String description)  {
-		this(url, channel, title);
+
+	public Video(int videoId, Channel channel, String videoUrl, String photoUrl, String title, String description) {
+		this(videoId, channel, videoUrl, photoUrl, title);
 		this.description = description;
-		
-	}
-	public Video(String url, Channel channel, String title) {
 
-		this.url = url;
+	}
+
+	public Video(int videoId, Channel channel, String videoUrl, String photoUrl, String title) {
+		this.videoId = videoId;
 		this.channel = channel;
+		this.videoUrl = videoUrl;
+		this.photoUrl = photoUrl;
 		this.title = title;
-		this.description = DEFAULT_DESCRIPTION;
 		this.uploadDate = LocalDateTime.now();
-		this.tags = new TreeSet<String>();
-		this.countOfLikes = DEFAULT_LIKES_TO_VIDEO;
-		this.countOfDislikes = DEFAULT_DISLIKES_TO_VIDEO;
+		this.description = DEFAULT_DESCRIPTION;
+		this.likes = DEFAULT_LIKES_TO_VIDEO;
+		this.dislikes = DEFAULT_DISLIKES_TO_VIDEO;
 		this.views = DEFAULT_VIEWS_TO_VIDEO;
+		this.isDeleted = DEFAULT_IS_DELETED;
+		this.tags = new TreeSet<>();
 	}
-	
 
-	
 	public int getVideoId() {
 		return videoId;
 	}
+
 	public void setVideoId(int videoId) {
 		this.videoId = videoId;
+	}
+
+	public Channel getChannel() {
+		return channel;
+	}
+
+	public void setChannel(Channel channel) {
+		this.channel = channel;
+	}
+
+	public String getVideoUrl() {
+		return videoUrl;
+	}
+
+	public void setVideoUrl(String videoUrl) {
+		this.videoUrl = videoUrl;
+	}
+
+	public String getPhotoUrl() {
+		return photoUrl;
+	}
+
+	public void setPhotoUrl(String photoUrl) {
+		this.photoUrl = photoUrl;
 	}
 
 	public String getTitle() {
@@ -73,14 +101,6 @@ public class Video {
 		this.title = title;
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	public LocalDateTime getUploadDate() {
 		return uploadDate;
 	}
@@ -89,28 +109,12 @@ public class Video {
 		this.uploadDate = uploadDate;
 	}
 
-	public Set<String> getTags() {
-		return tags;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setTags(Set<String> tags) {
-		this.tags = tags;
-	}
-	
-	public int getCountOfLikes() {
-		return countOfLikes;
-	}
-
-	public void setCountOfLikes(int countOfLikes) {
-		this.countOfLikes = countOfLikes;
-	}
-
-	public int getCountOfDislikes() {
-		return countOfDislikes;
-	}
-
-	public void setCountOfDislikes(int countOfDislikes) {
-		this.countOfDislikes = countOfDislikes;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public int getViews() {
@@ -121,14 +125,162 @@ public class Video {
 		this.views = views;
 	}
 
-	public String getUrl() {
-		return url;
+	public int getIsDeleted() {
+		return isDeleted;
 	}
 
-	public Channel getChannel() {
-		return channel;
+	public void setIsDeleted(int isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 
-	
+	public Set<Tag> getTags() {
+		return tags;
+	}
 
+	public void setTags(Set<Tag> tags) {
+		this.tags = tags;
+	}
+
+	public int getLikes() {
+		return likes;
+	}
+
+	public void setLikes(int likes) {
+		this.likes = likes;
+	}
+
+	public int getDislikes() {
+		return dislikes;
+	}
+
+	public void setDislikes(int dislikes) {
+		this.dislikes = dislikes;
+	}
+
+	public static String getDefaultDescription() {
+		return DEFAULT_DESCRIPTION;
+	}
+
+	public static int getDefaultDislikesToVideo() {
+		return DEFAULT_DISLIKES_TO_VIDEO;
+	}
+
+	public static int getDefaultLikesToVideo() {
+		return DEFAULT_LIKES_TO_VIDEO;
+	}
+
+	public static int getDefaultViewsToVideo() {
+		return DEFAULT_VIEWS_TO_VIDEO;
+	}
+
+	public static int getDefaultIsDeleted() {
+		return DEFAULT_IS_DELETED;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((channel == null) ? 0 : channel.hashCode());
+		result = prime * result + dislikes;
+		result = prime * result + likes;
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + isDeleted;
+		result = prime * result + ((photoUrl == null) ? 0 : photoUrl.hashCode());
+		result = prime * result + ((tags == null) ? 0 : tags.hashCode());
+		result = prime * result + ((title == null) ? 0 : title.hashCode());
+		result = prime * result + ((uploadDate == null) ? 0 : uploadDate.hashCode());
+		result = prime * result + videoId;
+		result = prime * result + ((videoUrl == null) ? 0 : videoUrl.hashCode());
+		result = prime * result + views;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Video other = (Video) obj;
+		if (channel == null) {
+			if (other.channel != null)
+				return false;
+		} else if (!channel.equals(other.channel))
+			return false;
+		if (dislikes != other.dislikes)
+			return false;
+		if (likes != other.likes)
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (isDeleted != other.isDeleted)
+			return false;
+		if (photoUrl == null) {
+			if (other.photoUrl != null)
+				return false;
+		} else if (!photoUrl.equals(other.photoUrl))
+			return false;
+		if (tags == null) {
+			if (other.tags != null)
+				return false;
+		} else if (!tags.equals(other.tags))
+			return false;
+		if (title == null) {
+			if (other.title != null)
+				return false;
+		} else if (!title.equals(other.title))
+			return false;
+		if (uploadDate == null) {
+			if (other.uploadDate != null)
+				return false;
+		} else if (!uploadDate.equals(other.uploadDate))
+			return false;
+		if (videoId != other.videoId)
+			return false;
+		if (videoUrl == null) {
+			if (other.videoUrl != null)
+				return false;
+		} else if (!videoUrl.equals(other.videoUrl))
+			return false;
+		if (views != other.views)
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Video [videoId=");
+		builder.append(videoId);
+		builder.append(", channel=");
+		builder.append(channel);
+		builder.append(", videoUrl=");
+		builder.append(videoUrl);
+		builder.append(", photoUrl=");
+		builder.append(photoUrl);
+		builder.append(", title=");
+		builder.append(title);
+		builder.append(", uploadDate=");
+		builder.append(uploadDate);
+		builder.append(", description=");
+		builder.append(description);
+		builder.append(", views=");
+		builder.append(views);
+		builder.append(", isDeleted=");
+		builder.append(isDeleted);
+		builder.append(", tags=");
+		builder.append(tags);
+		builder.append(", likes=");
+		builder.append(likes);
+		builder.append(", dislikes=");
+		builder.append(dislikes);
+		builder.append("]");
+		return builder.toString();
+	}
 }

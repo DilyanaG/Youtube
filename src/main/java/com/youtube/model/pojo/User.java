@@ -1,26 +1,29 @@
 package com.youtube.model.pojo;
 
-import java.net.URL;
-
 public class User {
-	
-	private int userId;
-	private final String userName;
-	private String password;
-	private final String email;
-	private String  photoURL;
 
-	public User(int id, String userName, String password, String email,String photoURL){
+	private int userId;
+	private String userName;
+	private String password;
+	private String email;
+	private String photoURL;
+	private int isDeleted;
+
+	public User() {
+		super();
+	}
+
+	public User(int userId, String userName, String password, String email, String photoURL, int isDeleted) {
 		this(userName, password, email);
-		this.photoURL=photoURL;
-		setUserId(id);
+		this.userId = userId;
+		this.photoURL = photoURL;
+		this.isDeleted = isDeleted;
 	}
 
 	public User(String userName, String password, String email) {
-
 		this.userName = userName;
-		this.email = email;
 		this.password = password;
+		this.email = email;
 	}
 
 	public int getUserId() {
@@ -43,21 +46,100 @@ public class User {
 		return userName;
 	}
 
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 	public String getEmail() {
 		return email;
 	}
- public String getPhotoURL() {
-	return photoURL;
-}
- public void setPhotoURL(String photoURL) {
-	this.photoURL = photoURL;
-}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPhotoURL() {
+		return photoURL;
+	}
+
+	public void setPhotoURL(String photoURL) {
+		this.photoURL = photoURL;
+	}
+
+	public int getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(int isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + isDeleted;
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((photoURL == null) ? 0 : photoURL.hashCode());
+		result = prime * result + userId;
+		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (isDeleted != other.isDeleted)
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (photoURL == null) {
+			if (other.photoURL != null)
+				return false;
+		} else if (!photoURL.equals(other.photoURL))
+			return false;
+		if (userId != other.userId)
+			return false;
+		if (userName == null) {
+			if (other.userName != null)
+				return false;
+		} else if (!userName.equals(other.userName))
+			return false;
+		return true;
+	}
 
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", userName=" + userName + ", password=" + password + ", email=" + email
-				+ "]";
+		StringBuilder builder = new StringBuilder();
+		builder.append("User [userId=");
+		builder.append(userId);
+		builder.append(", userName=");
+		builder.append(userName);
+		builder.append(", password=");
+		builder.append(password);
+		builder.append(", email=");
+		builder.append(email);
+		builder.append(", photoURL=");
+		builder.append(photoURL);
+		builder.append(", isDeleted=");
+		builder.append(isDeleted);
+		builder.append("]");
+		return builder.toString();
 	}
+
 }
-
-
