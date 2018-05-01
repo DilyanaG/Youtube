@@ -1,6 +1,5 @@
 package com.youtube.model.dao.video;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import com.youtube.controller.exceptions.DataBaseException;
