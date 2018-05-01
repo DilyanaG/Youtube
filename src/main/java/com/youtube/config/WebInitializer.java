@@ -1,5 +1,10 @@
 package com.youtube.config;
 
+import java.io.File;
+
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletRegistration;
+
 import org.springframework.web.servlet.support.
 AbstractAnnotationConfigDispatcherServletInitializer;
  
@@ -18,5 +23,20 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
     @Override
     protected String[] getServletMappings() {
         return new String[] { "/", "*.html", "*.pdf" };
+    }
+    private int maxUploadSizeInMb = 30 * 1024 * 1024; // 30 MB
+    @Override
+    protected void customizeRegistration(ServletRegistration.Dynamic registration) {
+
+        // temp file will be uploaded here
+        File uploadDirectory = new File(System.getProperty("java.io.tmpdir"));
+
+        // register a MultipartConfigElement
+        MultipartConfigElement multipartConfigElement =
+                new MultipartConfigElement(uploadDirectory.getAbsolutePath(),
+                        maxUploadSizeInMb, maxUploadSizeInMb * 2, maxUploadSizeInMb / 2);
+
+        registration.setMultipartConfig(multipartConfigElement);
+
     }
 }

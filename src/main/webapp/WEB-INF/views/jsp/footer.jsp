@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<div class="footer">
+<div class="footer" style="background-color: WhiteSmoke;">
 				<div class="footer-grids">
 					<div class="footer-top">
 						
@@ -9,7 +9,7 @@
 					<div class="footer-bottom">
 						<ul>
 							<li class="languages">
-								<select class="form-control bfh-countries" data-country="US">
+								<select class="form-control bfh-countries"  data-country="US">
 									<option value="">Select Language</option>
 									<option>English</option>
 									<option>Bulgarian</option>
