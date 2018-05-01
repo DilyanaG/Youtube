@@ -11,11 +11,22 @@ import java.util.List;
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
 import com.youtube.model.dao.channel.ChannelDAO;
+import com.youtube.model.dao.video.VideoDAO;
 import com.youtube.model.pojo.Channel;
 import com.youtube.model.pojo.Comment;
 import com.youtube.model.pojo.Video;
 
 public class CommentDAO {
+	
+	/*int getLikesForVideo(int video_id);
+	
+	int getDislikesForVideo(int video_id);
+	
+	void likeVideo(int video_id, int channel_id);
+	
+	void dislikeVideo(int video_id, int channel_id);*/
+	
+	
 	//selects
 	private static final String SELECT_ALL_BY_VIDEO_ID =
 			"SELECT comment_id,channel_id, content, date, likes, dislikes FROM comments WHERE video_id = ?;";

@@ -40,12 +40,13 @@ public class UserDAO implements IUserDAO {
 	private static final String UPDATE_PROFILE_PICTURE = "UPDATE users SET photoUrl = ? WHERE user_id = ?;";
 
 	// delete
-	private static final String DELETE_USER = "UPDATE users SET isDeleted = 1 WHERE user_id = ?;";
-
-	private static final String DELETE_CHANNEL = "UPDATE channels SET isDeleted = 1 WHERE channel_id = ?;";
-	
 	private static final String DELETE_PROFILE_PICTURE = "UPDETE users SET photoUrl = null WHERE user_id = ?;";
 
+	private static final String DELETE_USER = "UPDATE users SET isDeleted = 1 WHERE user_id = ?;";
+
+	private static final String DELETE_CHANNEL = "UPDATE channels JOIN users ON channels.user_id = users.user_id SET isDeleted = 1 WHERE channels.user_id = ?;";
+	
+	private static final String DELETE_CHANNEL_VIDEOS = "UPDATE videos JOIN channels ON videos.channel_id = channels.channel_id JOIN users ON channels.user_id = users.user_id SET isDeleted = 1 WHERE channels.user_id = ?;";
 	
 	
 	@Autowired
@@ -188,6 +189,7 @@ public class UserDAO implements IUserDAO {
 			dbManager.startTransaction(connection);
 			dbManager.execute(connection, DELETE_USER, userId);
 			dbManager.execute(connection, DELETE_CHANNEL, userId);
+			dbManager.execute(connection, DELETE_CHANNEL_VIDEOS, userId);
 			dbManager.commit(connection);
 			return true;
 		} catch (SQLException s) {
