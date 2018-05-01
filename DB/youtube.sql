@@ -15,7 +15,7 @@ CREATE SCHEMA IF NOT EXISTS `youtube` DEFAULT CHARACTER SET utf8 ;
 USE `youtube` ;
 
 -- -----------------------------------------------------
--- Table `youtube`.`users`
+-- Table `test_youtube`.`users`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `youtube`.`users` ;
 
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `youtube`.`users` (
   `user_name` VARCHAR(30) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
   `password` VARCHAR(100) NOT NULL,
-  `photoUrl` VARCHAR(100) NOT NULL,
+  `photoUrl` VARCHAR(100)  NULL,
   `isDeleted` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`user_id`),
   UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC),
@@ -34,7 +34,7 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `youtube`.`channels`
+-- Table `test_youtube`.`channels`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `youtube`.`channels` ;
 
@@ -52,9 +52,8 @@ CREATE TABLE IF NOT EXISTS `youtube`.`channels` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-
 -- -----------------------------------------------------
--- Table `youtube`.`videos`
+-- Table `test_youtube`.`videos`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `youtube`.`videos` ;
 
@@ -64,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `youtube`.`videos` (
   `video_url` VARCHAR(45) NOT NULL,
   `photo_url` VARCHAR(45) NOT NULL,
   `title` VARCHAR(45) NOT NULL,
-  `date` DATE NOT NULL,
+  `date` timestamp NOT NULL,
   `description` VARCHAR(200) NULL,
   `views` INT NOT NULL DEFAULT 0,
   `isDeleted` TINYINT NOT NULL DEFAULT 0,
@@ -75,13 +74,13 @@ CREATE TABLE IF NOT EXISTS `youtube`.`videos` (
   CONSTRAINT `fk_videos_channels1`
     FOREIGN KEY (`channel_id`)
     REFERENCES `youtube`.`channels` (`channel_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `youtube`.`playlists`
+-- Table `test_youtube`.`playlists`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `youtube`.`playlists` ;
 
@@ -89,20 +88,20 @@ CREATE TABLE IF NOT EXISTS `youtube`.`playlists` (
   `playlist_id` INT NOT NULL AUTO_INCREMENT,
   `channel_id` INT NOT NULL,
   `name` VARCHAR(45) NOT NULL,
-  `create_date` DATE NOT NULL,
-  `last_video_add_date` DATE NULL,
+  `create_date` timestamp NOT NULL,
+  `last_video_add_date` timestamp NULL,
   PRIMARY KEY (`playlist_id`),
   INDEX `fk_playlists_channels1_idx` (`channel_id` ASC),
   CONSTRAINT `fk_playlists_channels1`
     FOREIGN KEY (`channel_id`)
     REFERENCES `youtube`.`channels` (`channel_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE )
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `youtube`.`comments`
+-- Table `test_youtube`.`comments`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `youtube`.`comments` ;
 
@@ -112,7 +111,7 @@ CREATE TABLE IF NOT EXISTS `youtube`.`comments` (
   `channel_id` INT NOT NULL,
   `response_to_comment_id` INT NULL,
   `content` VARCHAR(45) NOT NULL,
-  `date` DATE NOT NULL,
+  `date` timestamp NOT NULL,
   PRIMARY KEY (`comment_id`),
   INDEX `fk_comments_videos1_idx` (`video_id` ASC),
   INDEX `fk_comments_channels1_idx` (`channel_id` ASC),
@@ -120,23 +119,23 @@ CREATE TABLE IF NOT EXISTS `youtube`.`comments` (
   CONSTRAINT `fk_comments_videos1`
     FOREIGN KEY (`video_id`)
     REFERENCES `youtube`.`videos` (`video_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_comments_channels1`
     FOREIGN KEY (`channel_id`)
     REFERENCES `youtube`.`channels` (`channel_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+     ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_comments_comments1`
     FOREIGN KEY (`response_to_comment_id`)
     REFERENCES `youtube`.`comments` (`comment_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+	ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `youtube`.`playlists_has_videos`
+-- Table `test_youtube`.`playlists_has_videos`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `youtube`.`playlists_has_videos` ;
 
@@ -154,13 +153,13 @@ CREATE TABLE IF NOT EXISTS `youtube`.`playlists_has_videos` (
   CONSTRAINT `fk_videos_has_playlists_playlists1`
     FOREIGN KEY (`playlist_id`)
     REFERENCES `youtube`.`playlists` (`playlist_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+	ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `youtube`.`channels_followed_channels`
+-- Table `test_youtube`.`channels_followed_channels`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `youtube`.`channels_followed_channels` ;
 
@@ -173,18 +172,18 @@ CREATE TABLE IF NOT EXISTS `youtube`.`channels_followed_channels` (
   CONSTRAINT `fk_channels_has_channels_channels1`
     FOREIGN KEY (`follower_channel_id`)
     REFERENCES `youtube`.`channels` (`channel_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+	ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_channels_has_channels_channels2`
     FOREIGN KEY (`followed_channel_id`)
     REFERENCES `youtube`.`channels` (`channel_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `youtube`.`tags`
+-- Table `test_youtube`.`tags`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `youtube`.`tags` ;
 
@@ -197,7 +196,7 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `youtube`.`videos_has_tags`
+-- Table `test_youtube`.`videos_has_tags`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `youtube`.`videos_has_tags` ;
 
@@ -210,18 +209,18 @@ CREATE TABLE IF NOT EXISTS `youtube`.`videos_has_tags` (
   CONSTRAINT `fk_videos_has_tags_videos1`
     FOREIGN KEY (`video_id`)
     REFERENCES `youtube`.`videos` (`video_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_videos_has_tags_tags1`
     FOREIGN KEY (`tag_id`)
     REFERENCES `youtube`.`tags` (`tag_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `youtube`.`videos_has_likes_dislikes`
+-- Table `test_youtube`.`videos_has_likes_dislikes`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `youtube`.`videos_has_likes_dislikes` ;
 
@@ -236,18 +235,18 @@ CREATE TABLE IF NOT EXISTS `youtube`.`videos_has_likes_dislikes` (
   CONSTRAINT `fk_videos_has_likes_dislikes_videos1`
     FOREIGN KEY (`video_id`)
     REFERENCES `youtube`.`videos` (`video_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_videos_has_likes_dislikes_channels1`
     FOREIGN KEY (`channel_id`)
     REFERENCES `youtube`.`channels` (`channel_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `youtube`.`comment_has_likes_dislikes`
+-- Table `test_youtube`.`comment_has_likes_dislikes`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `youtube`.`comment_has_likes_dislikes` ;
 
@@ -255,20 +254,20 @@ CREATE TABLE IF NOT EXISTS `youtube`.`comment_has_likes_dislikes` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `isLike` TINYINT NOT NULL,
   `comment_id` INT NOT NULL,
-  `channels_channel_id` INT NOT NULL,
+  `channel_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_comments_has_likes_dislikes_comments1_idx` (`comment_id` ASC),
-  INDEX `fk_comments_has_likes_dislikes_channels1_idx` (`channels_channel_id` ASC),
+  INDEX `fk_comments_has_likes_dislikes_channels1_idx` (`channel_id` ASC),
   CONSTRAINT `fk_comments_has_likes_dislikes_comments1`
     FOREIGN KEY (`comment_id`)
     REFERENCES `youtube`.`comments` (`comment_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_comments_has_likes_dislikes_channels1`
-    FOREIGN KEY (`channels_channel_id`)
+    FOREIGN KEY (`channel_id`)
     REFERENCES `youtube`.`channels` (`channel_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
