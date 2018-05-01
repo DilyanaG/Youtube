@@ -23,9 +23,8 @@ public class UserResolver implements IResolver<User> {
 		final String password = selectedColumns.contains("u.password") ? rs.getString("u.password") : null;
 		final String email = selectedColumns.contains("u.email") ? rs.getString("u.email") : null;
 		final String photoURL = selectedColumns.contains("u.photoURL") ? rs.getString("u.photoURL") : null;
-		final Integer isDeleted = selectedColumns.contains("u.isDeleted") ? rs.getInt("u.isDeleted") : null;
 		
-		User user = new User(userId, userName, password, email, photoURL, isDeleted);
+		User user = new User(userId, userName, password, email, photoURL);
 		return user;
 	}
 

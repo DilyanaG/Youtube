@@ -27,8 +27,7 @@ public class VideoResolver implements IResolver<Video> {
 		final String title = selectedColumns.contains("v.title") ? rs.getString("v.title") : null;
 		final String description = selectedColumns.contains("v.description") ? rs.getString("v.description") : null;
 		final Integer views = selectedColumns.contains("v.views") ? rs.getInt("v.views") : null;
-		final Integer isDeleted = selectedColumns.contains("v.isDeleted") ? rs.getInt("v.isDeleted") : null;
-
+		
 		// Use Inner selects with COUNT from the video_has_likes table. ONLY for
 		// single select
 		// FOR list selects use separate queries
@@ -38,7 +37,7 @@ public class VideoResolver implements IResolver<Video> {
 		final LocalDateTime uploadDate = selectedColumns.contains("v.date")
 				? rs.getTimestamp("v.date").toLocalDateTime() : null;
 
-		Video video = new Video(videoId, channel, videoUrl, photoUrl, title, uploadDate, description, views, isDeleted, countOfLikes, countOfDislikes);
+		Video video = new Video(videoId, channel, videoUrl, photoUrl, title, uploadDate, description, views,  countOfLikes, countOfDislikes);
 		return video;
 	}
 

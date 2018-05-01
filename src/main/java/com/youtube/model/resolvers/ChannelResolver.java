@@ -22,9 +22,8 @@ public class ChannelResolver implements IResolver<Channel> {
 
 		final Integer channelId = selectedColumns.contains("ch.channel_id") ? rs.getInt("ch.channel_id") : null;
 		final User user = userResolver.resolve(rs);
-		final Integer isDeleted = selectedColumns.contains("ch.isDeleted") ? rs.getInt("ch.isDeleted") : null;
-
-		Channel channel = new Channel(channelId, user, isDeleted);
+		
+		Channel channel = new Channel(channelId, user);
 		return channel;
 	}
 

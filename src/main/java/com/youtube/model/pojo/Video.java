@@ -10,7 +10,6 @@ public class Video {
 	private static final int DEFAULT_DISLIKES_TO_VIDEO = 0;
 	private static final int DEFAULT_LIKES_TO_VIDEO = 0;
 	private static final int DEFAULT_VIEWS_TO_VIDEO = 0;
-	private static final int DEFAULT_IS_DELETED = 0;
 
 	private int videoId;
 	private Channel channel;
@@ -20,7 +19,6 @@ public class Video {
 	private LocalDateTime uploadDate;
 	private String description;
 	private int views;
-	private int isDeleted;
 	private Set<Tag> tags;
 	private int likes;
 	private int dislikes;
@@ -30,13 +28,12 @@ public class Video {
 	}
 
 	public Video(int videoId, Channel channel, String videoUrl, String photoUrl, String title, LocalDateTime uploadDate,
-			String description, int views, int isDeleted, int likes, int dislikes) {
+			String description, int views, int likes, int dislikes) {
 		this(videoId, channel, videoUrl, photoUrl, title, description);
 		
 		this.uploadDate = uploadDate;
 		this.likes = likes;
 		this.dislikes = dislikes;
-		this.isDeleted = isDeleted;
 		this.views = views;
 	}
 
@@ -57,7 +54,6 @@ public class Video {
 		this.likes = DEFAULT_LIKES_TO_VIDEO;
 		this.dislikes = DEFAULT_DISLIKES_TO_VIDEO;
 		this.views = DEFAULT_VIEWS_TO_VIDEO;
-		this.isDeleted = DEFAULT_IS_DELETED;
 		this.tags = new TreeSet<>();
 	}
 
@@ -125,14 +121,6 @@ public class Video {
 		this.views = views;
 	}
 
-	public int getIsDeleted() {
-		return isDeleted;
-	}
-
-	public void setIsDeleted(int isDeleted) {
-		this.isDeleted = isDeleted;
-	}
-
 	public Set<Tag> getTags() {
 		return tags;
 	}
@@ -157,35 +145,14 @@ public class Video {
 		this.dislikes = dislikes;
 	}
 
-	public static String getDefaultDescription() {
-		return DEFAULT_DESCRIPTION;
-	}
-
-	public static int getDefaultDislikesToVideo() {
-		return DEFAULT_DISLIKES_TO_VIDEO;
-	}
-
-	public static int getDefaultLikesToVideo() {
-		return DEFAULT_LIKES_TO_VIDEO;
-	}
-
-	public static int getDefaultViewsToVideo() {
-		return DEFAULT_VIEWS_TO_VIDEO;
-	}
-
-	public static int getDefaultIsDeleted() {
-		return DEFAULT_IS_DELETED;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((channel == null) ? 0 : channel.hashCode());
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + dislikes;
 		result = prime * result + likes;
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + isDeleted;
 		result = prime * result + ((photoUrl == null) ? 0 : photoUrl.hashCode());
 		result = prime * result + ((tags == null) ? 0 : tags.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
@@ -210,16 +177,14 @@ public class Video {
 				return false;
 		} else if (!channel.equals(other.channel))
 			return false;
-		if (dislikes != other.dislikes)
-			return false;
-		if (likes != other.likes)
-			return false;
 		if (description == null) {
 			if (other.description != null)
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
-		if (isDeleted != other.isDeleted)
+		if (dislikes != other.dislikes)
+			return false;
+		if (likes != other.likes)
 			return false;
 		if (photoUrl == null) {
 			if (other.photoUrl != null)
@@ -272,8 +237,6 @@ public class Video {
 		builder.append(description);
 		builder.append(", views=");
 		builder.append(views);
-		builder.append(", isDeleted=");
-		builder.append(isDeleted);
 		builder.append(", tags=");
 		builder.append(tags);
 		builder.append(", likes=");
@@ -283,4 +246,6 @@ public class Video {
 		builder.append("]");
 		return builder.toString();
 	}
+
+	
 }

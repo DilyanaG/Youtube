@@ -7,17 +7,15 @@ public class User {
 	private String password;
 	private String email;
 	private String photoURL;
-	private int isDeleted;
 
 	public User() {
 		super();
 	}
 
-	public User(int userId, String userName, String password, String email, String photoURL, int isDeleted) {
+	public User(int userId, String userName, String password, String email, String photoURL) {
 		this(userName, password, email);
 		this.userId = userId;
 		this.photoURL = photoURL;
-		this.isDeleted = isDeleted;
 	}
 
 	public User(String userName, String password, String email) {
@@ -66,20 +64,11 @@ public class User {
 		this.photoURL = photoURL;
 	}
 
-	public int getIsDeleted() {
-		return isDeleted;
-	}
-
-	public void setIsDeleted(int isDeleted) {
-		this.isDeleted = isDeleted;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + isDeleted;
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((photoURL == null) ? 0 : photoURL.hashCode());
 		result = prime * result + userId;
@@ -100,8 +89,6 @@ public class User {
 			if (other.email != null)
 				return false;
 		} else if (!email.equals(other.email))
-			return false;
-		if (isDeleted != other.isDeleted)
 			return false;
 		if (password == null) {
 			if (other.password != null)
@@ -136,10 +123,10 @@ public class User {
 		builder.append(email);
 		builder.append(", photoURL=");
 		builder.append(photoURL);
-		builder.append(", isDeleted=");
-		builder.append(isDeleted);
 		builder.append("]");
 		return builder.toString();
 	}
+
+	
 
 }
