@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
-import com.youtube.model.dao.DBManager;
+import com.youtube.db.DBManager;
 import com.youtube.model.pojo.Channel;
 import com.youtube.model.resolvers.ChannelResolver;
 

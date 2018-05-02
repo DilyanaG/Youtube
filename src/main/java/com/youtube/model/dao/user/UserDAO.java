@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
-import com.youtube.model.dao.DBManager;
+import com.youtube.db.DBManager;
 import com.youtube.model.pojo.User;
 import com.youtube.model.resolvers.UserResolver;
 
@@ -39,8 +39,9 @@ public class UserDAO implements IUserDAO {
 
 	private static final String UPDATE_PROFILE_PICTURE = "UPDATE users SET photoUrl = ? WHERE user_id = ?;";
 
-	// delete
 	private static final String DELETE_PROFILE_PICTURE = "UPDETE users SET photoUrl = null WHERE user_id = ?;";
+
+	// delete
 
 	private static final String DELETE_USER = "UPDATE users SET isDeleted = 1 WHERE user_id = ?;";
 
