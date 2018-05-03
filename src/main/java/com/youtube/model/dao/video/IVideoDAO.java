@@ -20,7 +20,7 @@ interface IVideoDAO {
 
 	List<Video> getAllVideosFromPlaylist(Playlist playlist) throws IllegalInputException, DataBaseException;
 
-	int addVideo(Video video, Channel channel) throws DataBaseException;
+	int addVideo(Video video, int channelId) throws DataBaseException;
 
 	int addVideoToPlaylist(Video video, Playlist playlist) throws DataBaseException;
 

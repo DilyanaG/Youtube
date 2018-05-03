@@ -53,7 +53,7 @@ p {
 </style>
 </head>
 <body>
-	<img src="/FinalProject/images/errorpage.gif" />
+	<img src="FinalProject/images/errorpage.gif" />
 	<h1>Page Not Found</h1>
 
 	<p>Sorry, but the page you were trying to view does not exist.</p>

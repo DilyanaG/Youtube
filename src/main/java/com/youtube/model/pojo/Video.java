@@ -57,6 +57,14 @@ public class Video {
 		this.tags = new TreeSet<>();
 	}
 
+	public Video(String videoUrl, String photoUrl, String title, String description) {
+		this.videoUrl = videoUrl;
+		this.photoUrl = photoUrl;
+		this.title = title;
+		this.description = description;
+		this.views=0;
+	}
+
 	public int getVideoId() {
 		return videoId;
 	}

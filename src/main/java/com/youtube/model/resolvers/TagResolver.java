@@ -16,8 +16,8 @@ public class TagResolver implements IResolver<Tag> {
 		// If the parameter is not in the ResultSet it sets it a null value
 		// The "t." is the alias for the "videos_has_tags" table in the DB
 
-		final Integer tagId = selectedColumns.contains("t.tag_id") ? rs.getInt("t.tag_id") : null;
-		final String content = selectedColumns.contains("t.content") ? rs.getString("t.content") : null;
+		final Integer tagId = selectedColumns.contains("tag_id") ? rs.getInt("tag_id") : null;
+		final String content = selectedColumns.contains("content") ? rs.getString("content") : null;
 
 		Tag tag = new Tag(tagId, content);
 		return tag;

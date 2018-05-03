@@ -318,11 +318,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 										</div>
 									</div>
 									<div class="signup">
-										<form action="/login" method="post">
+										<form action="./login" method="post">
 											<input type="text" class="email" placeholder="Email"
 												required="required"
 												pattern="([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?"
-												title="Enter a valid email" /> <input type="password"
+												title="Enter a valid email" />
+												 <input type="password"
 												placeholder="Password" required="required" pattern=".{6,}"
 												title="Minimum 6 characters required" autocomplete="off" />
 											<input type="submit" value="Sign In" />

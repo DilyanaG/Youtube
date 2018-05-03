@@ -22,7 +22,7 @@ public class LoginController {
 		model.addAttribute("errorMessage","your username or password not correct please try again");
 	}else{
 		 HttpSession session = req.getSession();
-		    session.setAttribute("channelId", 15);
+		    session.setAttribute("channelId", 2);
 			model.addAttribute("successMessage","Login uraaa");
 				
 	}
