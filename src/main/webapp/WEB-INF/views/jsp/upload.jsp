@@ -13,10 +13,10 @@
 	<!-- container -->
 	<div class="container">
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-	<c:if test="${not empty message}">
-		<h1>Upload Status</h1>
-		<h2>Message : ${message}</h2>
-		</c:if>
+	<c:if test="${not empty errorMessage}">
+		<h2 style="color:red">${errorMessage}</h2>
+	</c:if>
+	
 		<form action="./upload" method="post" enctype="multipart/form-data">
 			<div class="upload-grids">
 				<div class="upload-right">
@@ -80,7 +80,7 @@
 
 
 
-<script src="js/bootstrap.min.js"></script>
+<script src="FinalProject/js/bootstrap.min.js"></script>
 
 
 </body>

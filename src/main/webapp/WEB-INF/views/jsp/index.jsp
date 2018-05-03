@@ -14,10 +14,10 @@
 					<div class="recommended-info">
 					   <c:choose>
 						<c:when test="${not empty errorMessage}">
-						       <h3>${errorMessage}</h3>
+						       <h3 style="color:red">${errorMessage}</h3>
 						</c:when>
                          <c:when test="${not empty successMessage}">
-						       <h3>${successMessage}</h3>
+						       <h3 >${successMessage}</h3>
 						       <h3>${sessionScope.channelId}</h3>
 						       
 						</c:when>

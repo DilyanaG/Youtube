@@ -20,7 +20,8 @@ public class ChannelResolver implements IResolver<Channel> {
 		// If the parameter is not in the ResultSet it sets it a null value
 		// The "ch." is the alias for the "channels" table in the DB
 
-		final Integer channelId = selectedColumns.contains("ch.channel_id") ? rs.getInt("ch.channel_id") : null;
+		final Integer channelId = selectedColumns.contains("channel_id") ? rs.getInt("channel_id") : null;
+		System.out.println(channelId);
 		final User user = userResolver.resolve(rs);
 		
 		Channel channel = new Channel(channelId, user);

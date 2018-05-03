@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
@@ -16,12 +17,14 @@ import com.youtube.model.pojo.Video;
 import com.youtube.model.resolvers.TagResolver;
 import com.youtube.model.resolvers.VideoResolver;
 
+//@Component
 public class VideoDAO implements IVideoDAO {
 
 	// selects
-	private static final String GET_VIDEO_BY_ID = "SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id WHERE v.video_id = ? AND v.isDeleted = 0;";
+	private static final String GET_VIDEO_BY_ID = "SELECT v.*, ch.*,u.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id JOIN users AS u ON u.user_id=ch.user_id WHERE v.video_id = ? AND v.isDeleted = 0;";
 
-	private static final String GET_VIDEO_BY_TITLE = "SELECT v.*, c.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id WHERE v.title = ? AND v.isDeleted = 0;";
+	private static final String GET_VIDEO_BY_TITLE = "SELECT v.*, ch.*,u.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id  JOIN users AS u "
+			+ "ON u.user_id=ch.user_id WHERE v.title = ? AND v.isDeleted = 0;";
 
 	private static final String SEARCH_VIDEOS_BY_TAGS = "SELECT v.*, c.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id JOIN videos_has_tags AS vht ON"
 			+ " (v.video_id = vht.video_id) WHERE vht.tag_id IN ( SELECT t.tag_id FROM tags AS t WHERE t.content LIKE ?) AND v.isDeleted = 0"
@@ -36,7 +39,7 @@ public class VideoDAO implements IVideoDAO {
 
 	private static final String GET_TAG_ID = "SELECT t.* FROM tags AS t WHERE t.content = ?;";
 
-	private static final String GET_TAG_COUNT = "SELECT COUNT(tags.tag_id) as count FROM tags AS t WHERE t.content = ?;";
+	private static final String GET_TAG_COUNT = "SELECT COUNT(t.tag_id) as count FROM tags AS t WHERE t.content = ?;";
 
 	private static final String COUNT_OF_LIKES = "SELECT COUNT(vhld.id) as count FROM videos_has_likes_dislikes AS vhld JOIN videos AS v ON vhld.video_id = v.video_id WHERE v.video_id = ? AND v.isDeleted = 0 AND vhld.isLike = 1;";;
 
@@ -70,7 +73,7 @@ public class VideoDAO implements IVideoDAO {
 	
 	
 	//@Autowired
-	private static DBManager dbManager;
+	private static DBManager dbManager=DBManager.getInstance();
 
 	@Override
 	public Video getVideoById(int video_id) throws IllegalInputException, DataBaseException {
@@ -153,18 +156,22 @@ public class VideoDAO implements IVideoDAO {
 	}
 
 	@Override
-	public int addVideo(Video video, Channel channel) throws DataBaseException {
+	public int addVideo(Video video, int channelId) throws DataBaseException  {
 		final Connection connection = dbManager.getConnection();
 
 		try {
 			dbManager.startTransaction(connection);
-			int inserted = dbManager.execute(connection, ADD_VIDEO_TO_CHANNEL, channel.getChannelId(),
+			int inserted = dbManager.execute(connection, ADD_VIDEO_TO_CHANNEL, channelId,
 					video.getVideoUrl(), video.getPhotoUrl(), video.getTitle(), video.getDescription(), 0);
+			System.out.println("tuka e ");
+			dbManager.commit(connection);
 			Video addedVideo = dbManager.executeSingleSelect(connection, GET_VIDEO_BY_TITLE, new VideoResolver(),
 					video.getTitle());
+			System.out.println("tuka e 1");
 			writeInVideosHasTagsTable(connection, addedVideo.getTitle() + " " + addedVideo.getDescription(),
 					addedVideo.getVideoId());
-			dbManager.commit(connection);
+			System.out.println("tuka e 3");
+			//dbManager.commit(connection);
 			return inserted;
 		} catch (SQLException s) {
 			dbManager.rollback(connection, s);
@@ -335,5 +342,9 @@ public class VideoDAO implements IVideoDAO {
 		} catch (SQLException s) {
 			dbManager.rollback(connection, s);
 		}
+	}
+	public static void main(String[] args) throws DataBaseException {
+		
+		new VideoDAO().addVideo(new Video("video.mp4","image.mp4", "moeto video", "ehe brao be"), 1);
 	}
 }
