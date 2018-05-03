@@ -32,7 +32,7 @@ public class DBManager {
 
 	//@Autowired
 	public DBManager() {
-		File file = new File("DB_connection.properties");
+		File file = new File("DB_test.properties");
 		try (BufferedReader in = new BufferedReader(new FileReader(file));) {
 			final Properties properties = new Properties();
 			properties.load(in);
