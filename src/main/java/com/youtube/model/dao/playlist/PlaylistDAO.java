@@ -5,9 +5,6 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.db.DBManager;
 import com.youtube.model.pojo.Playlist;

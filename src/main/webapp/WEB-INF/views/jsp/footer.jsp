@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+ pageEncoding="ISO-8859-1"%>
+<%@page session="false"%>
 <div class="footer" style="background-color: WhiteSmoke;">
 				<div class="footer-grids">
 					<div class="footer-top">

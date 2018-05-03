@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page errorPage="/error"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,18 +15,30 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script type="application/x-javascript">
 	
 	
-	 addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } 
+	
+	
+	
+	
+	
+ addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } 
+
+
+
+
+
+
 
 
 </script>
 <!-- bootstrap -->
-<link href="css/bootstrap.min.css" rel='stylesheet' type='text/css'
-	media="all" />
+<link href="FinalProject/css/bootstrap.min.css" rel='stylesheet'
+	type='text/css' media="all" />
 <!-- //bootstrap -->
-<link href="css/dashboard.css" rel="stylesheet">
+<link href="FinalProject/css/dashboard.css" rel="stylesheet">
 <!-- Custom Theme files -->
-<link href="css/style.css" rel='stylesheet' type='text/css' media="all" />
-<script src="js/jquery-1.11.1.min.js"></script>
+<link href="FinalProject/css/style.css" rel='stylesheet'
+	type='text/css' media="all" />
+<script src="FinalProject/js/jquery-1.11.1.min.js"></script>
 <!--start-smoth-scrolling-->
 <!-- fonts -->
 <link
@@ -49,32 +62,131 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				</button>
 				<a class="navbar-brand" href="./index">
 					<h1>
-						<img src="./images/logo.png" alt="" />
+						<img src="FinalProject/images/logo.png" alt="" />
 					</h1>
 				</a>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<div class="top-search">
-					<form class="navbar-form navbar-right">
-						<input type="text" class="form-control" placeholder="Search...">
-						<input type="submit" value=" ">
+					<form id="searchForm" class="navbar-form navbar-right">
+						<input type="text" class="form-control" name="searchWord"
+							placeholder="Search..."> <input id="submit" type="submit"
+							value="">
 					</form>
 				</div>
+				<script>
+					$(document)
+							.ready(
+									function() {
+										$("#searchForm")
+												.submit(
+														function() {
+															console.log(5);
+															var searchWord = $(
+																	'#searchForm')
+																	.find(
+																			'input[name="searchWord"]')
+																	.val();
+															$('#middle')
+																	.empty();
+															$('#middle')
+																	.append(
+																			'<h3>'
+																					+ searchWord
+																					+ '</h3>');
+
+															$
+																	.ajax({
+																		url : 'search',
+																		type : 'post',
+																		data : {
+																			search : searchWord
+																		},
+																		success : function(
+																				response) {
+
+																			console
+																					.log(response);
+																			$(
+																					'#middle')
+																					.empty();
+
+																			$(
+																					'#middle')
+																					.append(
+																							'<div class="top-grids">'
+																									+ ' <div class="recommended-info">'
+																									+ '      <h3>SEARCH RESULT</h3>'
+																									+ '		<c:if test="${ empty videos}">'
+																									+ '          <h1>nqma videa za toq search hahhahaaah</h1>'
+																									+ '		</c:if>'
+																									+ '	</div>');
+
+																			var i;
+																			for (i = 0; i < response.videos.length; i++) {
+																				$(
+																						'#middle')
+																						.append(
+																								'     <div class="col-md-4 resent-grid recommended-grid slider-top-grids">'
+																										+ ' 		<div class="resent-grid-img recommended-grid-img">'
+																										+ '			<a href="./video?videoId='
+																										+ response[i].videoId
+																										+ '"><img src="images/t3.jpg" alt=""></a>'
+																										+ '			<div class="time">'
+																										+ '             <p></p>'
+																										+ '			</div>'
+																										+ '			<div class="clck">'
+																										+ '				<span class="glyphicon glyphicon-time" aria-hidden="true"></span>'
+																										+ '			</div>'
+																										+ '		</div>'
+																										+ '		<div class="resent-grid-info recommended-grid-info">'
+																										+ '			<h3><a href="./video?videoId='
+																										+ response[i].videoId
+																										+ '" class="title title-info">TITLE</a></h3>'
+																										+ '			<ul>'
+																										+ '				<li><p class="author author-info"><a href="./profile?channelId='
+																										+ response[i].channelId
+																										+ '"'
+																										+ '	            class="author">'
+																										+ response[i].channelName
+																										+ '</a></p></li>'
+																										+ '				<!-- href add ${video.views} -->'
+																										+ '				<li class="right-list"><p class="views views-info"></p>'
+																										+ response[i].views
+																										+ '</li>'
+																										+ '			</ul>'
+																										+ '		</div>'
+																										+ '	</div>');
+																			}
+																			$(
+																					'#middle')
+																					.append(
+																							'<div class="clearfix"></div>'
+																									+ ' </div>');
+																		}
+																	});
+
+														});
+									});
+				</script>
 				<div class="header-top-right">
 					<div class="file">
 						<a href="./upload">Upload</a>
 					</div>
 
 					<c:choose>
-						<c:when test="${not empty videos}">
-							
+						<c:when test="${not empty sessionScope.channelId}">
+
 							<div class="signin">
 								<a href="#small-dialog2" class="play-icon popup-with-zoom-anim">Settings</a>
 								<!-- pop-up-box -->
-								<script type="text/javascript" src="js/modernizr.custom.min.js"></script>
-								<link href="css/popuo-box.css" rel="stylesheet" type="text/css"
-									media="all">
-								<script src="js/jquery.magnific-popup.js" type="text/javascript"></script>
+								<script type="text/javascript"
+									src="FinalProject/js/modernizr.custom.min.js"></script>
+								<link href="FinalProject/css/popuo-box.css" rel="stylesheet"
+									type="text/css" media="all">
+								<script src="FinalProject/js/jquery.magnific-popup.js"
+									type="text/javascript">
+								</script>
 								<!--//pop-up-box -->
 								<div id="small-dialog2" class="mfp-hide">
 									<h3>Settings</h3>
@@ -85,9 +197,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 										<div class="upload-image">
 											<img id="profileImage" src="http://lorempixel.com/100/100">
 											<form>
-											<input id="imageUpload" type="file" name="profile_photo"
-												placeholder="Photo" required="" capture=""> <br>
-											
+												<input id="imageUpload" type="file" name="profile_photo"
+													placeholder="Photo" required="" capture=""> <br>
+
 												<input type="submit" value="Continue">
 											</form>
 										</div>
@@ -114,32 +226,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 									</div>
 									<div class="clearfix"></div>
 								</div>
-
-
-
-
-
-								<script>
-									$(document)
-											.ready(
-													function() {
-														$(
-																'.popup-with-zoom-anim')
-																.magnificPopup(
-																		{
-																			type : 'inline',
-																			fixedContentPos : false,
-																			fixedBgPos : true,
-																			overflowY : 'auto',
-																			closeBtnInside : true,
-																			preloader : false,
-																			midClick : true,
-																			removalDelay : 300,
-																			mainClass : 'my-mfp-zoom-in'
-																		});
-
-													});
-								</script>
+						          
 							</div>
 
 							<div class="signin">
@@ -149,27 +236,44 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 									<h3>Are you sure you want to log out?</h3>
 
 									<div class="signup">
-										<form>
+										<form action="./sigout" method="get">
 											<input type="submit" value="Continue">
 										</form>
 									</div>
 									<div class="clearfix"></div>
 								</div>
+
+                               
 							</div>
-						
-					
+									<script>
+											$(document).ready(function() {
+											$('.popup-with-zoom-anim').magnificPopup({
+												type: 'inline',
+												fixedContentPos: false,
+												fixedBgPos: true,
+												overflowY: 'auto',
+												closeBtnInside: true,
+												preloader: false,
+												midClick: true,
+												removalDelay: 300,
+												mainClass: 'my-mfp-zoom-in'
+											});
+																											
+											});
+									</script>
 						</c:when>
-						
+
 						<c:otherwise>
 
 							<div class="signin">
 								<a href="#small-dialog2" class="play-icon popup-with-zoom-anim">Sign
 									Up</a>
 								<!-- pop-up-box -->
-								<script type="text/javascript" src="js/modernizr.custom.min.js"></script>
-								<link href="./css/popuo-box.css" rel="stylesheet"
+								<script type="text/javascript"
+									src="FinalProject/js/modernizr.custom.min.js"></script>
+								<link href="FinalProject/css/popuo-box.css" rel="stylesheet"
 									type="text/css" media="all" />
-								<script src="./js/jquery.magnific-popup.js"
+								<script src="FinalProject/js/jquery.magnific-popup.js"
 									type="text/javascript"></script>
 								<!--//pop-up-box -->
 								<div id="small-dialog2" class="mfp-hide">
@@ -188,19 +292,20 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 											</p>
 										</div>
 									</div>
-									<div class="signup">
-										<form>
-											<input type="text" class="email" placeholder="Username"
+										<div class="signup">
+										<form action="./signup" method="post">
+											<input type="text" class="email" name="username" placeholder="Username"
 												maxlength="50"
 												pattern="^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$"
-												title="Enter a valid username" /> <input type="password"
+												title="Enter a valid username" /> 
+											<input type="password" name="password"
 												placeholder="Password" required="required" pattern=".{6,}"
 												title="Minimum 6 characters required" autocomplete="off" />
-											<input type="text" class="email" placeholder="Email"
+											<input type="text" class="email" name="email" placeholder="Email"
 												required="required"
 												pattern="([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?"
-												title="Enter a valid email" /> <input type="submit"
-												value="Sign Up" />
+												title="Enter a valid email" /> 
+											<input type="submit" value="Sign Up" />
 										</form>
 									</div>
 									<div class="clearfix"></div>
@@ -226,7 +331,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 										</div>
 									</div>
 									<div class="signup">
-										<form action="upload.html">
+										<form action="/login" method="post">
 											<input type="text" class="email" placeholder="Email"
 												required="required"
 												pattern="([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?"
@@ -238,27 +343,22 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 									</div>
 									<div class="clearfix"></div>
 								</div>
-								<script>
-									$(document)
-											.ready(
-													function() {
-														$(
-																'.popup-with-zoom-anim')
-																.magnificPopup(
-																		{
-																			type : 'inline',
-																			fixedContentPos : false,
-																			fixedBgPos : true,
-																			overflowY : 'auto',
-																			closeBtnInside : true,
-																			preloader : false,
-																			midClick : true,
-																			removalDelay : 300,
-																			mainClass : 'my-mfp-zoom-in'
-																		});
-
-													});
-								</script>
+							<script>
+											$(document).ready(function() {
+											$('.popup-with-zoom-anim').magnificPopup({
+												type: 'inline',
+												fixedContentPos: false,
+												fixedBgPos: true,
+												overflowY: 'auto',
+												closeBtnInside: true,
+												preloader: false,
+												midClick: true,
+												removalDelay: 300,
+												mainClass: 'my-mfp-zoom-in'
+											});
+																											
+											});
+									</script>
 							</div>
 							<div class="signin">
 								<a href="#small-dialog" class="play-icon popup-with-zoom-anim">Sign
@@ -280,16 +380,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 										</div>
 									</div>
 									<div class="signup">
-										<form>
-											<input type="text" class="email" placeholder="Enter username"
-												required="required"
-												pattern="([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?" /> <input
-												type="password" placeholder="Password" required="required"
-												pattern=".{6,}" title="Minimum 6 characters required"
-												autocomplete="off" /> <input type="submit" value="LOGIN" />
+										<form action="./login" method="post">
+											<input type="text" class="email" name="username"
+												placeholder="Enter username" required="required" /> <input
+												type="password" placeholder="Password" name="password"
+												required="required" pattern=".{6,}"
+												title="Minimum 6 characters required" autocomplete="off" />
+											<input type="submit" value="LOGIN" />
 										</form>
 										<div class="forgot">
-											<a href="#">Forgot password ?</a>
+											<!-- <a href="#">Forgot password ?</a>-->
 										</div>
 									</div>
 
@@ -305,5 +405,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<div class="clearfix"></div>
 
 		</div>
+
 
 	</nav>

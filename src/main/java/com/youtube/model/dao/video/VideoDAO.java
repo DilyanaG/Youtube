@@ -5,9 +5,6 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
 import com.youtube.db.DBManager;
@@ -29,7 +26,9 @@ public class VideoDAO implements IVideoDAO {
 			+ " (v.video_id = vht.video_id) WHERE vht.tag_id IN ( SELECT t.tag_id FROM tags AS t WHERE t.content LIKE ?) AND v.isDeleted = 0"
 			+ " ORDER BY v.date DESC;";
 
-	private static final String SELECT_ALL_VIDEOS_BY_CHANNEL_ID = "SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id WHERE v.channel_id = ? AND v.isDeleted = 0;";
+	private static final String SELECT_ALL_VIDEOS_BY_CHANNEL_ID = 
+			"SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id "
+			+ "WHERE v.channel_id = ? AND v.isDeleted = 0;";
 
 	private static final String SELECT_ALL_VIDEOS_BY_PLAYLIST_ID = "SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id "
 			+ "JOIN  playlists_has_videos AS phv ON(v.video_id = phv.video_id) WHERE phv.playlist_id = ? AND v.isDeleted = 0;";

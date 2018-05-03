@@ -34,16 +34,19 @@ public class UploadController {
 
 	 private static String VIDEO_UPLOADED_FOLDER = "D://uploads//videos//";
 	 private static String IMAGE_UPLOADED_FOLDER = "D://uploads//images//";
+ 
+	 
  @RequestMapping(value = "/upload", method = RequestMethod.POST)
  public String singleFileUpload(@RequestParam("file") MultipartFile file,
                                 RedirectAttributes redirectAttributes,HttpServletRequest request) throws Exception {
 	   System.out.println(request.getParameter("title"));
 	   System.out.println(request.getParameter("description"));
+	     
          System.out.println("braoo ti doide to tuka ");
      if (file.isEmpty()) {
          redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
-         throw new Exception();
-        // return "redirect:upload";
+       
+         return "redirect:upload";
      }
 
      try {

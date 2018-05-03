@@ -5,9 +5,6 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
 import com.youtube.db.DBManager;
@@ -133,7 +130,6 @@ public class CommentDAO implements ICommentDAO {
 
 		try {
 			dbManager.startTransaction(connection);
-			//TODO response_to_comment_id is the parent comment to the responses?
 			List<Comment> comments = dbManager.executeSelect(connection, SELECT_ALL_RESPONSES_FOR_COMMENT, new CommentResolver(), comment.getCommentId());
 			dbManager.commit(connection);
 			return Collections.unmodifiableList(comments);
@@ -162,7 +158,6 @@ public class CommentDAO implements ICommentDAO {
 
 		try {
 			dbManager.startTransaction(connection);
-			//TODO response_to_comment_id is the parent comment to the responses?
 			dbManager.execute(connection, ADD_RESPONSE_TO_COMMENT, channel.getChannelId(), video.getVideoId(), response, respondTo.getCommentId());
 			dbManager.commit(connection);
 		} catch (SQLException s) {

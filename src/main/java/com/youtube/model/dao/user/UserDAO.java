@@ -7,9 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
 import com.youtube.db.DBManager;
@@ -49,8 +46,8 @@ public class UserDAO implements IUserDAO {
 	
 	private static final String DELETE_CHANNEL_VIDEOS = "UPDATE videos JOIN channels ON videos.channel_id = channels.channel_id JOIN users ON channels.user_id = users.user_id SET isDeleted = 1 WHERE channels.user_id = ?;";
 	
-	
-	//@Autowired
+
+	//	@Autowired
 	private static DBManager dbManager;
 
 	@Override
