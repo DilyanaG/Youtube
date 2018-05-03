@@ -33,6 +33,7 @@ public class DBManager {
 	private final String URL;
 
 	//@Autowired
+
 	private DBManager() {
 		File file = new File("DB_connection.properties");
 		String propFileName="DB_connection.properties";
@@ -40,6 +41,7 @@ public class DBManager {
 		//try (BufferedReader on = new BufferedReader(new FileReader(file));) {
 			try (InputStream in = getClass().getClassLoader().getResourceAsStream(propFileName);) {
 			 Properties properties = new Properties();
+
 			properties.load(in);
 			DB_NAME = properties.getProperty("DB_NAME");
 			DB_USERNAME = properties.getProperty("DB_USERNAME");

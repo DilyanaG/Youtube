@@ -42,6 +42,14 @@
 					class="glyphicon glyphicon-home glyphicon-hourglass"
 					aria-hidden="true"> </span>PLAYLISTS
 			</a></li>
+			<li id = "create_playlist"><a href="" class="sub-icon"> <span
+					class="glyphicon glyphicon-home glyphicon-hourglass"
+					aria-hidden="true"> </span>CREATE PLAYLIST
+			</a></li>
+                	<script>
+				$("#create_playlist").click(function() {
+					$("#middle").empty()
+					});
 			<script>
 				$('#playlist').click(function() {
 									$.ajax({
