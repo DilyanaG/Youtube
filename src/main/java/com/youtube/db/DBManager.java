@@ -13,9 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.model.resolvers.IResolver;
 
@@ -33,6 +30,7 @@ public class DBManager {
 	//@Autowired
 	public DBManager() {
 		File file = new File("DB_test.properties");
+		
 		try (BufferedReader in = new BufferedReader(new FileReader(file));) {
 			final Properties properties = new Properties();
 			properties.load(in);
@@ -40,7 +38,9 @@ public class DBManager {
 			DB_USERNAME = properties.getProperty("DB_USERNAME");
 			DB_PASSWORD = properties.getProperty("DB_PASSWORD");
 			URL = "jdbc:mysql://" + DB_IP + ":" + DB_PORT + "/" + DB_NAME + "?useSSL=false";
-
+			
+			System.out.println(DB_NAME);
+			
 			// load driver
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException | IOException e) {
@@ -128,7 +128,7 @@ public class DBManager {
 
 	private PreparedStatement setParameters(PreparedStatement prst, Object[] args) throws SQLException {
 		for (int parameterIndex = 0; parameterIndex < args.length; parameterIndex++) {
-			prst.setObject(parameterIndex, args[parameterIndex]);
+			prst.setObject(parameterIndex+1, args[parameterIndex]);
 		}
 		return prst;
 	}

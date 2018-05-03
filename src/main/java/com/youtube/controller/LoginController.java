@@ -30,8 +30,6 @@ public class LoginController {
 	   	return "redirect:index";
 	}
 	
-	
-	
 	@RequestMapping(method=RequestMethod.GET, value="/sigout")
 	public String signOut(Model model,HttpServletRequest req) {
 		HttpSession session = req.getSession(false);

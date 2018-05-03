@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page errorPage="/error"%>
@@ -21,14 +21,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	
 	
  addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } 
-
-
-
-
-
-
-
-
 </script>
 <!-- bootstrap -->
 <link href="FinalProject/css/bootstrap.min.css" rel='stylesheet'
@@ -94,7 +86,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 																			'<h3>'
 																					+ searchWord
 																					+ '</h3>');
-
 															$
 																	.ajax({
 																		url : 'search',
@@ -104,13 +95,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 																		},
 																		success : function(
 																				response) {
-
 																			console
 																					.log(response);
 																			$(
 																					'#middle')
 																					.empty();
-
 																			$(
 																					'#middle')
 																					.append(
@@ -121,7 +110,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 																									+ '          <h1>nqma videa za toq search hahhahaaah</h1>'
 																									+ '		</c:if>'
 																									+ '	</div>');
-
 																			var i;
 																			for (i = 0; i < response.videos.length; i++) {
 																				$(
@@ -165,7 +153,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 																									+ ' </div>');
 																		}
 																	});
-
 														});
 									});
 				</script>
@@ -407,4 +394,4 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		</div>
 
 
-	</nav>
+</nav>
