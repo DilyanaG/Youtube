@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
@@ -15,6 +16,7 @@ import com.youtube.model.pojo.Comment;
 import com.youtube.model.pojo.Video;
 import com.youtube.model.resolvers.CommentResolver;
 
+//@Component
 public class CommentDAO implements ICommentDAO {
 
 	// selects
@@ -60,7 +62,7 @@ public class CommentDAO implements ICommentDAO {
 
 
 
-	@Autowired
+	//@Autowired
 	private static DBManager dbManager;
 
 	@Override

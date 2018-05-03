@@ -13,8 +13,8 @@ import com.youtube.db.DBManager;
 import com.youtube.model.pojo.Playlist;
 import com.youtube.model.resolvers.PlaylistResolver;
 
-@Component
-public class PlaylistDAO {
+//@Component
+public class PlaylistDAO implements IPlaylistDAO{
 
 	// selects
 	private static final String SELECT_BY_NAME = "SELECT p.*,ch.* FROM playlists AS p JOIN channels AS ch ON ch.channel_id=p.channel_id WHERE p.name=?;";
@@ -36,9 +36,10 @@ public class PlaylistDAO {
 
 	private static final String DELETE_PLAYLIST = "DELETE FROM playlists WHERE name = ?;";
 
-	@Autowired
+	//@Autowired
 	private static DBManager dbManager;
 
+	@Override
 	public Playlist getPlaylistByName(String playlist_name) throws DataBaseException {
 		final Connection connection = dbManager.getConnection();
 		try {
@@ -53,6 +54,7 @@ public class PlaylistDAO {
 		}
 	}
 
+	@Override
 	public List<Playlist> getPlaylistsByChannelAndSortByCreationDate(int channelId) throws DataBaseException {
 		final Connection connection = dbManager.getConnection();
 
@@ -68,6 +70,7 @@ public class PlaylistDAO {
 		}
 	}
 
+	@Override
 	public List<Playlist> getAllPlaylists() throws DataBaseException {
 		final Connection connection = dbManager.getConnection();
 
@@ -82,6 +85,7 @@ public class PlaylistDAO {
 		}
 	}
 
+	@Override
 	public boolean createNewPlaylist(String playlistName, int channelId) throws DataBaseException {
 		final Connection connection = dbManager.getConnection();
 
@@ -96,6 +100,7 @@ public class PlaylistDAO {
 		}
 	}
 
+	@Override
 	public void deletePlaylist(String playlist_name) throws DataBaseException {
 		final Connection connection = dbManager.getConnection();
 		Playlist playlist = getPlaylistByName(playlist_name);
@@ -110,6 +115,7 @@ public class PlaylistDAO {
 		}
 	}
 
+	@Override
 	public void deleteChannelPlaylists(int channelId) throws DataBaseException {
 		final Connection connection = dbManager.getConnection();
 		List<Playlist> playlists = getPlaylistsByChannelAndSortByCreationDate(channelId);
@@ -126,6 +132,7 @@ public class PlaylistDAO {
 		}
 	}
 
+	@Override
 	public void renamePlaylistName(int playlistId, String newName) throws DataBaseException {
 		final Connection connection = dbManager.getConnection();
 
@@ -138,6 +145,7 @@ public class PlaylistDAO {
 		}
 	}
 
+	@Override
 	public void updataLastVideoAddDate(int playlistId) throws DataBaseException {
 		final Connection connection = dbManager.getConnection();
 

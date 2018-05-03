@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.model.resolvers.IResolver;
 
-@Component
+//@Component
 public class DBManager {
 
 	private static final String DB_IP = "127.0.0.1";
@@ -30,7 +30,7 @@ public class DBManager {
 	private final String DB_PASSWORD;
 	private final String URL;
 
-	@Autowired
+	//@Autowired
 	public DBManager() {
 		File file = new File("DB_connection.properties");
 		try (BufferedReader in = new BufferedReader(new FileReader(file));) {

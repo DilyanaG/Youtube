@@ -29,7 +29,7 @@
 					class="glyphicon glyphicon-home glyphicon-hourglass"
 					aria-hidden="true"> </span>PLAYLISTS
 			</a></li>
-			<li id = "create_playlist"><a href"" class="sub-icon"> <span
+			<li id = "create_playlist"><a href="" class="sub-icon"> <span
 					class="glyphicon glyphicon-home glyphicon-hourglass"
 					aria-hidden="true"> </span>CREATE PLAYLIST
 			</a></li>

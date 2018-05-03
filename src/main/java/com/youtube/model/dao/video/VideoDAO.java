@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
@@ -16,6 +17,7 @@ import com.youtube.model.pojo.Video;
 import com.youtube.model.resolvers.TagResolver;
 import com.youtube.model.resolvers.VideoResolver;
 
+//@Component
 public class VideoDAO implements IVideoDAO {
 
 	// selects
@@ -67,7 +69,7 @@ public class VideoDAO implements IVideoDAO {
 
 	
 	
-	@Autowired
+	//@Autowired
 	private static DBManager dbManager;
 
 	@Override
