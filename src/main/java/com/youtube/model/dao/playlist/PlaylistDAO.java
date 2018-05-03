@@ -13,7 +13,7 @@ import com.youtube.db.DBManager;
 import com.youtube.model.pojo.Playlist;
 import com.youtube.model.resolvers.PlaylistResolver;
 
-@Component
+//@Component
 public class PlaylistDAO {
 
 	// selects
@@ -36,7 +36,7 @@ public class PlaylistDAO {
 
 	private static final String DELETE_PLAYLIST = "DELETE FROM playlists WHERE name = ?;";
 
-	@Autowired
+	//@Autowired
 	private static DBManager dbManager;
 
 	public Playlist getPlaylistByName(String playlist_name) throws DataBaseException {

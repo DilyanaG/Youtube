@@ -4,7 +4,20 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page errorPage="./error"%>
 
-
+<style>
+.button {
+	background-color: aqua; /* Green */
+	border: none;
+	color: white;
+	padding: 10px 25px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	margin: 4px 2px;
+	cursor: pointer;
+	font-size: 16px
+}
+</style>
 
 <jsp:include page="header.jsp" />
 <div class="col-sm-3 col-md-2 sidebar"
@@ -12,7 +25,7 @@
 	<div class="top-navigation">
 		<div class="t-menu">USER NAME HERE</div>
 		<div class="t-img">
-			<img src="images/male.png" alt="">
+			<img src="/FinalProject/images/male.png" alt="">
 		</div>
 		<div class="clearfix"></div>
 	</div>
@@ -25,18 +38,64 @@
 			<li><a href="" class="user-icon"><span
 					class="glyphicon glyphicon-home glyphicon-blackboard"
 					aria-hidden="true"></span>VIDEOS</a></li>
-			<li><a href="" class="sub-icon"> <span
+			<li id="playlist"><a class="sub-icon"> <span
 					class="glyphicon glyphicon-home glyphicon-hourglass"
 					aria-hidden="true"> </span>PLAYLISTS
 			</a></li>
-			<li id = "create_playlist"><a href"" class="sub-icon"> <span
-					class="glyphicon glyphicon-home glyphicon-hourglass"
-					aria-hidden="true"> </span>CREATE PLAYLIST
-			</a></li>
-                	<script>
-				$("#create_playlist").click(function() {
-					$("#middle").empty()
-					});
+			<script>
+				$('#playlist').click(function() {
+									$.ajax({
+												url : 'playlists',
+												type : 'get',
+												data: {userId: 1},
+												success: function(response){
+													    console.log(response.comments[2].content);
+														console.log(response.playlists.length);
+														$('#middle').empty();
+
+														$('#middle').append(
+																		'<div class="top-grids">'
+																				+ ' <div class="recommended-info">'
+																				+ '      <h3 >PLAYLISTS</h3>'
+																				+ '		<c:if test="${not empty videos}">'
+																				+ '          <button class="button " onclick="createPlaylist()" >CREATE PLAYLIST </button>'
+																				+ '		</c:if>'
+																				+ '	</div>');
+
+														var i;
+														for (i = 0; i < response.playlists.length; i++) {
+															$('#middle')
+																	.append(
+																			'<div class="col-md-4 resent-grid recommended-grid slider-top-grids">'
+																					+ '    <div class="resent-grid-img recommended-grid-img">'
+																					+ '		<a href="./playlist?playlistId='+response.playlists[i].playlistId+'"><img src="FinalProject/images/t3.jpg" alt=""></a>'
+																					+ '		<div class="time">'
+																					+ '			<p>4:04</p>'
+																					+ '		</div>'
+																					+ '		<div class="clck">'
+																					+ '			<span class="glyphicon glyphicon-time" aria-hidden="true"></span>'
+																					+ '		</div>'
+																					+ '	</div>'
+																					+ '	<div class="resent-grid-info recommended-grid-info">'
+																					+ '		<h3>'
+																					+ '			<a href="./playlist?playlistId='+response.playlists[i].playlistId+'" class="title title-info" >'
+																					+ response.playlists[i].playlistName
+																					+ '</a>'
+																					+ '		</h3>'
+																					+ '	</div>'
+																					+ '	<p>'
+																					+ '	  <c:if test="${not empty videos}">'
+																					+ ' <button class="button ">DELETE</button>'
+																					+ '		</c:if>'
+																					+ '</p>'
+																					+ ' </div>');
+														}
+														$('#middle').append(
+																		'<div class="clearfix"></div>'
+																				+ ' </div>');
+													}
+									});
+						});
 			</script>
 
 			<li><a class="menu1"><span class="glyphicon glyphicon-film "
@@ -51,6 +110,7 @@
 			<!-- script-for-menu -->
 			<script>
 				$("li a.menu1").click(function() {
+
 					$("ul.cl-effect-2").slideToggle(300, function() {
 						// Animation complete.
 					});
@@ -68,17 +128,19 @@
 
 	</div>
 </div>
-<div id = "middle" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-	<div class="main-grids">
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+	<div id="middle" class="main-grids">
 		<div class="top-grids">
+
 			<div class="recommended-info">
 				<h3>Videos</h3>
+			
 			</div>
 			<c:forEach items="${videos}" var="patka" varStatus="loop">
 
 				<div class="col-md-4 resent-grid recommended-grid slider-top-grids">
 					<div class="resent-grid-img recommended-grid-img">
-						<a href="./videos/${loop.index}"><img src="images/t3.jpg"
+						<a href="./video?videoId=${loop.index}"><img src="FinalProject/images/t3.jpg"
 							alt=""></a>
 						<div class="time">
 							<p>4:04</p>
@@ -89,7 +151,7 @@
 					</div>
 					<div class="resent-grid-info recommended-grid-info">
 						<h3>
-							<a href="./videos/${loop.index}" class="title title-info">Nullam
+							<a href="./video?videoId=${loop.index}" class="title title-info">Nullam
 								interdum metus a imperdiet pellentesque vitae pulvinar tortor</a>
 						</h3>
 						<ul>
@@ -107,16 +169,16 @@
 
 					<p>
 						<c:if test="${not empty videos}">
-							<button style="background-color: LightBlue">
-								<a href=""> DELETE </a>
-							</button>
+							<button class="button ">DELETE</button>
 						</c:if>
-					<p></p>
+					</p>
 				</div>
 			</c:forEach>
 			<div class="clearfix"></div>
 		</div>
 	</div>
+
+
 	<jsp:include page="footer.jsp" />
 </div>
 
@@ -125,7 +187,7 @@
 <!-- Bootstrap core JavaScript
     ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="js/bootstrap.min.js"></script>
+<script src="FinalProject/js/bootstrap.min.js"></script>
 <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
 
 

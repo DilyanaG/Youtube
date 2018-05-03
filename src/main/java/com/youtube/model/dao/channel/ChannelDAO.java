@@ -17,7 +17,7 @@ import com.youtube.db.DBManager;
 import com.youtube.model.pojo.Channel;
 import com.youtube.model.resolvers.ChannelResolver;
 
-@Component
+//@Component
 public class ChannelDAO implements IChannelDAO {
 
 	// selects
@@ -45,7 +45,7 @@ public class ChannelDAO implements IChannelDAO {
 
 
 	
-	@Autowired
+	//@Autowired
 	private DBManager dbManager;
 
 	@Override

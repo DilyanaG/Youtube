@@ -16,7 +16,7 @@ import com.youtube.db.DBManager;
 import com.youtube.model.pojo.User;
 import com.youtube.model.resolvers.UserResolver;
 
-@Component
+//@Component
 public class UserDAO implements IUserDAO {
 
 	// selects
@@ -50,7 +50,7 @@ public class UserDAO implements IUserDAO {
 	private static final String DELETE_CHANNEL_VIDEOS = "UPDATE videos JOIN channels ON videos.channel_id = channels.channel_id JOIN users ON channels.user_id = users.user_id SET isDeleted = 1 WHERE channels.user_id = ?;";
 	
 	
-	@Autowired
+//	@Autowired
 	private static DBManager dbManager;
 
 	@Override

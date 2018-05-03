@@ -3,13 +3,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.youtube</groupId>
+	<groupId>com.example</groupId>
 	<artifactId>Youtube</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<name>Youtube</name>
-	<description>Final Project in IT Talents</description>
+	<description>Final Project</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -24,7 +24,7 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
+	<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 		</dependency>

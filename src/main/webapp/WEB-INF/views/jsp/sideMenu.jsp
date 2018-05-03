@@ -6,11 +6,12 @@
 
 
 
+
 <div class="col-sm-3 col-md-2 sidebar">>
 	<div class="top-navigation">
 		<div class="t-menu">MENU</div>
 		<div class="t-img">
-			<img src="./images/lines.png" alt="" />
+			<img src="FinalProject/images/lines.png" alt="" />
 		</div>
 		<div class="clearfix"></div>
 	</div>
@@ -21,37 +22,28 @@
 			<li class="active"><a href="./index" class="home-icon"> <span
 					class="glyphicon glyphicon-home" aria-hidden="true"></span>Home
 			</a></li>
-			<li><a href="#" class="user-icon"> <span
+			<li id=RecentVideos><a  class="user-icon"> <span
 					class="glyphicon glyphicon-hourglass" aria-hidden="true"></span>Recent
 			</a></li>
-			<li><a href="#" class="user-icon"> <span
+			<li id=mostPopularVideos><a  class="user-icon"> <span
 					class="glyphicon glyphicon-star" aria-hidden="true"></span>Most
 					popular
 			</a></li>
 		</ul>
 
 <!-- TODO add links  and change if condition to  ${not empty sessionScope.user}  -->
-		<c:if test="${ not empty videos}">
+		<c:if test="${not empty sessionScope.channelId}">
+		
 			<h4>More options</h4>
 			<ul class="nav nav-sidebar">
                 
                 <li>
-                    <a href="#" class="user-icon">
-                        <span class="glyphicon glyphicon-film" aria-hidden="true"></span>My Videos</a>
-                </li>
-                <li>
-                    <a href="#" class="user-icon">
-                        <span class="glyphicon glyphicon-list" aria-hidden="true"></span>My Playlists</a>
-                </li>
-                <li>
-                    <a href="./profile" class="user-icon">
-                        <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>My Channels</a>
+                    <a href="./profile?channelId=${sessionScope.channelId}" class="user-icon">
+                        <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>PROFILE</a>
                 </li>
             </ul>
 		</c:if>
 		<!--
-	}
-	
       </script>
       -->
 		<!-- script-for-menu -->
@@ -83,3 +75,7 @@
 				link</a></li>
 	</ul>
 </div>
+
+<script>
+
+</script>

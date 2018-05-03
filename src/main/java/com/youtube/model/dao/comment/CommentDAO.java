@@ -60,7 +60,7 @@ public class CommentDAO implements ICommentDAO {
 
 
 
-	@Autowired
+	//	@Autowired
 	private static DBManager dbManager;
 
 	@Override

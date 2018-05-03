@@ -1,0 +1,3 @@
+DB_NAME: test_youtube
+DB_USERNAME: root
+DB_PASSWORD: 12345qwerty
