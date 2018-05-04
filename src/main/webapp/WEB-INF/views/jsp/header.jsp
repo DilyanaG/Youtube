@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page errorPage="/error"%>
@@ -21,14 +21,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	
 	
  addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } 
-
-
-
-
-
-
-
-
 </script>
 <!-- bootstrap -->
 <link href="FinalProject/css/bootstrap.min.css" rel='stylesheet'
@@ -74,7 +66,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							value="">
 					</form>
 				</div>
-				
+
 				<div class="header-top-right">
 					<div class="file">
 						<a href="./upload">Upload</a>
@@ -314,4 +306,4 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		</div>
 
 
-	</nav>
+</nav>

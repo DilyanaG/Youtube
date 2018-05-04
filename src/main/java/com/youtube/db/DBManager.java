@@ -1,8 +1,5 @@
 package com.youtube.db;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -13,9 +10,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.model.resolvers.IResolver;
@@ -32,15 +26,15 @@ public class DBManager {
 	private final String DB_PASSWORD;
 	private final String URL;
 
-	//@Autowired
+	// @Autowired
 
 	private DBManager() {
-		File file = new File("DB_connection.properties");
-		String propFileName="DB_connection.properties";
-		
-		//try (BufferedReader on = new BufferedReader(new FileReader(file));) {
-			try (InputStream in = getClass().getClassLoader().getResourceAsStream(propFileName);) {
-			 Properties properties = new Properties();
+		// File file = new File("DB_connection.properties");
+		String propFileName = "DB_connection.properties";
+
+		// try (BufferedReader on = new BufferedReader(new FileReader(file));) {
+		try (InputStream in = getClass().getClassLoader().getResourceAsStream(propFileName);) {
+			Properties properties = new Properties();
 
 			properties.load(in);
 			DB_NAME = properties.getProperty("DB_NAME");
@@ -51,7 +45,6 @@ public class DBManager {
 			System.out.println(DB_PASSWORD);
 			URL = "jdbc:mysql://" + DB_IP + ":" + DB_PORT + "/" + DB_NAME + "?useSSL=false";
 
-			
 		} catch (IOException e) {
 			System.out.println("Sorry,connection failed! Maybe wrong credentials!");
 			throw new RuntimeException(e);
@@ -86,7 +79,7 @@ public class DBManager {
 	// If the transaction succeeds it makes a commit
 	public void commit(Connection connection) throws SQLException {
 		connection.prepareStatement("COMMIT;").execute();
-		//connection.close();
+		// connection.close();
 	}
 
 	// Executes the given select
@@ -115,8 +108,8 @@ public class DBManager {
 		PreparedStatement prst = connection.prepareStatement(sql);
 		System.out.println("tuka e ");
 		setParameters(prst, args);
-	     ResultSet rs = prst.executeQuery();
-	     System.out.println("tuka e1");
+		ResultSet rs = prst.executeQuery();
+		System.out.println("tuka e1");
 		if (!rs.next()) {
 			throw new SQLException("Found nothing");
 		} else {
@@ -141,15 +134,15 @@ public class DBManager {
 
 	private PreparedStatement setParameters(PreparedStatement prst, Object[] args) throws SQLException {
 		for (int parameterIndex = 1; parameterIndex <= args.length; parameterIndex++) {
-			prst.setObject(parameterIndex, args[parameterIndex-1]);
+			prst.setObject(parameterIndex, args[parameterIndex - 1]);
 		}
 		return prst;
 	}
 
 	public synchronized static DBManager getInstance() {
-		
-		if(instance==null){
-			instance=new DBManager();
+
+		if (instance == null) {
+			instance = new DBManager();
 		}
 		return instance;
 	}

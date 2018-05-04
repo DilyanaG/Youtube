@@ -1,5 +1,6 @@
 package com.youtube.controller.upload.service;
 
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,49 +15,49 @@ public class SignUpService {
 	private static final int MIN_USERNAME_SIZE = 2;
 	private static final int MAX_USERNAME_SIZE = 30;
 	private static final String USERNAME_PATTERN = "^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$";
-	
+
 	private static final int MIN_PASSWORD_SIZE = 6;
 	private static final int MAX_PASSWORD_SIZE = 100;
-	
+
 	private static final int MAX_EMAIL_SIZE = 45;
 	private static final String EMAIL_PATTERN = "([\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4})?";
 
 	// @Autowired
-	private static UserDAO userDAO;
+	private static UserDAO userDAO = new UserDAO();
 
-	public boolean register(String username, String password, String email) throws IllegalInputException, DataBaseException {
+	public boolean register(String username, String password, String email)
+			throws IllegalInputException, DataBaseException {
+
 		checkForUsername(username);
 		checkForPassword(password);
 		checkForEmail(email);
-		
-		
+
 		try {
-			// original
-			//userDAO.getUserByUserName(username);
-			//userDAO.getUserByEmail(email);
-			
-			// for the test
-			if(username.equals("username") || email.equals("email@abv.bg")) {
-				System.out.println("Already in DB");
-			}else {
-				throw new DataBaseException("success");
+		Map<String, User> allUsers = userDAO.getAllUsers();
+		if (allUsers.containsKey(username)) {
+			System.out.println("username exists");
+			throw new IllegalInputException("User with that username already exists");
+		}
+
+		for (User user : allUsers.values()) {
+			if (user.getEmail().equals(email)) {
+				System.out.println("email exists");
+				throw new IllegalInputException("User with that email already exists");
 			}
-			// end of for the test
-			
-		} catch (DataBaseException e) {
-			// than no such user in DB
-			
-			//original
-			// User user = new User(username, password, email);
-			//userDAO.addNewUserToDB(user);
-			
+		}
+		}catch(NullPointerException e) {
+			System.out.println("create user");
+			User user = new User(username, password, email);
+			userDAO.addNewUserToDB(user);
 			return true;
 		}
-		throw new DataBaseException("User with that username or email already exists");
+		
+		return false;
 	}
 
 	private boolean checkForUsername(String username) throws IllegalInputException {
-		if (username == null || username.length() < MIN_USERNAME_SIZE || username.length() > MAX_USERNAME_SIZE || !checkForPattern(username, USERNAME_PATTERN)) {
+		if (username == null || username.length() < MIN_USERNAME_SIZE || username.length() > MAX_USERNAME_SIZE
+				|| !checkForPattern(username, USERNAME_PATTERN)) {
 			throw new IllegalInputException("INCORRECT USERNAME!");
 		}
 		return true;
@@ -68,7 +69,7 @@ public class SignUpService {
 		}
 		return true;
 	}
-	
+
 	private boolean checkForEmail(String email) throws IllegalInputException {
 		if (email == null || email.length() > MAX_EMAIL_SIZE || !checkForPattern(email, EMAIL_PATTERN)) {
 			throw new IllegalInputException("INCORRECT EMAIL!");
@@ -77,13 +78,13 @@ public class SignUpService {
 	}
 
 	private boolean checkForPattern(String givenMatcher, String givenPattern) {
-			try {
-				Pattern pattern = Pattern.compile(givenPattern);
-				Matcher matcher = pattern.matcher(givenMatcher);
-				return matcher.matches();
-			} catch (RuntimeException e) {
-				return false;
-			}
+		try {
+			Pattern pattern = Pattern.compile(givenPattern);
+			Matcher matcher = pattern.matcher(givenMatcher);
+			return matcher.matches();
+		} catch (RuntimeException e) {
+			return false;
+		}
 	}
 
 }

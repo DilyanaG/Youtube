@@ -21,6 +21,8 @@ public class UserDAO implements IUserDAO {
 
 	private static final String BY_USERNAME = "SELECT u.* FROM users AS u WHERE u.user_name = ? AND u.isDeleted = 0;";
 
+	private static final String BY_EMAIL = "SELECT u.* FROM users AS u WHERE u.email = ? AND u.isDeleted = 0;";
+
 	private static final String BY_USERNAME_AND_PASSWORD = "SELECT u.user_id FROM users AS u WHERE u.user_name = ? AND u.password = sha1(?) AND isDeleted = 0;";
 
 	private static final String SELECT_ALL_USERS = "SELECT u.* FROM users AS u WHERE u.isDeleted = 0;";
@@ -45,10 +47,11 @@ public class UserDAO implements IUserDAO {
 	private static final String DELETE_CHANNEL = "UPDATE channels JOIN users ON channels.user_id = users.user_id SET isDeleted = 1 WHERE channels.user_id = ?;";
 	
 	private static final String DELETE_CHANNEL_VIDEOS = "UPDATE videos JOIN channels ON videos.channel_id = channels.channel_id JOIN users ON channels.user_id = users.user_id SET isDeleted = 1 WHERE channels.user_id = ?;";
+
 	
 
 	//	@Autowired
-	private static DBManager dbManager;
+	private static DBManager dbManager  = DBManager.getInstance();
 
 	@Override
 	public User getUserById(int userId) throws DataBaseException, IllegalInputException {
@@ -68,14 +71,18 @@ public class UserDAO implements IUserDAO {
 	public int addNewUserToDB(User user) throws DataBaseException, IllegalInputException {
 		final Connection connection = dbManager.getConnection();
 
+		System.out.println("before try");
 		try {
+			System.out.println("begin try");
 			dbManager.startTransaction(connection);
 			int inserted = dbManager.execute(connection, INSERT_INTO_USERS, user.getUserName(), user.getPassword(),
 					user.getEmail(), user.getPhotoURL());
 			dbManager.execute(connection, INSERT_INTO_CHANNELS, user.getUserId());	
 			dbManager.commit(connection);
+			System.out.println("end try");
 			return inserted;
 		} catch (SQLException s) {
+			System.out.println("catch");
 			dbManager.rollback(connection, s);
 			return 0;
 		}
@@ -105,12 +112,27 @@ public class UserDAO implements IUserDAO {
 	}
 
 	@Override
-	public User getUserByUserName(String username) throws IllegalInputException, DataBaseException {
+	public User getUserByUserName(String username) throws DataBaseException {
 		final Connection connection = dbManager.getConnection();
 
 		try {
 			dbManager.startTransaction(connection);
 			User user = dbManager.executeSingleSelect(connection, BY_USERNAME, new UserResolver(), username);
+			dbManager.commit(connection);
+			return user;
+		} catch (SQLException s) {
+			dbManager.rollback(connection, s);
+			return null;
+		}
+	}
+	
+	@Override
+	public User getUserByEmail(String email) throws DataBaseException {
+		final Connection connection = dbManager.getConnection();
+
+		try {
+			dbManager.startTransaction(connection);
+			User user = dbManager.executeSingleSelect(connection, BY_EMAIL, new UserResolver(), email);
 			dbManager.commit(connection);
 			return user;
 		} catch (SQLException s) {
