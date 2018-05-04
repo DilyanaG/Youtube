@@ -86,7 +86,7 @@
 				  $('#videos').append(
 						 ' <div class="col-md-4 resent-grid recommended-grid slider-top-grids">'
 						+'	<div class="resent-grid-img recommended-grid-img">'
-						+'		<a href="./video?videoId='+response.videos[i].videoId+'"><img src="FinalProject/images/t3.jpg" alt=""></a>'
+						+'		<a href="./video?videoId='+response.videos[i].videoId+'"><img src="./uploads/images/'+response.videos[i].photoUrl+'" alt=""></a>'
 						+'		<div class="time">'
 						+'			<p></p>'
 						+'		</div>'

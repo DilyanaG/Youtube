@@ -33,26 +33,28 @@ public class VideoController {
 	@RequestMapping(value = "/videoLoader", method = RequestMethod.GET)
 	public Map<String, List<VideoTopViewDTO>> doGet() throws IllegalInputException, DataBaseException {
 //		System.out.println(req.getParameter("parametyr"));
-//		String action = req.getParameter("parametyr");
-//        System.out.println(2);
-//		
-//		switch ("MOST") {
-//		case "MOST":
-//            videos=videoDao.getMostPopularVideos();
-//			break;
-//		case "RECENT":
-//             videos=videoDao.getRecentVideos();
-//			break;
-//		default:
-//		      videos=videoDao.getVideosByTagAndSortByDate(null);	
-//			break;
-//		}
 		List<Video> videos = new ArrayList<>();
-		for (int i = 0; i <MAX_VIDEOS_FOR_PAGE; i++) {
-			videos.add(new Video(1, new Channel(i+1,new User("goshkata", "1234567", "gosho@abv.bg")), "video"+i, "photo"+i, "title"+i,LocalDateTime.now(), "description"+i, new Random().nextInt(50), 0,0));
-		}
 		
-      System.out.println(videos.size());
+		//String action = req.getParameter("parametyr");
+        System.out.println(2);
+		
+		switch ("MOST") {
+		case "MOST":
+            videos=videoDao.getMostPopularVideos();
+			break;
+		case "RECENT":
+             videos=videoDao.getRecentVideos();
+			break;
+		default:
+		      videos=videoDao.getVideosByTagAndSortByDate(null);	
+			break;
+		}
+//		List<Video> videos = new ArrayList<>();
+//		for (int i = 0; i <MAX_VIDEOS_FOR_PAGE; i++) {
+//			videos.add(new Video(1, new Channel(i+1,new User("goshkata", "1234567", "gosho@abv.bg")), "video"+i, "photo"+i, "title"+i,LocalDateTime.now(), "description"+i, new Random().nextInt(50), 0,0));
+//		}
+		
+      System.out.println("videos size"+videos.size());
 	List<VideoTopViewDTO> sendVideos = new ArrayList<>();
 	//fill videoTopViewDTO 
 		for (int i = 0; i <MAX_VIDEOS_FOR_PAGE &&i<videos.size(); i++) {

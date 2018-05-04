@@ -69,7 +69,7 @@ public class DBManager {
 	public void rollback(Connection connection, SQLException sqlE) throws DataBaseException {
 		try {
 			connection.prepareStatement("ROLLBACK;").execute();
-			//connection.close();
+			connection.close();
 		} catch (SQLException e) {
 			throw new DataBaseException(e);
 		}
@@ -110,7 +110,7 @@ public class DBManager {
 		setParameters(prst, args);
 		ResultSet rs = prst.executeQuery();
 		System.out.println("tuka e1");
-		if (!rs.next()) {
+		if (rs==null||!rs.next()) {
 			throw new SQLException("Found nothing");
 		} else {
 			System.out.println("grymnah tuka");

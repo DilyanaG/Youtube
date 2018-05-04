@@ -53,7 +53,7 @@ public class UploadService {
 	        byte[] bytes = file.getBytes();
 	        int fileNumber= numFile.incrementAndGet();
 	        String videoUrl=file.getOriginalFilename()+"video"+fileNumber+".mp4";
-	        String photoUrl=file.getOriginalFilename()+"photo"+fileNumber+".png";
+	        String photoUrl=file.getOriginalFilename().substring(0,file.getOriginalFilename().length()-4)+"photo"+fileNumber+".png";
 	         Path path = Paths.get(VIDEO_UPLOADED_FOLDER+videoUrl);
 	   //save video
 	         Files.write(path, bytes);

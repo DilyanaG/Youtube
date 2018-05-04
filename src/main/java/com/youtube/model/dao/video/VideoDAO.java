@@ -207,7 +207,7 @@ public class VideoDAO implements IVideoDAO {
 			int inserted = dbManager.execute(connection, ADD_VIDEO_TO_CHANNEL, channelId,
 					video.getVideoUrl(), video.getPhotoUrl(), video.getTitle(), video.getDescription(), 0);
 			System.out.println("tuka e ");
-			dbManager.commit(connection);
+			//dbManager.commit(connection);
 			Video addedVideo = dbManager.executeSingleSelect(connection, GET_VIDEO_BY_TITLE, new VideoResolver(),
 					video.getTitle());
 			System.out.println("tuka e 1");

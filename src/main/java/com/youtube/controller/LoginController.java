@@ -22,20 +22,14 @@ public class LoginController {
 	   String password=(String) req.getParameter("password");
 	   System.out.println(username+"   "+password);
 	try {
-		new UserDAO().loginUser(new User(username, password,""));
-	} catch (IllegalInputException | DataBaseException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	//here call user dao for checkuser if user dont exxist put error message in model
-	if(Math.random()<0.2){
-		model.addAttribute("errorMessage","your username or password not correct please try again");
-	}else{
+		 int userId=UserDAO.getInstance().loginUser(new User(username, password,""));
 		 HttpSession session = req.getSession();
-		    session.setAttribute("channelId", 2);
+		    session.setAttribute("channelId",userId );
 			model.addAttribute("successMessage","Login uraaa");
-				
+	} catch (DataBaseException e) {
+		model.addAttribute("errorMessage","your username or password not correct please try again");
 	}
+	
 	  
 	   	return "redirect:index";
 	}
