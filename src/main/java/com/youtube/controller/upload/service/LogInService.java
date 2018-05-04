@@ -4,6 +4,13 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
 import com.youtube.model.dao.user.UserDAO;
@@ -30,13 +37,8 @@ public class LogInService {
 		System.out.println("Checks passed");
 
 		User user = userDAO.getUserByUserName(username);
-		
-		System.out.println(user);
-
 		int userId = userDAO.loginUser(user);
 
-		System.out.println(userId);
-		
 		if (userId != 0) {
 			return user;
 		}else {

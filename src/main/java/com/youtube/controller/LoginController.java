@@ -31,9 +31,7 @@ public class LoginController {
 
 		try {
 			User user = new LogInService().login(username, password);
-			System.out.println(user);
 			Channel channel = ChannelDAO.getInstance().getChannelByUserId(user.getUserId());
-			System.out.println(channel);
 			session.setAttribute("channelId", channel.getChannelId());
 			model.addAttribute("successMessage", "Log in successful.");
 		} catch (IllegalInputException | DataBaseException e) {
@@ -42,33 +40,6 @@ public class LoginController {
 		
 		return "redirect:/index";
 
-	}
-
-	// @RequestMapping(method=RequestMethod.POST, value="/login")
-	// public String login(Model model,HttpServletRequest req) {
-	// String username=(String) req.getParameter("username");
-	// String password=(String) req.getParameter("password");
-	// System.out.println(username+" "+password);
-	// try {
-	// new UserDAO().loginUser(new User(username, password,""));
-	// } catch (IllegalInputException | DataBaseException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// //here call user dao for checkuser if user dont exxist put error message in
-	// model
-	// if(Math.random()<0.2){
-	// model.addAttribute("errorMessage","your username or password not correct
-	// please try again");
-	// }else{
-	// HttpSession session = req.getSession();
-	// session.setAttribute("channelId", 2);
-	// model.addAttribute("successMessage","Login uraaa");
-	//
-	// }
-	//
-	// return "redirect:index";
-	// }
 
 	@RequestMapping(method = RequestMethod.GET, value = "/sigout")
 	public String signOut(Model model, HttpServletRequest req) {
