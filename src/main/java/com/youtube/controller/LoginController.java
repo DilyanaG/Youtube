@@ -8,6 +8,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.youtube.controller.exceptions.DataBaseException;
+import com.youtube.controller.exceptions.IllegalInputException;
+import com.youtube.model.dao.user.UserDAO;
+import com.youtube.model.pojo.User;
+
 @Controller
 public class LoginController {
    
@@ -16,7 +21,12 @@ public class LoginController {
 	   String username=(String) req.getParameter("username");
 	   String password=(String) req.getParameter("password");
 	   System.out.println(username+"   "+password);
-	
+	try {
+		new UserDAO().loginUser(new User(username, password,""));
+	} catch (IllegalInputException | DataBaseException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	//here call user dao for checkuser if user dont exxist put error message in model
 	if(Math.random()<0.2){
 		model.addAttribute("errorMessage","your username or password not correct please try again");

@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page errorPage = "./error" %>
 
@@ -79,8 +79,6 @@
 			data: {parametyr: action },
 			success: function(response){
 				
-			       console.log(response.comments[0].commentId)
-			       console.log(response.videos[0].videoId)
 			       $('#actionTitle').empty();
 			       $('#actionTitle').append(action+'  VIDEOS');
 			       $('#videos').empty();
@@ -88,7 +86,7 @@
 				  $('#videos').append(
 						 ' <div class="col-md-4 resent-grid recommended-grid slider-top-grids">'
 						+'	<div class="resent-grid-img recommended-grid-img">'
-						+'		<a href="./video?videoId='+response.videos[i].videoId+'"><img src="FinalProject/uploads/images/'+response.videos[i].photoUrl+'" alt=""></a>'
+						+'		<a href="./video?videoId='+response.videos[i].videoId+'"><img src="FinalProject/images/t3.jpg" alt=""></a>'
 						+'		<div class="time">'
 						+'			<p></p>'
 						+'		</div>'

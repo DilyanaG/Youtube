@@ -1,5 +1,8 @@
 package com.youtube.model.dto.video;
 
+import org.springframework.stereotype.Component;
+
+
 public class VideoTopViewDTO {
      
 	private int videoId;
@@ -19,53 +22,55 @@ public class VideoTopViewDTO {
 	}
 
 
-	private int getVideoId() {
+	public int getVideoId() {
 		return videoId;
 	}
 
 
-	private void setVideoId(int videoId) {
+	public void setVideoId(int videoId) {
 		this.videoId = videoId;
 	}
 
 
-	private int getChannelId() {
+	public int getChannelId() {
 		return channelId;
 	}
 
 
-	private void setChannelId(int channelId) {
+	public void setChannelId(int channelId) {
 		this.channelId = channelId;
 	}
 
 
-	private String getTitle() {
+	public String getTitle() {
 		return title;
 	}
 
 
-	private void setTitle(String title) {
+	public void setTitle(String title) {
 		this.title = title;
 	}
 
 
-	private String getPhotoUrl() {
+	public String getPhotoUrl() {
 		return photoUrl;
 	}
 
 
-	private void setPhotoUrl(String photoUrl) {
+	public void setPhotoUrl(String photoUrl) {
 		this.photoUrl = photoUrl;
 	}
 
 
-	private int getViews() {
+	public int getViews() {
 		return views;
 	}
 
 
-	private void setViews(int views) {
+	public void setViews(int views) {
 		this.views = views;
 	}
+
+
 	
 }

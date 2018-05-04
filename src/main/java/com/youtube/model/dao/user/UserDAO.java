@@ -219,7 +219,7 @@ public class UserDAO implements IUserDAO {
 	}
 
 	@Override
-	public int loginUser(User user) throws IllegalInputException, DataBaseException {
+	public int loginUser(User user) throws DataBaseException  {
 		final Connection connection = dbManager.getConnection();
 
 		try {
@@ -233,6 +233,11 @@ public class UserDAO implements IUserDAO {
 			dbManager.rollback(connection, s);
 			return 0;
 		}
+	}
+
+	
+	public static void main(String[] args) throws DataBaseException {
+		new UserDAO().loginUser(new User("ss", "ddd","ss"));
 	}
 
 }

@@ -69,7 +69,7 @@ public class DBManager {
 	public void rollback(Connection connection, SQLException sqlE) throws DataBaseException {
 		try {
 			connection.prepareStatement("ROLLBACK;").execute();
-			connection.close();
+			//connection.close();
 		} catch (SQLException e) {
 			throw new DataBaseException(e);
 		}
@@ -79,7 +79,7 @@ public class DBManager {
 	// If the transaction succeeds it makes a commit
 	public void commit(Connection connection) throws SQLException {
 		connection.prepareStatement("COMMIT;").execute();
-		// connection.close();
+		connection.close();
 	}
 
 	// Executes the given select
