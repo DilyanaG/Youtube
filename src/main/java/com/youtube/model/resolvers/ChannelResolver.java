@@ -18,7 +18,6 @@ public class ChannelResolver implements IResolver<Channel> {
 
 		// Checks if the parameter is in the ResultSet and takes it
 		// If the parameter is not in the ResultSet it sets it a null value
-		// The "ch." is the alias for the "channels" table in the DB
 
 		final Integer channelId = selectedColumns.contains("channel_id") ? rs.getInt("channel_id") : null;
 		System.out.println(channelId);

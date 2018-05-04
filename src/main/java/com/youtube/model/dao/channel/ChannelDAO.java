@@ -11,6 +11,7 @@ import java.util.Map;
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
 import com.youtube.db.DBManager;
+import com.youtube.model.dao.user.UserDAO;
 import com.youtube.model.pojo.Channel;
 import com.youtube.model.resolvers.ChannelResolver;
 
@@ -43,7 +44,17 @@ public class ChannelDAO implements IChannelDAO {
 
 	
 	//@Autowired
-	private DBManager dbManager;
+	private DBManager dbManager = DBManager.getInstance();
+	
+	private static ChannelDAO instance;
+	public synchronized static ChannelDAO getInstance() {
+		if(instance==null)
+			instance=new ChannelDAO();
+		return instance;
+	}
+	private ChannelDAO() {
+	
+	}
 
 	@Override
 	public Channel getChannelById(int id) throws IllegalInputException, DataBaseException {

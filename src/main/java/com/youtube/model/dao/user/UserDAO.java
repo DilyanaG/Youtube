@@ -82,19 +82,15 @@ public class UserDAO implements IUserDAO {
 	public int addNewUserToDB(User user) throws DataBaseException, IllegalInputException {
 		final Connection connection = dbManager.getConnection();
 
-		System.out.println("before try");
 		try {
-			System.out.println("begin try");
 			dbManager.startTransaction(connection);
 			int inserted = dbManager.execute(connection, INSERT_INTO_USERS, user.getUserName(), user.getPassword(),
 					user.getEmail(), user.getPhotoURL());
 			int userId = dbManager.executeSingleSelect(connection, BY_USERNAME_AND_PASSWORD, new UserResolver(), user.getUserName(), user.getPassword()).getUserId();
 			dbManager.execute(connection, INSERT_INTO_CHANNELS, userId);	
 			dbManager.commit(connection);
-			System.out.println("end try");
 			return inserted;
 		} catch (SQLException s) {
-			System.out.println("catch");
 			dbManager.rollback(connection, s);
 			return 0;
 		}
@@ -130,9 +126,11 @@ public class UserDAO implements IUserDAO {
 		try {
 			dbManager.startTransaction(connection);
 			User user = dbManager.executeSingleSelect(connection, BY_USERNAME, new UserResolver(), username);
+			System.out.println("In DAO " + user);
 			dbManager.commit(connection);
 			return user;
 		} catch (SQLException s) {
+			System.out.println("SQL exception");
 			dbManager.rollback(connection, s);
 			return null;
 		}
@@ -236,8 +234,7 @@ public class UserDAO implements IUserDAO {
 
 		try {
 			dbManager.startTransaction(connection);
-			UserResolver userResolver = new UserResolver();
-			User newUser = dbManager.executeSingleSelect(connection, BY_USERNAME_AND_PASSWORD, userResolver,
+			User newUser = dbManager.executeSingleSelect(connection, BY_USERNAME_AND_PASSWORD, new UserResolver(),
 					user.getUserName(), user.getPassword());
 			dbManager.commit(connection);
 			return newUser.getUserId();

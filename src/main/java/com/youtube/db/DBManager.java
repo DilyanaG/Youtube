@@ -69,7 +69,7 @@ public class DBManager {
 	public void rollback(Connection connection, SQLException sqlE) throws DataBaseException {
 		try {
 			connection.prepareStatement("ROLLBACK;").execute();
-			//connection.close();
+			connection.close();
 		} catch (SQLException e) {
 			throw new DataBaseException(e);
 		}

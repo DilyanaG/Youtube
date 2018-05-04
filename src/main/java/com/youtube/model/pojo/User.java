@@ -7,21 +7,24 @@ public class User {
 	private String password;
 	private String email;
 	private String photoURL;
+	private boolean isDeleted;
 
 	public User() {
 		super();
 	}
 
-	public User(int userId, String userName, String password, String email, String photoURL) {
+	public User(int userId, String userName, String password, String email, String photoURL, boolean isDeleted) {
 		this(userName, password, email);
 		this.userId = userId;
 		this.photoURL = photoURL;
+		this.isDeleted = isDeleted;
 	}
 
 	public User(String userName, String password, String email) {
 		this.userName = userName;
 		this.password = password;
 		this.email = email;
+		this.isDeleted = false;
 	}
 
 	public int getUserId() {
@@ -64,11 +67,20 @@ public class User {
 		this.photoURL = photoURL;
 	}
 
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + (isDeleted ? 1231 : 1237);
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((photoURL == null) ? 0 : photoURL.hashCode());
 		result = prime * result + userId;
@@ -89,6 +101,8 @@ public class User {
 			if (other.email != null)
 				return false;
 		} else if (!email.equals(other.email))
+			return false;
+		if (isDeleted != other.isDeleted)
 			return false;
 		if (password == null) {
 			if (other.password != null)
@@ -112,21 +126,11 @@ public class User {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("User [userId=");
-		builder.append(userId);
-		builder.append(", userName=");
-		builder.append(userName);
-		builder.append(", password=");
-		builder.append(password);
-		builder.append(", email=");
-		builder.append(email);
-		builder.append(", photoURL=");
-		builder.append(photoURL);
-		builder.append("]");
-		return builder.toString();
+		return "User [userId=" + userId + ", userName=" + userName + ", password=" + password + ", email=" + email
+				+ ", photoURL=" + photoURL + ", isDeleted=" + isDeleted + "]";
 	}
 
+	
 	
 
 }
