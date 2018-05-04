@@ -26,10 +26,14 @@ public class VideoDAO implements IVideoDAO {
 	private static final String GET_VIDEO_BY_TITLE = "SELECT v.*, ch.*,u.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id  JOIN users AS u "
 			+ "ON u.user_id=ch.user_id WHERE v.title = ? AND v.isDeleted = 0;";
 
-	private static final String SEARCH_VIDEOS_BY_TAGS = "SELECT v.*, c.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id JOIN videos_has_tags AS vht ON"
+	private static final String SEARCH_VIDEOS_BY_TAGS = "SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id JOIN videos_has_tags AS vht ON"
 			+ " (v.video_id = vht.video_id) WHERE vht.tag_id IN ( SELECT t.tag_id FROM tags AS t WHERE t.content LIKE ?) AND v.isDeleted = 0"
 			+ " ORDER BY v.date DESC;";
-
+	private static final String RECENT_VIDEOS = "SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id   WHERE v.isDeleted = 0"
+			+ " ORDER BY v.date DESC;";
+	private static final String MOST_POPULAR_VIDEOS = "SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id   WHERE v.isDeleted = 0"
+			+ " ORDER BY v.views DESC;";
+	
 	private static final String SELECT_ALL_VIDEOS_BY_CHANNEL_ID = 
 			"SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id "
 			+ "WHERE v.channel_id = ? AND v.isDeleted = 0;";
@@ -71,9 +75,21 @@ public class VideoDAO implements IVideoDAO {
 	private static final String REMOVE_LIKE_DISLIKE_FROM_VIDEO = "DELETE FROM videos_has_likes_dislikes WHERE video_id = ? AND channel_id = ?;";
 
 	
+
+	
 	
 	//@Autowired
 	private static DBManager dbManager=DBManager.getInstance();
+
+	private static VideoDAO instance;
+	public synchronized static VideoDAO getInstance() {
+		if(instance==null)
+			instance=new VideoDAO();
+		return instance;
+	}
+	private VideoDAO() {
+	
+	}
 
 	@Override
 	public Video getVideoById(int video_id) throws IllegalInputException, DataBaseException {
@@ -103,7 +119,34 @@ public class VideoDAO implements IVideoDAO {
 			return null;
 		}
 	}
-
+ 
+	public List<Video> getMostPopularVideos() throws IllegalInputException, DataBaseException {
+		final Connection connection = dbManager.getConnection();
+		try {
+			dbManager.startTransaction(connection);
+			List<Video> videos = dbManager.executeSelect(connection, MOST_POPULAR_VIDEOS, new VideoResolver());
+			dbManager.commit(connection);
+			return Collections.unmodifiableList(videos);
+		} catch (SQLException s) {
+			dbManager.rollback(connection, s);
+			return null;
+		}
+	}
+	
+	public List<Video> getRecentVideos() throws IllegalInputException, DataBaseException {
+		final Connection connection = dbManager.getConnection();
+		try {
+			dbManager.startTransaction(connection);
+			List<Video> videos = dbManager.executeSelect(connection, RECENT_VIDEOS, new VideoResolver());
+			dbManager.commit(connection);
+			return Collections.unmodifiableList(videos);
+		} catch (SQLException s) {
+			dbManager.rollback(connection, s);
+			return null;
+		}
+	}
+	
+	
 	@Override
 	public List<Video> getVideosByTagAndSortByDate(String tag) throws IllegalInputException, DataBaseException {
 		final Connection connection = dbManager.getConnection();
@@ -171,7 +214,8 @@ public class VideoDAO implements IVideoDAO {
 			writeInVideosHasTagsTable(connection, addedVideo.getTitle() + " " + addedVideo.getDescription(),
 					addedVideo.getVideoId());
 			System.out.println("tuka e 3");
-			//dbManager.commit(connection);
+			dbManager.commit(connection);
+			
 			return inserted;
 		} catch (SQLException s) {
 			dbManager.rollback(connection, s);
@@ -343,8 +387,9 @@ public class VideoDAO implements IVideoDAO {
 			dbManager.rollback(connection, s);
 		}
 	}
-	public static void main(String[] args) throws DataBaseException {
-		
-		new VideoDAO().addVideo(new Video("video.mp4","image.mp4", "moeto video", "ehe brao be"), 1);
+	public static void main(String[] args) throws DataBaseException, IllegalInputException {
+		System.out.println(new VideoDAO().getRecentVideos());
 	}
+
+	
 }

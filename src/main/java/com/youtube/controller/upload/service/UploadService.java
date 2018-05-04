@@ -52,8 +52,8 @@ public class UploadService {
 	     }
 	        byte[] bytes = file.getBytes();
 	        int fileNumber= numFile.incrementAndGet();
-	        String videoUrl="video"+fileNumber+".mp4";
-	        String photoUrl="photo"+fileNumber+".png";
+	        String videoUrl=file.getOriginalFilename()+"video"+fileNumber+".mp4";
+	        String photoUrl=file.getOriginalFilename()+"photo"+fileNumber+".png";
 	         Path path = Paths.get(VIDEO_UPLOADED_FOLDER+videoUrl);
 	   //save video
 	         Files.write(path, bytes);
@@ -64,7 +64,7 @@ public class UploadService {
 			ImageIO.write(bufferedImage, "png", new File(IMAGE_UPLOADED_FOLDER +photoUrl));
         //addvideo to DB
 		    Video video = new Video(videoUrl, photoUrl, title, description);
-		    new VideoDAO().addVideo(video, channelId);
+		    VideoDAO.getInstance().addVideo(video, channelId);
 		    return true;
 	}
 	

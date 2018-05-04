@@ -51,7 +51,7 @@ public class UserDAO implements IUserDAO {
 	
 
 	//	@Autowired
-	private static DBManager dbManager = DBManager.getInstance();
+	private static DBManager dbManager  = DBManager.getInstance();
 
 	@Override
 	public User getUserById(int userId) throws DataBaseException, IllegalInputException {

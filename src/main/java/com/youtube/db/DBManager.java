@@ -146,4 +146,5 @@ public class DBManager {
 		}
 		return instance;
 	}
+
 }
