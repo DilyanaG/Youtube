@@ -18,7 +18,6 @@ public class VideoResolver implements IResolver<Video> {
 
 		// Checks if the parameter is in the ResultSet and takes it
 		// If the parameter is not in the ResultSet it sets it a null value
-		// The "v." is the alias for the "videos" table in the DB
 
 		final Integer videoId = selectedColumns.contains("video_id") ? rs.getInt("video_id") : null;
 		System.out.println("resolversss"+videoId);
