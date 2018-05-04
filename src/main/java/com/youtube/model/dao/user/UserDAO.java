@@ -10,7 +10,6 @@ import java.util.Map;
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
 import com.youtube.db.DBManager;
-import com.youtube.model.dao.video.VideoDAO;
 import com.youtube.model.pojo.User;
 import com.youtube.model.resolvers.UserResolver;
 
@@ -126,7 +125,6 @@ public class UserDAO implements IUserDAO {
 		try {
 			dbManager.startTransaction(connection);
 			User user = dbManager.executeSingleSelect(connection, BY_USERNAME, new UserResolver(), username);
-			System.out.println("In DAO " + user);
 			dbManager.commit(connection);
 			return user;
 		} catch (SQLException s) {

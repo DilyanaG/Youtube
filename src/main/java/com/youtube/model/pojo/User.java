@@ -7,24 +7,21 @@ public class User {
 	private String password;
 	private String email;
 	private String photoURL;
-	private boolean isDeleted;
 
 	public User() {
 		super();
 	}
 
-	public User(int userId, String userName, String password, String email, String photoURL, boolean isDeleted) {
+	public User(int userId, String userName, String password, String email, String photoURL) {
 		this(userName, password, email);
 		this.userId = userId;
 		this.photoURL = photoURL;
-		this.isDeleted = isDeleted;
 	}
 
 	public User(String userName, String password, String email) {
 		this.userName = userName;
 		this.password = password;
 		this.email = email;
-		this.isDeleted = false;
 	}
 
 	public int getUserId() {
@@ -67,20 +64,11 @@ public class User {
 		this.photoURL = photoURL;
 	}
 
-	public boolean isDeleted() {
-		return isDeleted;
-	}
-
-	public void setDeleted(boolean isDeleted) {
-		this.isDeleted = isDeleted;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + (isDeleted ? 1231 : 1237);
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((photoURL == null) ? 0 : photoURL.hashCode());
 		result = prime * result + userId;
@@ -101,8 +89,6 @@ public class User {
 			if (other.email != null)
 				return false;
 		} else if (!email.equals(other.email))
-			return false;
-		if (isDeleted != other.isDeleted)
 			return false;
 		if (password == null) {
 			if (other.password != null)
@@ -127,10 +113,8 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", userName=" + userName + ", password=" + password + ", email=" + email
-				+ ", photoURL=" + photoURL + ", isDeleted=" + isDeleted + "]";
+				+ ", photoURL=" + photoURL + "]";
 	}
 
-	
-	
 
 }

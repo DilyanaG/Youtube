@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
 import com.youtube.controller.upload.service.LogInService;
-import com.youtube.controller.upload.service.SignUpService;
 import com.youtube.model.dao.channel.ChannelDAO;
-import com.youtube.model.dao.user.UserDAO;
 import com.youtube.model.pojo.Channel;
 import com.youtube.model.pojo.User;
 
@@ -39,7 +37,7 @@ public class LoginController {
 		}
 		
 		return "redirect:/index";
-
+	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/sigout")
 	public String signOut(Model model, HttpServletRequest req) {

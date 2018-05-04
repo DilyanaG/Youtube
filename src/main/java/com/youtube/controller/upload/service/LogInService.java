@@ -35,15 +35,14 @@ public class LogInService {
 		checkForPassword(password);
 
 		System.out.println("Checks passed");
-
-		User user = userDAO.getUserByUserName(username);
-		int userId = userDAO.loginUser(user);
-
-		if (userId != 0) {
-			return user;
-		}else {
-			throw new IllegalInputException("You do not have a registration or have entered wrong information.");
-		}
+		
+		System.out.println(username);
+		System.out.println(password);
+		
+		int userId = userDAO.loginUser(new User(username, password, ""));
+		System.out.println("userId = " + userId);
+		User user = userDAO.getUserById(userId);
+		return user;
 	}
 
 	private boolean checkForUsername(String username) throws IllegalInputException {
