@@ -5,8 +5,8 @@
 
        
        
-         <jsp:include page="header.jsp" />
-        <jsp:include page="sideMenu.jsp" />
+     <jsp:include page="header.jsp" />
+     <jsp:include page="sideMenu.jsp" />
  
 	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 		<div id="middle" class="main-grids">
@@ -28,31 +28,7 @@
 						
 					</div>
 					<div id=videos>
-					<c:forEach items="${videos}" var="video" varStatus="loop">
 					
-					<div class="col-md-4 resent-grid recommended-grid slider-top-grids">
-						<div class="resent-grid-img recommended-grid-img">
-						<!-- href put videoid and src images/${video.photoUrl}-->
-							<a href="./video?videoId=${video}"><img src="FinalProject/images/t3.jpg" alt=""></a>
-							<div class="time">
-								<p></p>
-							</div>
-							<div class="clck">
-								<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
-							</div>
-						</div>
-						<div class="resent-grid-info recommended-grid-info">
-						<!-- href put videoid and src images/${video.photoUrl} and ${video.title}-->
-							<h3><a href="./video?videoId=${video}" class="title title-info">TITLE</a></h3>
-							<ul>
-							<!-- href add ${video.channelId}  and  ${video.channelName}/username-->
-								<li><p class="author author-info"><a href="./profile?channelId=${video}" class="author">AUTHOR</a></p></li>
-								<!-- href add ${video.views} -->
-								<li class="right-list"><p class="views views-info"></p>69</li>
-							</ul>
-						</div>
-					</div>
-					</c:forEach>
 					</div>
 					<div class="clearfix"> </div>
 				</div>
@@ -68,6 +44,14 @@
 	<script src="FinalProject/js/bootstrap.min.js"></script>
 	<!-- Just to make our placeholder images work. Don't actually copy the next line! -->
 	<script>
+	$(document).ready(function() {
+		$("#searchForm").submit(function() {
+									
+		   var searchWord = $('#searchForm').find('input[name="searchWord"]').val();
+		   loadVideos('searchWord');
+		   });
+	});
+	
 	$( document ).ready(function() {
 		 loadVideos('RECENT');
         });
@@ -104,7 +88,7 @@
 				  $('#videos').append(
 						 ' <div class="col-md-4 resent-grid recommended-grid slider-top-grids">'
 						+'	<div class="resent-grid-img recommended-grid-img">'
-						+'		<a href="./video?videoId=1"><img src="FinalProject/images/t3.jpg" alt=""></a>'
+						+'		<a href="./video?videoId='+response.videos[i].videoId+'"><img src="FinalProject/uploads/images/'+response.videos[i].photoUrl+'" alt=""></a>'
 						+'		<div class="time">'
 						+'			<p></p>'
 						+'		</div>'
@@ -113,10 +97,10 @@
 						+'		</div>'
 						+'	</div>'
 						+'	<div class="resent-grid-info recommended-grid-info">'
-						+'		<h3><a href="./video?videoId=1" class="title title-info">TITLE</a></h3>'
+						+'		<h3><a href="./video?videoId='+response.videos[i].videoId+'" class="title title-info">'+response.videos[i].title+'</a></h3>'
 						+'		<ul>'
-						+'			<li><p class="author author-info"><a href="./profile?channelId=1" class="author">AUTHOR</a></p></li>'
-						+'			<li class="right-list"><p class="views views-info"></p>69</li>'
+						+'			<li><p class="author author-info"><a href="./profile?channelId='+response.videos[i].channelId+'" class="author">AUTHOR</a></p></li>'
+						+'			<li class="right-list"><p class="views views-info"></p>'+response.videos[i].views+'</li>'
 						+'		</ul>'
 						+'	</div>'
 						+' </div>'

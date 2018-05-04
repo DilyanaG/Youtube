@@ -153,7 +153,5 @@ public class DBManager {
 		}
 		return instance;
 	}
-public static void main(String[] args) {
-	DBManager db= getInstance();
-}
+
 }

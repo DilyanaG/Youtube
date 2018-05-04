@@ -31,7 +31,7 @@
 	</div>
 	<div class="drop-navigation drop-navigation">
 		<ul class="nav nav-sidebar">
-			<img src="images/male.png" alt="">
+			<img src="FinalProject/images/male.png" alt="">
 			<li class="active"><a href="" class="home-icon"> <span
 					aria-hidden="true"> </span>USER NAME HERE
 			</a></li>
@@ -42,14 +42,8 @@
 					class="glyphicon glyphicon-home glyphicon-hourglass"
 					aria-hidden="true"> </span>PLAYLISTS
 			</a></li>
-			<li id = "create_playlist"><a href="" class="sub-icon"> <span
-					class="glyphicon glyphicon-home glyphicon-hourglass"
-					aria-hidden="true"> </span>CREATE PLAYLIST
-			</a></li>
-                	<script>
-				$("#create_playlist").click(function() {
-					$("#middle").empty()
-					});
+			
+                
 			<script>
 				$('#playlist').click(function() {
 									$.ajax({
