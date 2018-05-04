@@ -10,6 +10,7 @@ import java.util.Map;
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
 import com.youtube.db.DBManager;
+import com.youtube.model.dao.video.VideoDAO;
 import com.youtube.model.pojo.User;
 import com.youtube.model.resolvers.UserResolver;
 
@@ -53,6 +54,16 @@ public class UserDAO implements IUserDAO {
 	//	@Autowired
 	private static DBManager dbManager  = DBManager.getInstance();
 
+	private static UserDAO instance;
+	public synchronized static UserDAO getInstance() {
+		if(instance==null)
+			instance=new UserDAO();
+		return instance;
+	}
+	private UserDAO() {
+	
+	}
+	
 	@Override
 	public User getUserById(int userId) throws DataBaseException, IllegalInputException {
 		final Connection connection = dbManager.getConnection();
@@ -77,7 +88,8 @@ public class UserDAO implements IUserDAO {
 			dbManager.startTransaction(connection);
 			int inserted = dbManager.execute(connection, INSERT_INTO_USERS, user.getUserName(), user.getPassword(),
 					user.getEmail(), user.getPhotoURL());
-			dbManager.execute(connection, INSERT_INTO_CHANNELS, user.getUserId());	
+			int userId = dbManager.executeSingleSelect(connection, BY_USERNAME_AND_PASSWORD, new UserResolver(), user.getUserName(), user.getPassword()).getUserId();
+			dbManager.execute(connection, INSERT_INTO_CHANNELS, userId);	
 			dbManager.commit(connection);
 			System.out.println("end try");
 			return inserted;

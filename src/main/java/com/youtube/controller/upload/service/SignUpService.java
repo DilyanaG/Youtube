@@ -23,36 +23,44 @@ public class SignUpService {
 	private static final String EMAIL_PATTERN = "([\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4})?";
 
 	// @Autowired
-	private static UserDAO userDAO = new UserDAO();
+	private static UserDAO userDAO = UserDAO.getInstance();
 
 	public boolean register(String username, String password, String email)
 			throws IllegalInputException, DataBaseException {
+
+		System.out.println("In SignUpService.register()");
 
 		checkForUsername(username);
 		checkForPassword(password);
 		checkForEmail(email);
 
-		try {
+		System.out.println("Checks passed");
+
+		System.out.println("get all users");
 		Map<String, User> allUsers = userDAO.getAllUsers();
+
+		System.out.println("all users were gotten");
+		System.out.println(allUsers.size() + " all users size");
+		System.out.println(allUsers.containsKey(username));
+
 		if (allUsers.containsKey(username)) {
 			System.out.println("username exists");
 			throw new IllegalInputException("User with that username already exists");
 		}
 
 		for (User user : allUsers.values()) {
+			System.out.println("user value");
 			if (user.getEmail().equals(email)) {
 				System.out.println("email exists");
 				throw new IllegalInputException("User with that email already exists");
 			}
 		}
-		}catch(NullPointerException e) {
-			System.out.println("create user");
-			User user = new User(username, password, email);
-			userDAO.addNewUserToDB(user);
-			return true;
-		}
-		
-		return false;
+
+		System.out.println("create user");
+		User user = new User(username, password, email);
+		userDAO.addNewUserToDB(user);
+		return true;
+
 	}
 
 	private boolean checkForUsername(String username) throws IllegalInputException {
