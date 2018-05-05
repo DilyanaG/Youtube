@@ -31,14 +31,15 @@ public class VideoController {
 	private VideoDAO videoDao= VideoDAO.getInstance();
 	
 	@RequestMapping(value = "/videoLoader", method = RequestMethod.GET)
-	public Map<String, List<VideoTopViewDTO>> doGet() throws IllegalInputException, DataBaseException {
-//		System.out.println(req.getParameter("parametyr"));
+	public Map<String, List<VideoTopViewDTO>> doGet(HttpServletRequest req) throws IllegalInputException, DataBaseException {
+//		
 		List<Video> videos = new ArrayList<>();
 		
-		//String action = req.getParameter("parametyr");
+		String action = req.getParameter("parametyr");
+		System.out.println(req.getParameter("parametyr"));
         System.out.println(2);
 		
-		switch ("MOST") {
+		switch (action) {
 		case "MOST":
             videos=videoDao.getMostPopularVideos();
 			break;
@@ -59,13 +60,8 @@ public class VideoController {
 	//fill videoTopViewDTO 
 		for (int i = 0; i <MAX_VIDEOS_FOR_PAGE &&i<videos.size(); i++) {
 			
-	
-			sendVideos.add(new VideoTopViewDTO (videos.get(i).getVideoId(),
-					                            videos.get(i).getChannel().getChannelId(),
-					                            videos.get(i).getTitle(),
-					                            videos.get(i).getPhotoUrl(),
-					                            videos.get(i).getViews()
-					                            ));
+	        System.out.println(videos.get(i));
+			sendVideos.add(new VideoTopViewDTO(videos.get(i)));
 		}
 		Map<String, List<VideoTopViewDTO>> result = new HashMap<String, List<VideoTopViewDTO>>();
 

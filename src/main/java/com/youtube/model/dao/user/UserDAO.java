@@ -243,8 +243,8 @@ public class UserDAO implements IUserDAO {
 	}
 
 	
-	public static void main(String[] args) throws DataBaseException {
-		new UserDAO().loginUser(new User("ss", "ddd","ss"));
+	public static void main(String[] args) throws DataBaseException, IllegalInputException {
+		System.out.println(new UserDAO().getUserById(1));
 	}
 
 }

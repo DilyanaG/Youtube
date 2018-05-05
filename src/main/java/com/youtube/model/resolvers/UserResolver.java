@@ -22,8 +22,10 @@ public class UserResolver implements IResolver<User> {
 		
 		System.out.println(userId);
 		System.out.println(userName);
+		System.out.println(password);
 		System.out.println(email);
 		System.out.println(photoURL);
+		
 		
 		User user = new User(userId, userName, password, email, photoURL);
 		return user;

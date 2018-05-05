@@ -29,9 +29,11 @@ public class VideoDAO implements IVideoDAO {
 	private static final String SEARCH_VIDEOS_BY_TAGS = "SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id JOIN videos_has_tags AS vht ON"
 			+ " (v.video_id = vht.video_id) WHERE vht.tag_id IN ( SELECT t.tag_id FROM tags AS t WHERE t.content LIKE ?) AND v.isDeleted = 0"
 			+ " ORDER BY v.date DESC;";
-	private static final String RECENT_VIDEOS = "SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id   WHERE v.isDeleted = 0"
+	private static final String RECENT_VIDEOS = "SELECT v.*, ch.*,u.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id JOIN users AS u  "
+			+ "ON u.user_id=ch.user_id WHERE v.isDeleted = 0"
 			+ " ORDER BY v.date DESC;";
-	private static final String MOST_POPULAR_VIDEOS = "SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id   WHERE v.isDeleted = 0"
+	private static final String MOST_POPULAR_VIDEOS = "SELECT v.*, ch.*,u.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id  JOIN users AS u  "
+			+ "ON u.user_id=ch.user_id WHERE v.isDeleted = 0"
 			+ " ORDER BY v.views DESC;";
 	
 	private static final String SELECT_ALL_VIDEOS_BY_CHANNEL_ID = 

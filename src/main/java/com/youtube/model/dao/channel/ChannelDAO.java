@@ -28,7 +28,7 @@ public class ChannelDAO implements IChannelDAO {
 	private static final String COUNT_OF_FOLLOWERS = "SELECT COUNT(follower_channel_id) as count FROM channels_followed_channels AS cfc"
 			+ " JOIN channels AS fc ON fc.channel_id = cfc.follower_chanel_id WHERE cfc.followed_channel_id = ? AND fc.isDeleted = 0;";
 
-	private static final String FOLLOWED_CHANNELS = " SELECT u.user_name, ch.channel_id FROM users u "
+	private static final String FOLLOWED_CHANNELS = " SELECT u.*, ch.* FROM users u "
 			+ " JOIN channels ch ON ch.user_id = u.user_id"
 			+ " JOIN channels_followed_channels cfc ON ch.channel_id = cfc.followed_channel_id "
 			+ " WHERE cfc.follower_channel_id = ? AND ch.isDeleted = 0 ;";

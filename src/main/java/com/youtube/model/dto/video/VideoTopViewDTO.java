@@ -2,23 +2,27 @@ package com.youtube.model.dto.video;
 
 import org.springframework.stereotype.Component;
 
+import com.youtube.model.pojo.Video;
+
 
 public class VideoTopViewDTO {
      
 	private int videoId;
 	private int channelId;
+	private String username;
 	private String title;
 	private String photoUrl;
 	private int views;
 	
 	
-	public VideoTopViewDTO(int videoId, int channelId, String title, String photoUrl, int views) {
+	public VideoTopViewDTO(Video v) {
 	
-		this.videoId = videoId;
-		this.channelId = channelId;
-		this.title = title;
-		this.photoUrl = photoUrl;
-		this.views = views;
+		this.videoId = v.getVideoId();
+		this.channelId = v.getChannel().getChannelId();
+		this.username=v.getChannel().getUser().getUserName();
+		this.title = v.getTitle();
+		this.photoUrl = v.getPhotoUrl();
+		this.views = v.getViews();
 	}
 
 
@@ -69,6 +73,16 @@ public class VideoTopViewDTO {
 
 	public void setViews(int views) {
 		this.views = views;
+	}
+
+
+	public String getUsername() {
+		return username;
+	}
+
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 

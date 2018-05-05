@@ -60,18 +60,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<div class="top-search">
-					<form id="searchForm" class="navbar-form navbar-right">
-						<input type="text" class="form-control" name="searchWord"
-							placeholder="Search..."> <input id="submit" type="submit"
-							value="">
+					<form id="search" class="navbar-form navbar-right">
+						<input id="searchForInput" type="text" class="form-control" name="searchWord" placeholder="Search..."> 
+							<input  type="submit" value="">
 					</form>
 				</div>
-
+            
 				<div class="header-top-right">
 					<div class="file">
 						<a href="./upload">Upload</a>
 					</div>
-
+                
 					<c:choose>
 						<c:when test="${not empty sessionScope.channelId}">
 

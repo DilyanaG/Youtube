@@ -1,6 +1,5 @@
 package com.youtube.controller.upload.service;
 
-import static org.mockito.Mockito.timeout;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

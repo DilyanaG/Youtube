@@ -23,7 +23,7 @@
 <div class="col-sm-3 col-md-2 sidebar"
 	style="background-color: WhiteSmoke;">
 	<div class="top-navigation">
-		<div class="t-menu">USER NAME HERE</div>
+		<div class="t-menu"></div>
 		<div class="t-img">
 			<img src="/FinalProject/images/male.png" alt="">
 		</div>
@@ -32,8 +32,9 @@
 	<div class="drop-navigation drop-navigation">
 		<ul class="nav nav-sidebar">
 			<img src="FinalProject/images/male.png" alt="">
-			<li class="active"><a href="" class="home-icon"> <span
-					aria-hidden="true"> </span>USER NAME HERE
+			<li class="active"><a href="" class="home-icon"> 
+			<span aria-hidden="true"> </span> 
+			${profile.username}
 			</a></li>
 			<li><a href="" class="user-icon"><span
 					class="glyphicon glyphicon-home glyphicon-blackboard"
@@ -42,72 +43,17 @@
 					class="glyphicon glyphicon-home glyphicon-hourglass"
 					aria-hidden="true"> </span>PLAYLISTS
 			</a></li>
+
+
 			
-                
-			<script>
-				$('#playlist').click(function() {
-									$.ajax({
-												url : 'playlists',
-												type : 'get',
-												data: {userId: 1},
-												success: function(response){
-													    console.log(response.comments[2].content);
-														console.log(response.playlists.length);
-														$('#middle').empty();
-
-														$('#middle').append(
-																		'<div class="top-grids">'
-																				+ ' <div class="recommended-info">'
-																				+ '      <h3 >PLAYLISTS</h3>'
-																				+ '		<c:if test="${not empty videos}">'
-																				+ '          <button class="button " onclick="createPlaylist()" >CREATE PLAYLIST </button>'
-																				+ '		</c:if>'
-																				+ '	</div>');
-
-														var i;
-														for (i = 0; i < response.playlists.length; i++) {
-															$('#middle')
-																	.append(
-																			'<div class="col-md-4 resent-grid recommended-grid slider-top-grids">'
-																					+ '    <div class="resent-grid-img recommended-grid-img">'
-																					+ '		<a href="./playlist?playlistId='+response.playlists[i].playlistId+'"><img src="FinalProject/images/t3.jpg" alt=""></a>'
-																					+ '		<div class="time">'
-																					+ '			<p>4:04</p>'
-																					+ '		</div>'
-																					+ '		<div class="clck">'
-																					+ '			<span class="glyphicon glyphicon-time" aria-hidden="true"></span>'
-																					+ '		</div>'
-																					+ '	</div>'
-																					+ '	<div class="resent-grid-info recommended-grid-info">'
-																					+ '		<h3>'
-																					+ '			<a href="./playlist?playlistId='+response.playlists[i].playlistId+'" class="title title-info" >'
-																					+ response.playlists[i].playlistName
-																					+ '</a>'
-																					+ '		</h3>'
-																					+ '	</div>'
-																					+ '	<p>'
-																					+ '	  <c:if test="${not empty videos}">'
-																					+ ' <button class="button ">DELETE</button>'
-																					+ '		</c:if>'
-																					+ '</p>'
-																					+ ' </div>');
-														}
-														$('#middle').append(
-																		'<div class="clearfix"></div>'
-																				+ ' </div>');
-													}
-									});
-						});
-			</script>
-
 			<li><a class="menu1"><span class="glyphicon glyphicon-film "
 					aria-hidden="true"></span>ABONOMENTI<span
 					class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a></li>
 			<ul class="cl-effect-2">
 				<!--  add link here got to  user profile  -->
-				<li><a href="#">abonat name</a></li>
-				<li><a href="#">abonat name2</a></li>
-				<li><a href="#">abonaet name3</a></li>
+				<c:forEach items="${profile.subscriptions}" var="subscription">
+                     <li><a href="./profile?channelId=${subscription.id}">${subscription.name}</a></li>
+                 </c:forEach>
 			</ul>
 			<!-- script-for-menu -->
 			<script>
@@ -136,16 +82,17 @@
 
 			<div class="recommended-info">
 				<h3>Videos</h3>
-			
+
 			</div>
-			<c:forEach items="${videos}" var="patka" varStatus="loop">
+			<c:forEach items="${profile.videos}" var="video" >
 
 				<div class="col-md-4 resent-grid recommended-grid slider-top-grids">
 					<div class="resent-grid-img recommended-grid-img">
-						<a href="./video?videoId=${loop.index}"><img src="FinalProject/images/t3.jpg"
-							alt=""></a>
+						<a href="./video?videoId=${video.videoId}">
+						<img
+							src="FinalProject/uploads/images/${video.photoUrl}" alt=""></a>
 						<div class="time">
-							<p>4:04</p>
+							<p></p>
 						</div>
 						<div class="clck">
 							<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
@@ -153,15 +100,19 @@
 					</div>
 					<div class="resent-grid-info recommended-grid-info">
 						<h3>
-							<a href="./video?videoId=${loop.index}" class="title title-info">Nullam
-								interdum metus a imperdiet pellentesque vitae pulvinar tortor</a>
+							<a href="./video?videoId=${video.videoId}" class="title title-info">
+							  ${video.title}
+							 </a>
 						</h3>
 						<ul>
 							<li><p class="author author-info">
-									<a href="#" class="author">John Maniya</a>
+									<a style ="color:black" href="#" class="author">${video.username} </a>
 								</p></li>
 							<li class="right-list">
-								<p class="views views-info">71,174 views</p>
+								<p class="views views-info"> ${video.views}</p>
+							</li>
+							<li class="right-list">
+								<button>fffffffffff</button>
 							</li>
 
 						</ul>
@@ -192,6 +143,74 @@
 <script src="FinalProject/js/bootstrap.min.js"></script>
 <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
 
+<script>
+				$('#playlist')
+						.click(
+								function() {
+									$
+											.ajax({
+												url : 'playlists',
+												type : 'get',
+												data : {
+													userId : 1
+												},
+												success : function(response) {
+													console
+															.log(response.comments[2].content);
+													console
+															.log(response.playlists.length);
+													$('#middle').empty();
+
+													$('#middle')
+															.append(
+																	'<div class="top-grids">'
+																			+ ' <div class="recommended-info">'
+																			+ '      <h3 >PLAYLISTS</h3>'
+																			+ '		<c:if test="${not empty videos}">'
+																			+ '          <button class="button " onclick="createPlaylist()" >CREATE PLAYLIST </button>'
+																			+ '		</c:if>'
+																			+ '	</div>');
+
+													var i;
+													for (i = 0; i < response.playlists.length; i++) {
+														$('#middle')
+																.append(
+																		'<div class="col-md-4 resent-grid recommended-grid slider-top-grids">'
+																				+ '    <div class="resent-grid-img recommended-grid-img">'
+																				+ '		<a href="./playlist?playlistId='
+																				+ response.playlists[i].playlistId
+																				+ '"><img src="FinalProject/images/t3.jpg" alt=""></a>'
+																				+ '		<div class="time">'
+																				+ '			<p>4:04</p>'
+																				+ '		</div>'
+																				+ '		<div class="clck">'
+																				+ '			<span class="glyphicon glyphicon-time" aria-hidden="true"></span>'
+																				+ '		</div>'
+																				+ '	</div>'
+																				+ '	<div class="resent-grid-info recommended-grid-info">'
+																				+ '		<h3>'
+																				+ '			<a href="./playlist?playlistId='
+																				+ response.playlists[i].playlistId
+																				+ '" class="title title-info" >'
+																				+ response.playlists[i].playlistName
+																				+ '</a>'
+																				+ '		</h3>'
+																				+ '	</div>'
+																				+ '	<p>'
+																				+ '	  <c:if test="${ empty videos}">'
+																				+ ' <button class="button ">DELETE</button>'
+																				+ '		</c:if>'
+																				+ '</p>'
+																				+ ' </div>');
+													}
+													$('#middle')
+															.append(
+																	'<div class="clearfix"></div>'
+																			+ ' </div>');
+												}
+											});
+								});
+			</script>
 
 
 </body>

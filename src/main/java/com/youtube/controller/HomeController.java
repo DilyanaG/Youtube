@@ -35,26 +35,7 @@ public class HomeController {
 	}
 	
 	
-	@RequestMapping(value="/profile",method = RequestMethod.GET)
-	public String profile(Model model,HttpServletRequest req){
-		
-		req.getSession().setAttribute("currentProfile", req.getParameter("channelId"));		
-		System.out.println(req.getParameter(req.getParameter("channelId")));
-		
-		 String[] videos={
-				 "video",
-				 "video",
-				 "video",
-				 "video",
-				 "video",
-				 "video",
-				 "video",
-				 
-		 };
-		model.addAttribute("videos",videos);
-		
-		return "profile";
-	}
+	
 	
 	
 	@RequestMapping(value={"/videos/index"},method = RequestMethod.GET)
