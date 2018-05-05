@@ -20,7 +20,11 @@ interface IVideoDAO {
 
 	List<Video> getAllVideosFromPlaylist(Playlist playlist) throws IllegalInputException, DataBaseException;
 
+	List<Video> getMostPopularVideos() throws IllegalInputException, DataBaseException;
+
 	int addVideo(Video video, int channelId) throws DataBaseException;
+
+	List<Video> getRecentVideos() throws IllegalInputException, DataBaseException;
 
 	int addVideoToPlaylist(Video video, Playlist playlist) throws DataBaseException;
 
@@ -41,5 +45,7 @@ interface IVideoDAO {
 	boolean likeExists(int video_id, int channel_id) throws DataBaseException;
 
 	boolean dislikeExists(int video_id, int channel_id) throws DataBaseException;
+
+
 
 }

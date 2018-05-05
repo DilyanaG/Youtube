@@ -1,38 +1,30 @@
 package com.youtube.controller;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
-import javax.servlet.http.HttpServletRequest;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
 import com.youtube.model.dao.video.VideoDAO;
 import com.youtube.model.dto.video.VideoTopViewDTO;
-import com.youtube.model.pojo.Channel;
-import com.youtube.model.pojo.Comment;
-import com.youtube.model.pojo.User;
 import com.youtube.model.pojo.Video;
 
 @RestController
 public class VideoController {
 
-	
 	private static final int MAX_VIDEOS_FOR_PAGE = 15;
-	private VideoDAO videoDao= VideoDAO.getInstance();
+	@Autowired
+	private VideoDAO videoDao;
 	
 	@RequestMapping(value = "/videoLoader", method = RequestMethod.GET)
 	public Map<String, List<VideoTopViewDTO>> doGet() throws IllegalInputException, DataBaseException {
-//		System.out.println(req.getParameter("parametyr"));
 		List<Video> videos = new ArrayList<>();
 		
 		//String action = req.getParameter("parametyr");

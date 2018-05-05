@@ -5,19 +5,18 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
 import com.youtube.db.DBManager;
-import com.youtube.model.pojo.Channel;
 import com.youtube.model.pojo.Playlist;
 import com.youtube.model.pojo.Video;
 import com.youtube.model.resolvers.TagResolver;
 import com.youtube.model.resolvers.VideoResolver;
 
-//@Component
+@Component
 public class VideoDAO implements IVideoDAO {
 
 	// selects
@@ -78,18 +77,8 @@ public class VideoDAO implements IVideoDAO {
 
 	
 	
-	//@Autowired
-	private static DBManager dbManager=DBManager.getInstance();
-
-	private static VideoDAO instance;
-	public synchronized static VideoDAO getInstance() {
-		if(instance==null)
-			instance=new VideoDAO();
-		return instance;
-	}
-	private VideoDAO() {
-	
-	}
+	@Autowired
+	private DBManager dbManager; 
 
 	@Override
 	public Video getVideoById(int video_id) throws IllegalInputException, DataBaseException {
@@ -120,6 +109,7 @@ public class VideoDAO implements IVideoDAO {
 		}
 	}
  
+	@Override
 	public List<Video> getMostPopularVideos() throws IllegalInputException, DataBaseException {
 		final Connection connection = dbManager.getConnection();
 		try {
@@ -133,6 +123,7 @@ public class VideoDAO implements IVideoDAO {
 		}
 	}
 	
+	@Override
 	public List<Video> getRecentVideos() throws IllegalInputException, DataBaseException {
 		final Connection connection = dbManager.getConnection();
 		try {
@@ -206,14 +197,10 @@ public class VideoDAO implements IVideoDAO {
 			dbManager.startTransaction(connection);
 			int inserted = dbManager.execute(connection, ADD_VIDEO_TO_CHANNEL, channelId,
 					video.getVideoUrl(), video.getPhotoUrl(), video.getTitle(), video.getDescription(), 0);
-			System.out.println("tuka e ");
-			//dbManager.commit(connection);
 			Video addedVideo = dbManager.executeSingleSelect(connection, GET_VIDEO_BY_TITLE, new VideoResolver(),
 					video.getTitle());
-			System.out.println("tuka e 1");
 			writeInVideosHasTagsTable(connection, addedVideo.getTitle() + " " + addedVideo.getDescription(),
 					addedVideo.getVideoId());
-			System.out.println("tuka e 3");
 			dbManager.commit(connection);
 			
 			return inserted;
@@ -386,9 +373,6 @@ public class VideoDAO implements IVideoDAO {
 		} catch (SQLException s) {
 			dbManager.rollback(connection, s);
 		}
-	}
-	public static void main(String[] args) throws DataBaseException, IllegalInputException {
-		System.out.println(new VideoDAO().getRecentVideos());
 	}
 
 	

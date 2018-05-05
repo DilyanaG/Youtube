@@ -4,12 +4,15 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
 import com.youtube.model.dao.user.UserDAO;
 import com.youtube.model.pojo.User;
 
-//@Component or @Service
+@Service
 public class SignUpService {
 
 	private static final int MIN_USERNAME_SIZE = 2;
@@ -22,41 +25,28 @@ public class SignUpService {
 	private static final int MAX_EMAIL_SIZE = 45;
 	private static final String EMAIL_PATTERN = "([\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4})?";
 
-	// @Autowired
-	private static UserDAO userDAO = UserDAO.getInstance();
+	@Autowired
+	private UserDAO userDAO; 
 
 	public boolean register(String username, String password, String email)
 			throws IllegalInputException, DataBaseException {
-
-		System.out.println("In SignUpService.register()");
 
 		checkForUsername(username);
 		checkForPassword(password);
 		checkForEmail(email);
 
-		System.out.println("Checks passed");
-
-		System.out.println("get all users");
 		Map<String, User> allUsers = userDAO.getAllUsers();
 
-		System.out.println("all users were gotten");
-		System.out.println(allUsers.size() + " all users size");
-		System.out.println(allUsers.containsKey(username));
-
 		if (allUsers.containsKey(username)) {
-			System.out.println("username exists");
 			throw new IllegalInputException("User with that username already exists");
 		}
 
 		for (User user : allUsers.values()) {
-			System.out.println("user value");
 			if (user.getEmail().equals(email)) {
-				System.out.println("email exists");
 				throw new IllegalInputException("User with that email already exists");
 			}
 		}
 
-		System.out.println("create user");
 		User user = new User(username, password, email);
 		userDAO.addNewUserToDB(user);
 		return true;
