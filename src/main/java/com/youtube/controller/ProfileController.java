@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,14 @@ import com.youtube.model.pojo.Video;
 
 @Controller
 public class ProfileController {
+	
+	@Autowired
+	ChannelDAO channelDao;
+	@Autowired
+	VideoDAO videoDao;
+	
+	
+	
 	@RequestMapping(value="/profile",method = RequestMethod.GET)
 	public String profile(Model model,HttpServletRequest req) throws IllegalInputException, DataBaseException{
 		
@@ -33,11 +42,11 @@ public class ProfileController {
 		            
 		 */ 
 		        
-		Channel  currentUser = ChannelDAO.getInstance().getChannelById(channelId);
+		Channel  currentUser =channelDao.getChannelById(channelId);
 		
-		List <Video> videos= VideoDAO.getInstance().getVideosByChannelId(channelId);
+		List <Video> videos= videoDao.getVideosByChannelId(channelId);
 		
-		List<Channel> subscriptions= ChannelDAO.getInstance().getFollowedChannels(channelId);
+		List<Channel> subscriptions= channelDao.getFollowedChannels(channelId);
 		
 		ProfileViewDTO profile = new ProfileViewDTO(currentUser,videos,subscriptions);
 		System.out.println(profile);

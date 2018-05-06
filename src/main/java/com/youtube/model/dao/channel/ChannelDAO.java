@@ -8,14 +8,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
 import com.youtube.db.DBManager;
-import com.youtube.model.dao.user.UserDAO;
 import com.youtube.model.pojo.Channel;
 import com.youtube.model.resolvers.ChannelResolver;
 
-//@Component
+@Component
 public class ChannelDAO implements IChannelDAO {
 
 	// selects
@@ -43,10 +45,10 @@ public class ChannelDAO implements IChannelDAO {
 
 
 	
-	//@Autowired
-	private DBManager dbManager = DBManager.getInstance();
+	@Autowired
+	private DBManager dbManager; //  = DBManager.getInstance();
 	
-	private static ChannelDAO instance;
+	/*private static ChannelDAO instance;
 	public synchronized static ChannelDAO getInstance() {
 		if(instance==null)
 			instance=new ChannelDAO();
@@ -54,7 +56,7 @@ public class ChannelDAO implements IChannelDAO {
 	}
 	private ChannelDAO() {
 	
-	}
+	}*/
 
 	@Override
 	public Channel getChannelById(int id) throws IllegalInputException, DataBaseException {

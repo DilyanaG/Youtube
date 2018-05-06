@@ -86,13 +86,18 @@
 			success: function(response){
 				
 			       $('#actionTitle').empty();
-			       $('#actionTitle').append(action+'  VIDEOS');
+			       $('#actionTitle').append(action+' VIDEOS');
 			       $('#videos').empty();
 				  for (i = 0; i < response.videos.length; i++) {
 				  $('#videos').append(
 						 ' <div class="col-md-4 resent-grid recommended-grid slider-top-grids">'
 						+'	<div class="resent-grid-img recommended-grid-img">'
 						+'		<a href="./video?videoId='+response.videos[i].videoId+'"><img src="FinalProject/uploads/images/'+response.videos[i].photoUrl+'" alt=""></a>'
+
+						+'		<a href="./video?videoId='+response.videos[i].videoId+'">'
+						+'			<img src= "'+response.videos[i].photoUrl+'">'
+						+'		</a>'
+
 						+'		<div class="time">'
 						+'			<p></p>'
 						+'		</div>'

@@ -7,13 +7,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
 import com.youtube.db.DBManager;
 import com.youtube.model.pojo.User;
 import com.youtube.model.resolvers.UserResolver;
 
-//@Component
+@Component
 public class UserDAO implements IUserDAO {
 
 	// selects
@@ -50,10 +53,10 @@ public class UserDAO implements IUserDAO {
 
 	
 
-	//	@Autowired
-	private static DBManager dbManager  = DBManager.getInstance();
+	@Autowired
+	private DBManager dbManager; // static = DBManager.getInstance();
 
-	private static UserDAO instance;
+	/*private static UserDAO instance;
 	public synchronized static UserDAO getInstance() {
 		if(instance==null)
 			instance=new UserDAO();
@@ -61,7 +64,7 @@ public class UserDAO implements IUserDAO {
 	}
 	private UserDAO() {
 	
-	}
+	}*/
 	
 	@Override
 	public User getUserById(int userId) throws DataBaseException, IllegalInputException {

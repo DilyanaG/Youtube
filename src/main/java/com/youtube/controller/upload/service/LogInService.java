@@ -1,21 +1,17 @@
 package com.youtube.controller.upload.service;
 
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
 import com.youtube.model.dao.user.UserDAO;
 import com.youtube.model.pojo.User;
 
+@Service
 public class LogInService {
 	private static final int MIN_USERNAME_SIZE = 2;
 	private static final int MAX_USERNAME_SIZE = 30;
@@ -24,23 +20,15 @@ public class LogInService {
 	private static final int MIN_PASSWORD_SIZE = 6;
 	private static final int MAX_PASSWORD_SIZE = 100;
 
-	// @Autowired
-	private static UserDAO userDAO = UserDAO.getInstance();
+	@Autowired
+	private UserDAO userDAO;
 
 	public User login(String username, String password) throws IllegalInputException, DataBaseException {
-
-		System.out.println("In LogInService.login()");
 
 		checkForUsername(username);
 		checkForPassword(password);
 
-		System.out.println("Checks passed");
-		
-		System.out.println(username);
-		System.out.println(password);
-		
 		int userId = userDAO.loginUser(new User(username, password, ""));
-		System.out.println("userId = " + userId);
 		User user = userDAO.getUserById(userId);
 		return user;
 	}

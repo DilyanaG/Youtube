@@ -1,52 +1,54 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page errorPage="./error"%>
 
 
-   <jsp:include page="header.jsp" />
-    <jsp:include page="sideMenu.jsp" />
+
     
-	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-		<div class="show-top-grids">
-			<div class="col-sm-8 single-left">
-				<div class="song">
-					<div class="song-info">
-						<h3>Etiam molestie nisl eget consequat pharetra</h3>
+					 <!-- 
+                      <video width="420" height="300" controls> <source
+		              	src="FinalProject/uploads/videos/${video.videoUrl}" type="video/mp4"></video>
 					</div>
-					<div class="video-grid">
-					 <!-- <iframe src="https://www.youtube.com/embed/oYiT-vLjhC4" allowfullscreen=""></iframe>
-  -->                      <video width="420" height="300" controls> <source
-		              	src="FinalProject/uploads/videos/didyouknow=9�Fast Food Facts You Won't Believe Are Actually True.mp4video3.mp4" type="video/mp4"></video>
-					</div>
+					-->  
+<jsp:include page="header.jsp" />
+<jsp:include page="sideMenu.jsp" />
+
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+	<div class="show-top-grids">
+		<div class="col-sm-8 single-left">
+			<div class="song">
+				<div class="song-info">
+					<h3>Etiam molestie nisl eget consequat pharetra</h3>
 				</div>
-				<div class="song-grid-right">
-					<div class="share">
-						<h5>Options</h5>
-						<ul>
-							<li>
-								<a href="#" class="icon fb-icon">Share</a>
-							</li>
-							<li>
-								<a href="./addToPlaylist" class="icon pinterest-icon">To Playlist</a>
-							</li>
-							<li class="view">200 Views</li>
-							<li>
-								<a href="#" class="icon like">26 Likes</a>
-							</li>
-							<li>
-								<a href="#" class="icon dribbble-icon">9 Dislikes</a>
-							</li>
-						</ul>
-						
-					</div>
-				
+				<div class="video-grid">
+					<video width="640" height="264" controls>
+						<source
+							src="${video.videoUrl}"
+							type="video/mp4">
+					</video>
 				</div>
-				
-				<div class="clearfix"> </div>
-				<div class="published">
-					<script src="FinalProject/js/jquery.min.js"></script>
-					<script>
+			</div>
+			<div class="song-grid-right">
+				<div class="share">
+					<h5>Options</h5>
+					<ul>
+						<li><a href="#" class="icon fb-icon">Share</a></li>
+						<li><a href="./addToPlaylist" class="icon pinterest-icon">To
+								Playlist</a></li>
+						<li class="view">200 Views</li>
+						<li><a href="#" class="icon like">26 Likes</a></li>
+						<li><a href="#" class="icon dribbble-icon">9 Dislikes</a></li>
+					</ul>
+
+				</div>
+
+			</div>
+
+			<div class="clearfix"></div>
+			<div class="published">
+				<script src="FinalProject/js/jquery.min.js"></script>
+				<script>
 						$(document).ready(function () {
 							size_li = $("#myList li").size();
 							x = 1;
@@ -61,43 +63,47 @@
 							});
 						});
 					</script>
-					<div class="load_more">
-						<div class="main_video_info">
-							<img src="FinalProject/images/male.png" alt="user_profile_picture" id="profile-pic">
-							<p class="author">By
-								<a href="#" class="author">John Maniya</a>
-								<br>
-								<span>Published on: 5 June 2015</span>
-							</p>
+				<div class="load_more">
+					<div class="main_video_info">
+						<img src="FinalProject/images/male.png" alt="user_profile_picture"
+							id="profile-pic">
+						<p class="author">
+							By <a href="#" class="author">John Maniya</a> <br> <span>Published
+								on: 5 June 2015</span>
+						</p>
 
-							<div class="heading-right">
-								<a href="#small-dialog8" class="play-icon popup-with-zoom-anim">Subscribe</a>
-							</div>
-
+						<div class="heading-right">
+							<a href="#small-dialog8" class="play-icon popup-with-zoom-anim">Subscribe</a>
 						</div>
 
-						<br>
-						<ul id="myList">
-							<br><br><br><br><br>
-							<li style="display: list-item;">
-								<p>Nullam fringilla</p>
-							</li>
-							<li>
-								<div class="load-grids">
-									<div class="load-grid">
-										<p>Category</p>
-									</div>
-									<div class="load-grid">
-										<a href="movies.html">Entertainment</a>
-									</div>
-									<div class="clearfix"> </div>
-								</div>
-							</li>
-						</ul>
 					</div>
+
+					<br>
+					<ul id="myList">
+						<br>
+						<br>
+						<br>
+						<br>
+						<br>
+						<li style="display: list-item;">
+							<p>Nullam fringilla</p>
+						</li>
+						<li>
+							<div class="load-grids">
+								<div class="load-grid">
+									<p>Category</p>
+								</div>
+								<div class="load-grid">
+									<a href="movies.html">Entertainment</a>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+						</li>
+					</ul>
 				</div>
-				<div class="all-comments">
-					<div class="all-comments-info">
+			</div>
+			<div class="all-comments">
+				<div class="all-comments-info">
 					<h3>COMMENTS</h3>
 					<div class="box">
 						<form>
@@ -131,7 +137,7 @@
 				</div>
 			</div>
 		</div>
-				<div class="col-md-4 single-right">
+		<div class="col-md-4 single-right">
 			<h3>OTHER VIDEOS</h3>
 			<!-- alvideosForPlaylist  -->
 
@@ -158,19 +164,19 @@
 			</div>
 
 		</div>
-			<div class="clearfix"> </div>
-		</div>
-		<!-- footer -->
-  <jsp:include page="footer.jsp" />
-		<!-- //footer -->
+		<div class="clearfix"></div>
 	</div>
-	<div class="clearfix"> </div>
-	
-	<!-- Bootstrap core JavaScript
+	<!-- footer -->
+	<jsp:include page="footer.jsp" />
+	<!-- //footer -->
+</div>
+<div class="clearfix"></div>
+
+<!-- Bootstrap core JavaScript
     ================================================== -->
-	<!-- Placed at the end of the document so the pages load faster -->
-	<script src="FinalProject/js/bootstrap.min.js"></script>
-	<!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="FinalProject/js/bootstrap.min.js"></script>
+<!-- Just to make our placeholder images work. Don't actually copy the next line! -->
 
 
 </body>

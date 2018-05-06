@@ -11,28 +11,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.springframework.stereotype.Repository;
+
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.model.resolvers.IResolver;
 
-//@Component
+@Repository
 public class DBManager {
 
 	private static final String DB_IP = "127.0.0.1";
 	private static final String DB_PORT = "3306";
-	private static DBManager instance;
 
 	private final String DB_NAME;
 	private final String DB_USERNAME;
 	private final String DB_PASSWORD;
 	private final String URL;
 
-	// @Autowired
-
-	private DBManager() {
-		// File file = new File("DB_connection.properties");
+	public DBManager() {
 		String propFileName = "DB_connection.properties";
 
-		// try (BufferedReader on = new BufferedReader(new FileReader(file));) {
 		try (InputStream in = getClass().getClassLoader().getResourceAsStream(propFileName);) {
 			Properties properties = new Properties();
 
@@ -106,16 +103,12 @@ public class DBManager {
 	public <T> T executeSingleSelect(Connection connection, String sql, IResolver<T> resolver, Object... args)
 			throws SQLException {
 		PreparedStatement prst = connection.prepareStatement(sql);
-		System.out.println("tuka e ");
 		setParameters(prst, args);
 		ResultSet rs = prst.executeQuery();
-		System.out.println("tuka e1");
 		if (rs==null||!rs.next()) {
 			throw new SQLException("Found nothing");
 		} else {
-			System.out.println("grymnah tuka");
 			final T object = resolver.resolve(rs);
-			System.out.println("grymnah tuka1");
 			if (rs.next()) {
 				throw new SQLException("Found more than one result");
 			}
@@ -137,14 +130,6 @@ public class DBManager {
 			prst.setObject(parameterIndex, args[parameterIndex - 1]);
 		}
 		return prst;
-	}
-
-	public synchronized static DBManager getInstance() {
-
-		if (instance == null) {
-			instance = new DBManager();
-		}
-		return instance;
 	}
 
 }

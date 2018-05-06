@@ -3,6 +3,7 @@ package com.youtube.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,19 +20,22 @@ import com.youtube.model.pojo.User;
 @Controller
 public class LoginController {
 
+	@Autowired
+	private ChannelDAO channelDAO;
+	
+	@Autowired
+	private LogInService loginService;
+	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String logIn(@RequestParam(value = "username", required = true) String username,
 			@RequestParam(value = "password", required = true) String password, HttpSession session, Model model)
 			throws Exception {
 
-		System.out.println(username);
-		System.out.println(password);
-
 		try {
-			User user = new LogInService().login(username, password);
-			Channel channel = ChannelDAO.getInstance().getChannelByUserId(user.getUserId());
+			User user = loginService.login(username, password);
+			Channel channel = channelDAO.getChannelByUserId(user.getUserId());
 			session.setAttribute("channelId", channel.getChannelId());
-			model.addAttribute("successMessage", "Log in successful.");
+//			model.addAttribute("successMessage", "Log in successful.");
 		} catch (IllegalInputException | DataBaseException e) {
 			model.addAttribute("errorMessage", e.getMessage());
 		}
