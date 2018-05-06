@@ -45,6 +45,8 @@ public interface IVideoDAO {
 
 	boolean dislikeExists(int video_id, int channel_id) throws DataBaseException;
 
+	void increaseViewsForVideo(int video_id) throws DataBaseException;
+
 
 
 }

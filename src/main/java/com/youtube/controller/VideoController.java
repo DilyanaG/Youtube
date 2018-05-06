@@ -8,23 +8,29 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
+import com.youtube.controller.upload.service.VideoService;
 import com.youtube.model.dao.video.IVideoDAO;
+import com.youtube.model.dto.video.VideoDTO;
 import com.youtube.model.dto.video.VideoTopViewDTO;
 import com.youtube.model.pojo.Video;
 
-@RestController
+@Controller
 public class VideoController {
 
 	private static final int MAX_VIDEOS_FOR_PAGE = 15;
 	
 	@Autowired
-	private IVideoDAO videoDao;
+	private IVideoDAO videoDAO;
+	
+	@Autowired
+	private VideoService videoService;
 	
 	@RequestMapping(value = "/videoLoader", method = RequestMethod.GET)
 	public Map<String, List<VideoTopViewDTO>> doGet(HttpServletRequest req) throws IllegalInputException, DataBaseException {
@@ -37,13 +43,13 @@ public class VideoController {
 		
 		switch (action) {
 		case "MOST":
-            videos=videoDao.getMostPopularVideos();
+            videos=videoDAO.getMostPopularVideos();
 			break;
 		case "RECENT":
-             videos=videoDao.getRecentVideos();
+             videos=videoDAO.getRecentVideos();
 			break;
 		default:
-		      videos=videoDao.getVideosByTagAndSortByDate(null);	
+		      videos=videoDAO.getVideosByTagAndSortByDate(null);	
 			break;
 		}
 //		List<Video> videos = new ArrayList<>();
@@ -63,5 +69,15 @@ public class VideoController {
 
 		result.put("videos", sendVideos);
 		return result;
+	}
+	
+	@RequestMapping(value = "/video", method = RequestMethod.GET)
+	public String playVideo(Model model, HttpServletRequest req) throws Exception {
+
+		int videoId = Integer.valueOf(req.getParameter("videoId"));
+		VideoDTO video = videoService.playVideo(videoId);
+
+		model.addAttribute("video", video);
+		return "single";
 	}
 }

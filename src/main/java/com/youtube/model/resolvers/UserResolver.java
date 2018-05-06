@@ -18,7 +18,7 @@ public class UserResolver implements IResolver<User> {
 		final String userName = selectedColumns.contains("user_name") ? rs.getString("user_name") : null;
 		final String password = selectedColumns.contains("password") ? rs.getString("password") : null;
 		final String email = selectedColumns.contains("email") ? rs.getString("email") : null;
-		final String photoURL = selectedColumns.contains("photo_url") ? rs.getString("photo_url") : null;
+		final String photoURL = selectedColumns.contains("profile_picture_url") ? rs.getString("profile_picture_url") : null;
 		
 		System.out.println(userId);
 		System.out.println(userName);

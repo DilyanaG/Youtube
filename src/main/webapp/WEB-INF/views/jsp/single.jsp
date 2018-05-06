@@ -19,7 +19,7 @@
 		<div class="col-sm-8 single-left">
 			<div class="song">
 				<div class="song-info">
-					<h3>Etiam molestie nisl eget consequat pharetra</h3>
+					<h3>${video.title}</h3>
 				</div>
 				<div class="video-grid">
 					<video width="640" height="264" controls>
@@ -36,9 +36,9 @@
 						<li><a href="#" class="icon fb-icon">Share</a></li>
 						<li><a href="./addToPlaylist" class="icon pinterest-icon">To
 								Playlist</a></li>
-						<li class="view">200 Views</li>
-						<li><a href="#" class="icon like">26 Likes</a></li>
-						<li><a href="#" class="icon dribbble-icon">9 Dislikes</a></li>
+						<li class="view">${video.views}</li>
+						<li><a href="#" class="icon like">${video.likes}</a></li>
+						<li><a href="#" class="icon dribbble-icon">${video.dislikes}</a></li>
 					</ul>
 
 				</div>
@@ -65,11 +65,11 @@
 					</script>
 				<div class="load_more">
 					<div class="main_video_info">
-						<img src="FinalProject/images/male.png" alt="user_profile_picture"
-							id="profile-pic">
+						<img src="${video.profilePictureUrl}" alt="user_profile_picture"
+							id="profile-pic" width="100" height="100">
 						<p class="author">
-							By <a href="#" class="author">John Maniya</a> <br> <span>Published
-								on: 5 June 2015</span>
+							By <a href="#" class="author">${video.username}</a> <br> <span>Published
+								on: ${video.uploadDate}</span>
 						</p>
 
 						<div class="heading-right">
@@ -80,13 +80,10 @@
 
 					<br>
 					<ul id="myList">
-						<br>
-						<br>
-						<br>
-						<br>
-						<br>
+						<br><br><br>
+						<br><br><br>
 						<li style="display: list-item;">
-							<p>Nullam fringilla</p>
+							<p>${video.description}</p>
 						</li>
 						<li>
 							<div class="load-grids">

@@ -46,7 +46,7 @@ public class VideoDAO implements IVideoDAO {
 
 	private static final String GET_TAG_COUNT = "SELECT COUNT(t.tag_id) as count FROM tags AS t WHERE t.content = ?;";
 
-	private static final String COUNT_OF_LIKES = "SELECT COUNT(vhld.id) as count FROM videos_has_likes_dislikes AS vhld JOIN videos AS v ON vhld.video_id = v.video_id WHERE v.video_id = ? AND v.isDeleted = 0 AND vhld.isLike = 1;";;
+	private static final String COUNT_OF_LIKES = "SELECT COUNT(vhld.id) as count FROM videos_has_likes_dislikes AS vhld JOIN videos AS v ON vhld.video_id = v.video_id WHERE v.video_id = ? AND v.isDeleted = 0 AND vhld.isLike = 1;";
 
 	private static final String COUNT_OF_DISLIKES = "SELECT COUNT(vhld.id) as count FROM videos_has_likes_dislikes AS vhld JOIN videos AS v ON vhld.video_id = v.video_id WHERE v.video_id = ? AND v.isDeleted = 0 AND vhld.isLike = 0;";
 
@@ -67,6 +67,9 @@ public class VideoDAO implements IVideoDAO {
 
 	private static final String DISLIKE_VIDEO = "INSERT INTO videos_has_likes_dislikes (isLike,video_id,channel_id) VALUES (0,?,?)";;
 
+	//updates
+	private static final String INCREASE_VIEWS = "UPDATE videos SET views = views+1 WHERE video_id = ? AND isDeleted=0;";
+	
 	// deletes
 	private static final String DELETE_VIDEO = "DELETE FROM videos WHERE title = ?;";
 
@@ -74,6 +77,8 @@ public class VideoDAO implements IVideoDAO {
 			+ "SELECT v.video_id FROM videos AS v WHERE v.title = ?);";
 
 	private static final String REMOVE_LIKE_DISLIKE_FROM_VIDEO = "DELETE FROM videos_has_likes_dislikes WHERE video_id = ? AND channel_id = ?;";
+
+
 
 	
 
@@ -371,6 +376,19 @@ public class VideoDAO implements IVideoDAO {
 		try {
 			dbManager.startTransaction(connection);
 			dbManager.execute(connection, REMOVE_LIKE_DISLIKE_FROM_VIDEO, video_id, channel_id);
+			dbManager.commit(connection);
+		} catch (SQLException s) {
+			dbManager.rollback(connection, s);
+		}
+	}
+	
+	@Override
+	public void increaseViewsForVideo(int video_id) throws DataBaseException {
+		final Connection connection = dbManager.getConnection();
+
+		try {
+			dbManager.startTransaction(connection);
+			dbManager.execute(connection, INCREASE_VIEWS, video_id);
 			dbManager.commit(connection);
 		} catch (SQLException s) {
 			dbManager.rollback(connection, s);

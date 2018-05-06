@@ -20,16 +20,6 @@ public class SingleMenuController {
 	@Autowired
 	private IVideoDAO videoDAO;
 
-	@RequestMapping(method = RequestMethod.GET, value = "/video")
-	public String singleVideo(Model model, HttpServletRequest req) throws Exception {
-
-		int videoId = Integer.valueOf(req.getParameter("videoId"));
-		Video video = videoDAO.getVideoById(videoId);
-
-		model.addAttribute("video", video);
-		return "single";
-	}
-
 	@RequestMapping(method = RequestMethod.GET, value = "/playlist")
 	public String singlePlaylist(Model model, HttpServletRequest req) {
 		System.out.println(req.getParameter("playlistId"));
