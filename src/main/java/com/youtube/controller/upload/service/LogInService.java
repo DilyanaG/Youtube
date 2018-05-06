@@ -32,6 +32,16 @@ public class LogInService {
 		User user = userDAO.getUserById(userId);
 		return user;
 	}
+	
+	public User changePassword(String username, String oldPassword, String newPassword) throws IllegalInputException, DataBaseException {
+
+		checkForPassword(oldPassword);
+		checkForPassword(newPassword);
+
+		User user = userDAO.getUserByUserName(username);
+		userDAO.updatePassword(user.getUserId(), oldPassword, newPassword);
+		return userDAO.getUserById(user.getUserId());
+	}
 
 	private boolean checkForUsername(String username) throws IllegalInputException {
 		if (username == null || username.length() < MIN_USERNAME_SIZE || username.length() > MAX_USERNAME_SIZE

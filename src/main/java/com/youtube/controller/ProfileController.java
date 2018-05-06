@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
-import com.youtube.model.dao.channel.ChannelDAO;
-import com.youtube.model.dao.video.VideoDAO;
+import com.youtube.model.dao.channel.IChannelDAO;
+import com.youtube.model.dao.video.IVideoDAO;
 import com.youtube.model.dto.channel.ProfileViewDTO;
 import com.youtube.model.pojo.Channel;
 import com.youtube.model.pojo.Video;
@@ -23,10 +23,10 @@ import com.youtube.model.pojo.Video;
 public class ProfileController {
 	
 	@Autowired
-	ChannelDAO channelDao;
-	@Autowired
-	VideoDAO videoDao;
+	private IChannelDAO channelDao;
 	
+	@Autowired
+	private IVideoDAO videoDao;
 	
 	
 	@RequestMapping(value="/profile",method = RequestMethod.GET)

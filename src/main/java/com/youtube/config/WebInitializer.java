@@ -25,6 +25,7 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
         return new String[] { "/", "*.html", "*.pdf" };
     }
     private int maxUploadSizeInMb = 50 * 1024 * 1024; // 50 MB
+    
     @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
 

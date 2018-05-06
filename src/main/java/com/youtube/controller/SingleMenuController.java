@@ -11,13 +11,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.youtube.model.dao.video.VideoDAO;
+import com.youtube.model.dao.video.IVideoDAO;
 import com.youtube.model.pojo.Video;
 
 @Controller
 public class SingleMenuController {
+	
 	@Autowired
-	private VideoDAO videoDAO;
+	private IVideoDAO videoDAO;
 
 	@RequestMapping(method = RequestMethod.GET, value = "/video")
 	public String singleVideo(Model model, HttpServletRequest req) throws Exception {

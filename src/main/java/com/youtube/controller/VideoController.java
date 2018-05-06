@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
-import com.youtube.model.dao.video.VideoDAO;
+import com.youtube.model.dao.video.IVideoDAO;
 import com.youtube.model.dto.video.VideoTopViewDTO;
 import com.youtube.model.pojo.Video;
 
@@ -22,8 +22,9 @@ import com.youtube.model.pojo.Video;
 public class VideoController {
 
 	private static final int MAX_VIDEOS_FOR_PAGE = 15;
+	
 	@Autowired
-	private VideoDAO videoDao;
+	private IVideoDAO videoDao;
 	
 	@RequestMapping(value = "/videoLoader", method = RequestMethod.GET)
 	public Map<String, List<VideoTopViewDTO>> doGet(HttpServletRequest req) throws IllegalInputException, DataBaseException {

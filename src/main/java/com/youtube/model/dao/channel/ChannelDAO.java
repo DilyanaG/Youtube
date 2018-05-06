@@ -46,18 +46,8 @@ public class ChannelDAO implements IChannelDAO {
 
 	
 	@Autowired
-	private DBManager dbManager; //  = DBManager.getInstance();
+	private DBManager dbManager;
 	
-	/*private static ChannelDAO instance;
-	public synchronized static ChannelDAO getInstance() {
-		if(instance==null)
-			instance=new ChannelDAO();
-		return instance;
-	}
-	private ChannelDAO() {
-	
-	}*/
-
 	@Override
 	public Channel getChannelById(int id) throws IllegalInputException, DataBaseException {
 		final Connection connection = dbManager.getConnection();

@@ -37,9 +37,6 @@ public class DBManager {
 			DB_NAME = properties.getProperty("DB_NAME");
 			DB_USERNAME = properties.getProperty("DB_USERNAME");
 			DB_PASSWORD = properties.getProperty("DB_PASSWORD");
-			System.out.println(DB_NAME);
-			System.out.println(DB_USERNAME);
-			System.out.println(DB_PASSWORD);
 			URL = "jdbc:mysql://" + DB_IP + ":" + DB_PORT + "/" + DB_NAME + "?useSSL=false";
 
 		} catch (IOException e) {

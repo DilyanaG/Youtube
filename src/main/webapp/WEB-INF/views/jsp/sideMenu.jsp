@@ -2,12 +2,7 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-
-
-
-
-
-<div class="col-sm-3 col-md-2 sidebar" style="background-color: WhiteSmoke;">>
+<div class="col-sm-3 col-md-2 sidebar" style="background-color: WhiteSmoke;">
 	<div class="top-navigation">
 		<div class="t-menu">MENU</div>
 		<div class="t-img">

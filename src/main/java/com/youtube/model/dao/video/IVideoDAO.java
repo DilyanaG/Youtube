@@ -4,11 +4,10 @@ import java.util.List;
 
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
-import com.youtube.model.pojo.Channel;
 import com.youtube.model.pojo.Playlist;
 import com.youtube.model.pojo.Video;
 
-interface IVideoDAO {
+public interface IVideoDAO {
 
 	Video getVideoById(int video_id) throws IllegalInputException, DataBaseException;
 

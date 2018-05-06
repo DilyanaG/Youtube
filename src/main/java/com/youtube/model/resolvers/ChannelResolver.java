@@ -20,7 +20,6 @@ public class ChannelResolver implements IResolver<Channel> {
 		// If the parameter is not in the ResultSet it sets it a null value
 
 		final Integer channelId = selectedColumns.contains("channel_id") ? rs.getInt("channel_id") : null;
-		System.out.println(channelId);
 		final User user = userResolver.resolve(rs);
 		
 		Channel channel = new Channel(channelId, user);

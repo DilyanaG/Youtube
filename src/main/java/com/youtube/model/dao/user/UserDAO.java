@@ -37,7 +37,7 @@ public class UserDAO implements IUserDAO {
 	
 	
 	// update
-	private static final String UPDATE_USER_PASSWORD = "UPDATE users SET password = sha1(?) WHERE user_id = ?;";
+	private static final String UPDATE_USER_PASSWORD = "UPDATE users SET password = sha1(?) WHERE user_id = ? AND password = sha1(?);";
 
 	private static final String UPDATE_PROFILE_PICTURE = "UPDATE users SET photoUrl = ? WHERE user_id = ?;";
 
@@ -54,17 +54,7 @@ public class UserDAO implements IUserDAO {
 	
 
 	@Autowired
-	private DBManager dbManager; // static = DBManager.getInstance();
-
-	/*private static UserDAO instance;
-	public synchronized static UserDAO getInstance() {
-		if(instance==null)
-			instance=new UserDAO();
-		return instance;
-	}
-	private UserDAO() {
-	
-	}*/
+	private DBManager dbManager; 
 	
 	@Override
 	public User getUserById(int userId) throws DataBaseException, IllegalInputException {
@@ -153,12 +143,12 @@ public class UserDAO implements IUserDAO {
 	}
 
 	@Override
-	public boolean updatePassword(int user_id, String newPassword) throws DataBaseException, IllegalInputException {
+	public boolean updatePassword(int user_id, String oldPassword, String newPassword) throws DataBaseException, IllegalInputException {
 		final Connection connection = dbManager.getConnection();
 
 		try {
 			dbManager.startTransaction(connection);
-			int updated = dbManager.execute(connection, UPDATE_USER_PASSWORD, newPassword, user_id);
+			int updated = dbManager.execute(connection, UPDATE_USER_PASSWORD, newPassword, user_id, oldPassword);
 
 			if (updated == 0) {
 				throw new IllegalInputException("USER NOT FOUND !");

@@ -112,10 +112,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 									<div class="signup">
 										<h4>Change password</h4>
 										<form action="./changePassword" method="post">
-											<input type="password" placeholder="New Password"
+											<input type="password" name="newPassword" placeholder="New Password"
 												required="required" pattern=".{6,}"
 												title="Minimum 6 characters required" autocomplete="off">
-											<input type="password" placeholder="Old Password"
+											<input type="password" name="oldPassword" placeholder="Old Password"
 												required="required" pattern=".{6,}"
 												title="Minimum 6 characters required" autocomplete="off">
 											<input type="submit" value="Continue">
@@ -133,7 +133,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 									<h3>Are you sure you want to log out?</h3>
 
 									<div class="signup">
-										<form action="./sigout" method="get">
+										<form action="./signout" method="get">
 											<input type="submit" value="Continue">
 										</form>
 									</div>

@@ -18,7 +18,7 @@ public interface IUserDAO {
 
 	User getUserByEmail(String email) throws IllegalInputException, DataBaseException;
 
-	boolean updatePassword(int user_id, String newPassword) throws DataBaseException, IllegalInputException;
+	boolean updatePassword(int user_id, String oldPassword, String newPassword) throws DataBaseException, IllegalInputException;
 
 	boolean updateProfilePicture(String pictureURL, int userId) throws IllegalInputException, DataBaseException;
 

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.youtube.controller.exceptions.DataBaseException;
-import com.youtube.model.dao.playlist.PlaylistDAO;
+import com.youtube.model.dao.playlist.IPlaylistDAO;
 import com.youtube.model.pojo.Comment;
 import com.youtube.model.pojo.Playlist;
 import com.youtube.model.pojo.Video;
@@ -21,9 +21,7 @@ import com.youtube.model.pojo.Video;
 public class PlaylistController {
  
 	@Autowired
-	private PlaylistDAO playlistDao;
-	
-	
+	private IPlaylistDAO playlistDao;
 	
 	@RequestMapping(value = "/playlists", method = RequestMethod.GET)
 	public Map<String, List<Object>> doGet(HttpServletRequest req) throws DataBaseException {
