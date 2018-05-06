@@ -47,9 +47,9 @@ public class UserDAO implements IUserDAO {
 
 	private static final String DELETE_USER = "UPDATE users SET isDeleted = 1 WHERE user_id = ?;";
 
-	private static final String DELETE_CHANNEL = "UPDATE channels JOIN users ON channels.user_id = users.user_id SET isDeleted = 1 WHERE channels.user_id = ?;";
+	private static final String DELETE_CHANNEL = "UPDATE channels SET isDeleted = 1 WHERE channels.user_id = ?;";
 	
-	private static final String DELETE_CHANNEL_VIDEOS = "UPDATE videos JOIN channels ON videos.channel_id = channels.channel_id JOIN users ON channels.user_id = users.user_id SET isDeleted = 1 WHERE channels.user_id = ?;";
+	private static final String DELETE_CHANNEL_VIDEOS = "UPDATE videos SET isDeleted = 1 WHERE videos.channel_id = (SELECT channel_id FROM channels WHERE channels.user_id = ?);";
 
 	
 
@@ -234,10 +234,4 @@ public class UserDAO implements IUserDAO {
 			return 0;
 		}
 	}
-
-	
-	public static void main(String[] args) throws DataBaseException, IllegalInputException {
-		System.out.println(new UserDAO().getUserById(1));
-	}
-
 }

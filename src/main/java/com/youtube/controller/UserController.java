@@ -27,7 +27,7 @@ public class UserController {
 	private IChannelDAO channelDAO;
 	
 	@Autowired
-	private SecurityService loginService;
+	private SecurityService securityService;
 
 	@Autowired
 	private SignUpService signUpService;
@@ -38,7 +38,7 @@ public class UserController {
 						HttpSession session, Model model) throws Exception {
 
 		try {
-			User user = loginService.login(username, password);
+			User user = securityService.login(username, password);
 			Channel channel = channelDAO.getChannelByUserId(user.getUserId());
 			session.setAttribute("channelId", channel.getChannelId());
 			session.setAttribute("username", user.getUserName());
@@ -87,14 +87,28 @@ public class UserController {
 
 		try {
 			String username = session.getAttribute("username").toString();
-			loginService.changePassword(username, oldPassword, newPassword);
-			model.addAttribute("successMessage", "Password changes successfully. Please log in again with your new password.");
+			securityService.changePassword(username, oldPassword, newPassword);
 			session.invalidate();
+			model.addAttribute("successMessage", "Password changes successfully. Please log in again with your new password.");
 		} catch (IllegalInputException | DataBaseException e) {
 			model.addAttribute("errorMessage", e.getMessage());
 		}
 		return "redirect:/index";
 	}
 	
+	@RequestMapping(value = "/deleteAccount", method = RequestMethod.POST)
+	public String deleteUser(HttpSession session, Model model) throws Exception {
+
+		try {
+			String username = session.getAttribute("username").toString();
+			securityService.deleteUser(username);
+			session.invalidate();
+			model.addAttribute("successMessage", "User has been deleted.");
+		} catch (IllegalInputException | DataBaseException e) {
+			model.addAttribute("errorMessage", e.getMessage());
+		}
+		
+		return "redirect:/index";
+	}
 	
 }

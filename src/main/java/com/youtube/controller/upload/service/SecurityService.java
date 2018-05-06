@@ -32,8 +32,9 @@ public class SecurityService {
 		User user = userDAO.getUserById(userId);
 		return user;
 	}
-	
-	public User changePassword(String username, String oldPassword, String newPassword) throws IllegalInputException, DataBaseException {
+
+	public User changePassword(String username, String oldPassword, String newPassword)
+			throws IllegalInputException, DataBaseException {
 
 		checkForPassword(oldPassword);
 		checkForPassword(newPassword);
@@ -41,6 +42,11 @@ public class SecurityService {
 		User user = userDAO.getUserByUserName(username);
 		userDAO.updatePassword(user.getUserId(), oldPassword, newPassword);
 		return userDAO.getUserById(user.getUserId());
+	}
+
+	public void deleteUser(String username) throws DataBaseException, IllegalInputException {
+		User user = userDAO.getUserByUserName(username);
+		userDAO.deleteUser(user.getUserId());
 	}
 
 	private boolean checkForUsername(String username) throws IllegalInputException {
@@ -67,4 +73,5 @@ public class SecurityService {
 			return false;
 		}
 	}
+
 }
