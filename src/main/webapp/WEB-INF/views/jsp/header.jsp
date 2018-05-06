@@ -97,7 +97,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 												<input id="imageUpload" type="file" name="profile_photo"
 													placeholder="Photo" required="" capture=""> <br>
 												<script type="text/javascript" src="FinalProject/js/uploading.js"></script>
-												<input type="submit" value="Apply">
+												<input type="submit" value="Apply New Photo">
+											</form>
+											<form action="./changeProfilePic" method="post" enctype="multipart/form-data">
+												<input type="submit" value="Remove Current Photo">
 											</form>
 									</div>
 
@@ -134,11 +137,18 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 								<a href="#small-dialog" class="play-icon popup-with-zoom-anim">Sign
 									Out</a>
 								<div id="small-dialog" class="mfp-hide">
-									<h3>Are you sure you want to log out?</h3>
-
 									<div class="signup">
+									<h3>Are you sure you want to log out?</h3>
+									<br><br><br>
 										<form action="./signout" method="get">
 											<input type="submit" value="Continue">
+										</form>
+									</div>
+									<div class="signup" id="delete">
+									<h3>Are you sure you want to delete your profile?</h3>
+									<br><br><br>
+										<form action="./deleteAccount" method="post">
+											<input type="submit" value="Delete Account">
 										</form>
 									</div>
 									<div class="clearfix"></div>

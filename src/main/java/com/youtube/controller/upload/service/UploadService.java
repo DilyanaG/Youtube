@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -40,7 +39,8 @@ public class UploadService {
 	private static final String IMAGES = "images";
 	private static final String VIDEOS = "videos";
 	private static final String PROFILES = "profiles";
-	
+	private static final String DEFAULT = "uploads/profiles/default.png";
+
 	private static final Set<String> SUPPORTED_IMAGE_TYPES = new HashSet<>(asList("jpg", "jpeg", "png"));
 	private static final Set<String> SUPPORTED_VIDEO_TYPES = new HashSet<>(asList("mp4", "avi"));
 
@@ -67,7 +67,7 @@ public class UploadService {
 		if (!SUPPORTED_VIDEO_TYPES.contains(contentType)) {
 			throw new IllegalInputException("The allowed file types are: mp4, avi!");
 		}
-		
+
 		final String uriId = UUID.randomUUID().toString();
 		final Path videoPath = Paths.get(realPath, UPLOADS, VIDEOS, uriId + "." + contentType);
 		final Path photoPath = Paths.get(realPath, UPLOADS, IMAGES, uriId + ".png");
@@ -103,6 +103,7 @@ public class UploadService {
 
 	public User changeProfilePicture(MultipartFile file, String realPath, String username)
 			throws IllegalInputException, DataBaseException, IOException {
+
 		if (file.isEmpty()) {
 			throw new IllegalInputException("PLEASE UPLOAD PHOTO!");
 		}
@@ -124,12 +125,28 @@ public class UploadService {
 		Files.write(photoPath.toAbsolutePath(), photoBytes);
 
 		// Delete old profile photo
-		if (user.getPhotoURL() != null) {
+		if (user.getPhotoURL() != null && !oldPhotoUrl.equals(DEFAULT)) {
 			Path oldPhototPath = Paths.get(realPath, oldPhotoUrl);
 			Files.delete(oldPhototPath);
 		}
 
 		userDAO.updateProfilePicture(photoUrl, user.getUserId());
+		User updatedUser = userDAO.getUserByUserName(username);
+		return updatedUser;
+	}
+
+	public User setDefaultProfilePicture(MultipartFile file, String realPath, String username)
+			throws IllegalInputException, DataBaseException, IOException {
+		User user = userDAO.getUserByUserName(username);
+		String oldPhotoUrl = user.getPhotoURL();
+		
+		// Delete old profile photo
+		if (user.getPhotoURL() != null) {
+			Path oldPhototPath = Paths.get(realPath, oldPhotoUrl);
+			Files.delete(oldPhototPath);
+		}
+
+		userDAO.updateProfilePicture(DEFAULT, user.getUserId());
 		User updatedUser = userDAO.getUserByUserName(username);
 		return updatedUser;
 	}

@@ -25,15 +25,15 @@
 	<div class="top-navigation">
 		<div class="t-menu"></div>
 		<div class="t-img">
-			<img src="/FinalProject/images/male.png" alt="">
+			<img src="${sessionScope.photoUrl}" alt="">
 		</div>
 		<div class="clearfix"></div>
 	</div>
 	<div class="drop-navigation drop-navigation">
 		<ul class="nav nav-sidebar">
-			<img src="FinalProject/images/male.png" alt="">
+			<img src="${sessionScope.photoUrl}" alt="" width="150" height="150" style="margin-left: 50px"/>
 			<li class="active"><a href="" class="home-icon"> <span
-					aria-hidden="true"> </span> ${profile.username}
+					aria-hidden="true" style="margin-left: 50px"> ${profile.username}</span> 
 			</a></li>
 			<li><a href="" class="user-icon"><span
 					class="glyphicon glyphicon-home glyphicon-blackboard"

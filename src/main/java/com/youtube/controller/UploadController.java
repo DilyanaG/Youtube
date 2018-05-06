@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
 import com.youtube.controller.upload.service.UploadService;
+import com.youtube.model.pojo.User;
 
 @Controller
 public class UploadController {
@@ -40,14 +42,38 @@ public class UploadController {
 			throws Exception {
 		try {
 			final String realPath = session.getServletContext().getRealPath("/static/");
-		//	String realPath= "D://";
+			// String realPath= "D://";
 			uploadService.addVideo(file, title, description, (int) session.getAttribute("channelId"), realPath);
 		} catch (IllegalInputException e) {
 			model.addAttribute("errorMessage", e.getMessage());
 			return "upload";
 		}
 		// add here session.getChannelID
-		return "redirect:/profile?channelId="+session.getAttribute("channelId");
+		return "redirect:/profile?channelId=" + session.getAttribute("channelId");
+	}
+
+	@RequestMapping(value = "/changeProfilePic", method = RequestMethod.POST)
+	public String changeProfilePic(@RequestParam(name = "profile_photo", required = false) MultipartFile file,
+			HttpSession session, Model model) throws Exception {
+
+		try {
+			final String username = session.getAttribute("username").toString();
+			String photoUrl;
+			
+			final String realPath = session.getServletContext().getRealPath("/static/");
+			if (file == null) {
+				User user = uploadService.setDefaultProfilePicture(file, realPath, username);
+				photoUrl = user.getPhotoURL();
+			}else {
+				User user = uploadService.changeProfilePicture(file, realPath, username);
+				photoUrl = user.getPhotoURL();
+			}
+			session.setAttribute("photoUrl", photoUrl);
+			return "redirect:/profile?channelId=" + session.getAttribute("channelId");
+		} catch (IllegalInputException | DataBaseException e) {
+			model.addAttribute("errorMessage", e.getMessage());
+			return "redirect:/error";
+		}
 	}
 
 }

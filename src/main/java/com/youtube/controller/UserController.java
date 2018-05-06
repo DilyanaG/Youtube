@@ -32,10 +32,6 @@ public class UserController {
 	@Autowired
 	private SignUpService signUpService;
 	
-	@Autowired
-	private UploadService uploadService;
-	
-	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String logIn(@RequestParam(value = "username", required = true) String username,
 						@RequestParam(value = "password", required = true) String password, 
@@ -72,8 +68,12 @@ public class UserController {
 						 HttpSession session, Model model) throws Exception {
 
 		try {
-			signUpService.register(username, password, email);
-			model.addAttribute("successMessage", "Sign Up successful. Please log in.");
+			User user = signUpService.register(username, password, email);
+			Channel channel = channelDAO.getChannelByUserId(user.getUserId());
+			session.setAttribute("channelId", channel.getChannelId());
+			session.setAttribute("username", user.getUserName());
+			session.setAttribute("photoUrl", user.getPhotoURL());
+			model.addAttribute("successMessage", "Sign Up successful.");
 		} catch (IllegalInputException | DataBaseException e) {
 			model.addAttribute("errorMessage", e.getMessage());
 		}
@@ -96,19 +96,5 @@ public class UserController {
 		return "redirect:/index";
 	}
 	
-	@RequestMapping(value = "/changeProfilePic", method = RequestMethod.POST)
-	public String changeProfilePic(@RequestParam("profile_photo") MultipartFile file,
-								   HttpSession session, Model model) throws Exception {
-
-		
-		try {
-			final String realPath = session.getServletContext().getRealPath("/static/");
-			final String username = session.getAttribute("username").toString();
-			uploadService.changeProfilePicture(file, realPath, username);
-			return "redirect:/profile?channelId="+session.getAttribute("channelId");
-		} catch (IllegalInputException | DataBaseException e) {
-			model.addAttribute("errorMessage", e.getMessage());
-			return "redirect:/error";
-		}	
-	}
+	
 }

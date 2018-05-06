@@ -24,11 +24,13 @@ public class SignUpService {
 
 	private static final int MAX_EMAIL_SIZE = 45;
 	private static final String EMAIL_PATTERN = "([\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4})?";
+	
+	private static final String DEFAULT = "uploads/profiles/default.png";
 
 	@Autowired
 	private UserDAO userDAO; 
 
-	public boolean register(String username, String password, String email)
+	public User register(String username, String password, String email)
 			throws IllegalInputException, DataBaseException {
 
 		checkForUsername(username);
@@ -48,9 +50,9 @@ public class SignUpService {
 		}
 
 		User user = new User(username, password, email);
+		user.setPhotoURL(DEFAULT);
 		userDAO.addNewUserToDB(user);
-		return true;
-
+		return userDAO.getUserByUserName(username);
 	}
 
 	private boolean checkForUsername(String username) throws IllegalInputException {

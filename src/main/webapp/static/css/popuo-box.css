@@ -462,6 +462,7 @@ button::-moz-focus-inner {
   padding-right: 6px;
   width: 100%; 
 }
+
 .signup {
     position: relative;
     padding: 2em 0 0 6em;
@@ -470,7 +471,12 @@ button::-moz-focus-inner {
     border-left: solid 1px #E4E4E4;
     text-align: left;
 }
-.login h3,.signup h3{
+
+#deleted {
+    border-left: none;
+}
+
+.login h3,.signup h3 {
 	margin: 0;
 	color: #3498DB;
 	text-align: left;
@@ -478,7 +484,7 @@ button::-moz-focus-inner {
 	top: 2px;
 	left: 54px;
 }
-.login h3, .signup h4  a{
+.login h3, .signup h4 a{
 	text-align: right;
 	position: absolute;
 	margin: 0;
@@ -528,8 +534,17 @@ button::-moz-focus-inner {
     -o-border-radius: 3px;
     -ms-border-radius: 3px;
 }
+
 .login input[type="submit"]:hover,.signup input[type="submit"]:hover,.upload-image input[type="submit"]:hover{
   background: #C7C7C7;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+
+.deleteAccount input[type="submit"]:hover{
+  background: #fd111d;
   -webkit-transition: all 0.5s ease-in-out;
   -moz-transition: all 0.5s ease-in-out;
   -o-transition: all 0.5s ease-in-out;
@@ -653,6 +668,7 @@ button::-moz-focus-inner {
 	  border-left: none;
 	  text-align: left;
 	}
+	
 	.login input[type="submit"], .signup input[type="submit"] {
 	  width: 50%;
 	}
@@ -690,11 +706,11 @@ button::-moz-focus-inner {
 		width:100%;
 		min-height:250px;
 	}
-	.login input[type="submit"], .signup input[type="submit"] {
+	.login input[type="submit"], .signup input[type="submit"]{
 		font-size: 12px;
 		  width: 50% !important;
 	}
-	.signup input[type="text"] {
+	.signup input[type="text"]{
 		width: 90%;
 	}
 	.login h3, .signup h3 {
