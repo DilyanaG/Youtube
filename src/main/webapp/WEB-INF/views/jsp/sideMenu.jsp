@@ -6,7 +6,7 @@
 	<div class="top-navigation">
 		<div class="t-menu">MENU</div>
 		<div class="t-img">
-			<img src="FinalProject/images/lines.png" alt="" />
+			<img src="${sessionScope.photoUrl}"/>
 		</div>
 		<div class="clearfix"></div>
 	</div>

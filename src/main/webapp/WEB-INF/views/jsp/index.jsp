@@ -31,7 +31,7 @@
 					    <div class="col-md-4 resent-grid recommended-grid slider-top-grids">
 						 <div class="resent-grid-img recommended-grid-img">
 					    		<a href="./video?videoId=${video.videoId}">
-									<img src= "${video.photoUrl}">
+									<img src= "${video.photoUrl}"></img>
 				      		</a>
 
 								<div class="time">

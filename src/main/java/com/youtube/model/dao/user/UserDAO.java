@@ -31,7 +31,7 @@ public class UserDAO implements IUserDAO {
 	private static final String SELECT_ALL_USERS = "SELECT u.* FROM users AS u WHERE u.isDeleted = 0;";
 
 	// insert
-	private static final String INSERT_INTO_USERS = "INSERT INTO users (user_name, password, email, photoUrl) VALUES (?,sha1(?),?,?);";
+	private static final String INSERT_INTO_USERS = "INSERT INTO users (user_name, password, email, photo_url) VALUES (?,sha1(?),?,?);";
 
 	private static final String INSERT_INTO_CHANNELS = "INSERT INTO channels (user_id) VALUES (?);";
 	
@@ -39,9 +39,9 @@ public class UserDAO implements IUserDAO {
 	// update
 	private static final String UPDATE_USER_PASSWORD = "UPDATE users SET password = sha1(?) WHERE user_id = ? AND password = sha1(?);";
 
-	private static final String UPDATE_PROFILE_PICTURE = "UPDATE users SET photoUrl = ? WHERE user_id = ?;";
+	private static final String UPDATE_PROFILE_PICTURE = "UPDATE users SET photo_url = ? WHERE user_id = ?;";
 
-	private static final String DELETE_PROFILE_PICTURE = "UPDETE users SET photoUrl = null WHERE user_id = ?;";
+	private static final String DELETE_PROFILE_PICTURE = "UPDETE users SET photo_url = null WHERE user_id = ?;";
 
 	// delete
 

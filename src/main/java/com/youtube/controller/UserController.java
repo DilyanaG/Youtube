@@ -9,11 +9,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
-import com.youtube.controller.upload.service.LogInService;
+import com.youtube.controller.upload.service.SecurityService;
 import com.youtube.controller.upload.service.SignUpService;
+import com.youtube.controller.upload.service.UploadService;
 import com.youtube.model.dao.channel.IChannelDAO;
 import com.youtube.model.pojo.Channel;
 import com.youtube.model.pojo.User;
@@ -25,10 +27,13 @@ public class UserController {
 	private IChannelDAO channelDAO;
 	
 	@Autowired
-	private LogInService loginService;
+	private SecurityService loginService;
 
 	@Autowired
 	private SignUpService signUpService;
+	
+	@Autowired
+	private UploadService uploadService;
 	
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -89,5 +94,21 @@ public class UserController {
 			model.addAttribute("errorMessage", e.getMessage());
 		}
 		return "redirect:/index";
+	}
+	
+	@RequestMapping(value = "/changeProfilePic", method = RequestMethod.POST)
+	public String changeProfilePic(@RequestParam("profile_photo") MultipartFile file,
+								   HttpSession session, Model model) throws Exception {
+
+		
+		try {
+			final String realPath = session.getServletContext().getRealPath("/static/");
+			final String username = session.getAttribute("username").toString();
+			uploadService.changeProfilePicture(file, realPath, username);
+			return "redirect:/profile?channelId="+session.getAttribute("channelId");
+		} catch (IllegalInputException | DataBaseException e) {
+			model.addAttribute("errorMessage", e.getMessage());
+			return "redirect:/error";
+		}	
 	}
 }

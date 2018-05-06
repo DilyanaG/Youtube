@@ -92,9 +92,7 @@
 						<div class="time">
 							<p></p>
 						</div>
-						<div class="clck">
-							<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
-						</div>
+						<div class="clck"></div>
 					</div>
 					<div class="resent-grid-info recommended-grid-info">
 						<h3>

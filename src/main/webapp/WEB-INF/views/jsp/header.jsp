@@ -92,21 +92,25 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 										<br>
 
 										<div class="upload-image">
-											<img id="profileImage" src="http://lorempixel.com/100/100">
-											<form>
+											<img id="profileImage" src="http://lorempixel.com/100/100" width="150" heigth="150">
+											<form action="./changeProfilePic" method="post" enctype="multipart/form-data">
 												<input id="imageUpload" type="file" name="profile_photo"
 													placeholder="Photo" required="" capture=""> <br>
-
-												<input type="submit" value="Continue">
+												<script type="text/javascript" src="FinalProject/js/uploading.js"></script>
+												<input type="submit" value="Apply">
 											</form>
-										</div>
+									</div>
 
 										<script>
 											$("#profileImage").click(
 													function(e) {
 														$("#imageUpload")
-																.click();
-													});
+																.click()
+											});
+											
+											$("#imageUpload").change(function() {
+												  readURL(this);
+												});
 										</script>
 									</div>
 									<div class="signup">
@@ -118,7 +122,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 											<input type="password" name="oldPassword" placeholder="Old Password"
 												required="required" pattern=".{6,}"
 												title="Minimum 6 characters required" autocomplete="off">
-											<input type="submit" value="Continue">
+											<input type="submit" value="Apply">
 										</form>
 									</div>
 									<div class="clearfix"></div>

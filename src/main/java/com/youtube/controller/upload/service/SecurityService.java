@@ -12,7 +12,7 @@ import com.youtube.model.dao.user.UserDAO;
 import com.youtube.model.pojo.User;
 
 @Service
-public class LogInService {
+public class SecurityService {
 	private static final int MIN_USERNAME_SIZE = 2;
 	private static final int MAX_USERNAME_SIZE = 30;
 	private static final String USERNAME_PATTERN = "^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$";
