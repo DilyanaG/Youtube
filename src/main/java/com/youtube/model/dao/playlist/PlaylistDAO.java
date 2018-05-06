@@ -5,12 +5,14 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.db.DBManager;
 import com.youtube.model.pojo.Playlist;
 import com.youtube.model.resolvers.PlaylistResolver;
-
-//@Component
+@Component
 public class PlaylistDAO implements IPlaylistDAO{
 
 	// selects
@@ -33,7 +35,7 @@ public class PlaylistDAO implements IPlaylistDAO{
 
 	private static final String DELETE_PLAYLIST = "DELETE FROM playlists WHERE name = ?;";
 
-	//@Autowired
+	@Autowired
 	private static DBManager dbManager;
 
 	@Override
@@ -153,6 +155,11 @@ public class PlaylistDAO implements IPlaylistDAO{
 		} catch (SQLException s) {
 			dbManager.rollback(connection, s);
 		}
+	}
+	
+	public static void main(String[] args) throws DataBaseException {
+		System.out.println(new PlaylistDAO().getPlaylistsByChannelAndSortByCreationDate(1));
+		
 	}
 	
 }

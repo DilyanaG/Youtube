@@ -22,105 +22,47 @@
 						       
 						</c:when>
 						<c:otherwise>
-						      <h3 id=actionTitle>Recent Videos</h3>
+						      <h3> ${message} </h3>
 						</c:otherwise>
 					</c:choose>
 						
-					</div>
-					<div id=videos>
 					
-					</div>
-					<div class="clearfix"> </div>
-				</div>
+				       <c:forEach items="${videos}" var="video">
+					    <div class="col-md-4 resent-grid recommended-grid slider-top-grids">
+						 <div class="resent-grid-img recommended-grid-img">
+					    		<a href="./video?videoId=${video.videoId}">
+									<img src= "${video.photoUrl}">
+				      		</a>
+
+								<div class="time">
+									<p></p>
+								</div>
+							<div class="clck">
+									<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+								</div>
+							</div>
+							<div class="resent-grid-info recommended-grid-info">
+								<h3><a href="./video?videoId=${video.videoId}" class="title title-info">${video.title}</a></h3>
+								<ul>
+									<li><p class="author author-info">
+									<a href="./profile?channelId=${video.channelId}" class="author">
+									</a>${video.username}
+									</p></li>
+									<li class="right-list"><p class="views views-info"></p>${video.views}</li>
+								</ul>
+							</div>
+							</div>
+						</c:forEach> 
+			     <div class="clearfix"> </div>
 			</div>
+		</div>
 		<jsp:include page="footer.jsp" />
-	</div>
-	
-	
 	<div class="clearfix"> </div>
 	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="FinalProject/js/bootstrap.min.js"></script>
 	<!-- Just to make our placeholder images work. Don't actually copy the next line! -->
-	<script>
-	
-	
-	$( document ).ready(function() {
-		 loadVideos('RECENT');
-        });
-	$(document).ready(function() 
-			{
-			   $('#search').submit(function(e) 
-			   { 
-				   e.preventDefault();
-			      var inForm = $('#searchForInput').val() 
-			    	  
-			      console.log(inForm)
-			      loadVideos(inForm);
-			      
-			   });
-			});
-	
-	$(document).ready(function() 
-			{
-			   $('#mostPopularVideos').click(function(e) 
-			   { 
-			     loadVideos('MOST');
-			   });
-			});
-	$(document).ready(function() 
-			{
-			   $('#RecentVideos').click(function(e) 
-			   { 
-			     loadVideos('RECENT');
-			   });
-			});
-	
-	function loadVideos(action) {
-		
-		$.ajax({
-			url : 'videoLoader',
-			type : 'get',
-			data: {parametyr: action },
-			success: function(response){
-				
-			       $('#actionTitle').empty();
-			       $('#actionTitle').append(action+' VIDEOS');
-			       $('#videos').empty();
-				  for (i = 0; i < response.videos.length; i++) {
-				  $('#videos').append(
-						 ' <div class="col-md-4 resent-grid recommended-grid slider-top-grids">'
-						+'	<div class="resent-grid-img recommended-grid-img">'
-						+'		<a href="./video?videoId='+response.videos[i].videoId+'"><img src="FinalProject/uploads/images/'+response.videos[i].photoUrl+'" alt=""></a>'
-
-						+'		<a href="./video?videoId='+response.videos[i].videoId+'">'
-						+'			<img src= "'+response.videos[i].photoUrl+'">'
-						+'		</a>'
-
-						+'		<div class="time">'
-						+'			<p></p>'
-						+'		</div>'
-						+'		<div class="clck">'
-						+'			<span class="glyphicon glyphicon-time" aria-hidden="true"></span>'
-						+'		</div>'
-						+'	</div>'
-						+'	<div class="resent-grid-info recommended-grid-info">'
-						+'		<h3><a href="./video?videoId='+response.videos[i].videoId+'" class="title title-info">'+response.videos[i].title+'</a></h3>'
-						+'		<ul>'
-						+'			<li><p class="author author-info"><a href="./profile?channelId='+response.videos[i].channelId+'" class="author"></a>'+response.videos[i].username+'</p></li>'
-						+'			<li class="right-list"><p class="views views-info"></p>'+response.videos[i].views+'</li>'
-						+'		</ul>'
-						+'	</div>'
-						+' </div>'
-				  
-				  
-				  );
-				 }  
-			}
-		});
-	}
-	</script>
   
 </body>
 </html>

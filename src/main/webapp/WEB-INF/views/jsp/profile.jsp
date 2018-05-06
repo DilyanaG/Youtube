@@ -32,28 +32,27 @@
 	<div class="drop-navigation drop-navigation">
 		<ul class="nav nav-sidebar">
 			<img src="FinalProject/images/male.png" alt="">
-			<li class="active"><a href="" class="home-icon"> 
-			<span aria-hidden="true"> </span> 
-			${profile.username}
+			<li class="active"><a href="" class="home-icon"> <span
+					aria-hidden="true"> </span> ${profile.username}
 			</a></li>
 			<li><a href="" class="user-icon"><span
 					class="glyphicon glyphicon-home glyphicon-blackboard"
 					aria-hidden="true"></span>VIDEOS</a></li>
-			<li id="playlist"><a class="sub-icon"> <span
+			<li onclick="getPlaylist(${profile.channelId})"><a class="sub-icon"> <span
 					class="glyphicon glyphicon-home glyphicon-hourglass"
 					aria-hidden="true"> </span>PLAYLISTS
 			</a></li>
 
 
-			
+
 			<li><a class="menu1"><span class="glyphicon glyphicon-film "
 					aria-hidden="true"></span>ABONOMENTI<span
 					class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a></li>
 			<ul class="cl-effect-2">
 				<!--  add link here got to  user profile  -->
 				<c:forEach items="${profile.subscriptions}" var="subscription">
-                     <li><a href="./profile?channelId=${subscription.id}">${subscription.name}</a></li>
-                 </c:forEach>
+					<li><a href="./profile?channelId=${subscription.id}">${subscription.name}</a></li>
+				</c:forEach>
 			</ul>
 			<!-- script-for-menu -->
 			<script>
@@ -84,13 +83,12 @@
 				<h3>Videos</h3>
 
 			</div>
-			<c:forEach items="${profile.videos}" var="video" >
+			<c:forEach items="${profile.videos}" var="video">
 
 				<div class="col-md-4 resent-grid recommended-grid slider-top-grids">
 					<div class="resent-grid-img recommended-grid-img">
-						<a href="./video?videoId=${video.videoId}">
-						<img
-							src="FinalProject/uploads/images/${video.photoUrl}" alt=""></a>
+						<a href="./video?videoId=${video.videoId}"> <img
+							src="${video.photoUrl}" alt=""></a>
 						<div class="time">
 							<p></p>
 						</div>
@@ -100,20 +98,18 @@
 					</div>
 					<div class="resent-grid-info recommended-grid-info">
 						<h3>
-							<a href="./video?videoId=${video.videoId}" class="title title-info">
-							  ${video.title}
-							 </a>
+							<a href="./video?videoId=${video.videoId}"
+								class="title title-info"> ${video.title} </a>
 						</h3>
 						<ul>
 							<li><p class="author author-info">
-									<a style ="color:black" href="#" class="author">${video.username} </a>
+									<a style="color: black" href="#" class="author">${video.username}
+									</a>
 								</p></li>
 							<li class="right-list">
-								<p class="views views-info"> ${video.views}</p>
+								<p class="views views-info">${video.views}</p>
 							</li>
-							<li class="right-list">
-								<button>fffffffffff</button>
-							</li>
+							<li class="right-list"></li>
 
 						</ul>
 
@@ -121,8 +117,9 @@
 					</div>
 
 					<p>
-						<c:if test="${not empty videos}">
+						<c:if test="${video.channelId==channelId}">
 							<button class="button ">DELETE</button>
+
 						</c:if>
 					</p>
 				</div>
@@ -144,73 +141,67 @@
 <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
 
 <script>
-				$('#playlist')
-						.click(
-								function() {
-									$
-											.ajax({
-												url : 'playlists',
-												type : 'get',
-												data : {
-													userId : 1
-												},
-												success : function(response) {
-													console
-															.log(response.comments[2].content);
-													console
-															.log(response.playlists.length);
-													$('#middle').empty();
+	function getPlaylist(channelId) {
+		$
+				.ajax({
+					url : 'playlists',
+					type : 'get',
+					data : {
+						channelId : channelId
+					},
+					success : function(response) {
+						console.log(response.comments[2].content);
+						console.log(response.playlists.length);
+						$('#middle').empty();
 
-													$('#middle')
-															.append(
-																	'<div class="top-grids">'
-																			+ ' <div class="recommended-info">'
-																			+ '      <h3 >PLAYLISTS</h3>'
-																			+ '		<c:if test="${not empty videos}">'
-																			+ '          <button class="button " onclick="createPlaylist()" >CREATE PLAYLIST </button>'
-																			+ '		</c:if>'
-																			+ '	</div>');
+						$('#middle')
+								.append(
+										'<div class="top-grids">'
+												+ ' <div class="recommended-info">'
+												+ '      <h3 >PLAYLISTS</h3>'
+												+ '		<c:if test="${not empty videos}">'
+												+ '          <button class="button " onclick="createPlaylist()" >CREATE PLAYLIST </button>'
+												+ '		</c:if>' + '	</div>');
 
-													var i;
-													for (i = 0; i < response.playlists.length; i++) {
-														$('#middle')
-																.append(
-																		'<div class="col-md-4 resent-grid recommended-grid slider-top-grids">'
-																				+ '    <div class="resent-grid-img recommended-grid-img">'
-																				+ '		<a href="./playlist?playlistId='
-																				+ response.playlists[i].playlistId
-																				+ '"><img src="FinalProject/images/t3.jpg" alt=""></a>'
-																				+ '		<div class="time">'
-																				+ '			<p>4:04</p>'
-																				+ '		</div>'
-																				+ '		<div class="clck">'
-																				+ '			<span class="glyphicon glyphicon-time" aria-hidden="true"></span>'
-																				+ '		</div>'
-																				+ '	</div>'
-																				+ '	<div class="resent-grid-info recommended-grid-info">'
-																				+ '		<h3>'
-																				+ '			<a href="./playlist?playlistId='
-																				+ response.playlists[i].playlistId
-																				+ '" class="title title-info" >'
-																				+ response.playlists[i].playlistName
-																				+ '</a>'
-																				+ '		</h3>'
-																				+ '	</div>'
-																				+ '	<p>'
-																				+ '	  <c:if test="${ empty videos}">'
-																				+ ' <button class="button ">DELETE</button>'
-																				+ '		</c:if>'
-																				+ '</p>'
-																				+ ' </div>');
-													}
-													$('#middle')
-															.append(
-																	'<div class="clearfix"></div>'
-																			+ ' </div>');
-												}
-											});
-								});
-			</script>
+						var i;
+						for (i = 0; i < response.playlists.length; i++) {
+							$('#middle')
+									.append(
+											'<div class="col-md-4 resent-grid recommended-grid slider-top-grids">'
+													+ '    <div class="resent-grid-img recommended-grid-img">'
+													+ '		<a href="./playlist?playlistId='
+													+ response.playlists[i].playlistId
+													+ '"><img src="FinalProject/images/t3.jpg" alt=""></a>'
+													+ '		<div class="time">'
+													+ '			<p>4:04</p>'
+													+ '		</div>'
+													+ '		<div class="clck">'
+													+ '			<span class="glyphicon glyphicon-time" aria-hidden="true"></span>'
+													+ '		</div>'
+													+ '	</div>'
+													+ '	<div class="resent-grid-info recommended-grid-info">'
+													+ '		<h3>'
+													+ '			<a href="./playlist?playlistId='
+													+ response.playlists[i].playlistId
+													+ '" class="title title-info" >'
+													+ response.playlists[i].playlistName
+													+ '</a>'
+													+ '		</h3>'
+													+ '	</div>'
+													+ '	<p>'
+													+ ' <c:if test="${playlist.channelId==channelId}">'
+													+ '   <button class="button ">DELETE</button>'
+													+ '	 </c:if>'
+													+ '</p>'
+													+ ' </div>');
+						}
+						$('#middle').append(
+								'<div class="clearfix"></div>' + ' </div>');
+					}
+				});
+
+	}
+</script>
 
 
 </body>

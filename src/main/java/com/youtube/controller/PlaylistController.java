@@ -6,10 +6,13 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.youtube.controller.exceptions.DataBaseException;
+import com.youtube.model.dao.playlist.PlaylistDAO;
 import com.youtube.model.pojo.Comment;
 import com.youtube.model.pojo.Playlist;
 import com.youtube.model.pojo.Video;
@@ -17,9 +20,13 @@ import com.youtube.model.pojo.Video;
 @RestController
 public class PlaylistController {
  
+	@Autowired
+	private PlaylistDAO playlistDao;
+	
+	
 	
 	@RequestMapping(value = "/playlists", method = RequestMethod.GET)
-	public Map<String, List<Object>> doGet() {
+	public Map<String, List<Object>> doGet(HttpServletRequest req) throws DataBaseException {
 //	
 //		?userId={id}  get parametyr userId in profile 
 //		or maybe save current oppenned profile in session 
@@ -29,17 +36,21 @@ public class PlaylistController {
 //		            playlistName
 //		            pictureForPlaylist(last addet video picture)
 //		  create   DTO for this PlaylistViewDTO      
+		int channelId=Integer.valueOf(req.getParameter("channelId"));
+	    List<Playlist> playlists = playlistDao.getPlaylistsByChannelAndSortByCreationDate(channelId);
+		System.out.println(playlists);
 		
+//		
 		Map<String, List<Object>> result = new HashMap<String, List<Object>>();
-		List<Object> playlists = new ArrayList<>();
-		List<Object> comments = new ArrayList<>();
-		for(int i=0;i<10;i++){
-			playlists.add(new Playlist(i,null,"playlist"+i));
-			comments.add(new Comment(i, null, "content"+i,null));
-		}
-		result.put("playlists",playlists);
-		result.put("comments",comments);
-
+//		List<Object> playlists = new ArrayList<>();
+//		List<Object> comments = new ArrayList<>();
+//		for(int i=0;i<10;i++){
+//			playlists.add(new Playlist(i,null,"playlist"+i));
+//			comments.add(new Comment(i, null, "content"+i,null));
+//		}
+//		result.put("playlists",playlists);
+//		result.put("comments",comments);
+      
 		return result;
 	}
 	

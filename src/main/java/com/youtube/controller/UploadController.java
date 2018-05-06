@@ -40,13 +40,14 @@ public class UploadController {
 			throws Exception {
 		try {
 			final String realPath = session.getServletContext().getRealPath("/static/");
+		//	String realPath= "D://";
 			uploadService.addVideo(file, title, description, (int) session.getAttribute("channelId"), realPath);
 		} catch (IllegalInputException e) {
 			model.addAttribute("errorMessage", e.getMessage());
 			return "upload";
 		}
 		// add here session.getChannelID
-		return "redirect:/profile?channelId=1";
+		return "redirect:/profile?channelId="+session.getAttribute("channelId");
 	}
 
 }

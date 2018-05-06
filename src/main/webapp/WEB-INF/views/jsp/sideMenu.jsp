@@ -7,7 +7,7 @@
 
 
 
-<div class="col-sm-3 col-md-2 sidebar">>
+<div class="col-sm-3 col-md-2 sidebar" style="background-color: WhiteSmoke;">>
 	<div class="top-navigation">
 		<div class="t-menu">MENU</div>
 		<div class="t-img">
@@ -15,20 +15,21 @@
 		</div>
 		<div class="clearfix"></div>
 	</div>
-	<div id="side_menu" class="drop-navigation drop-navigation">
+	<div id="side_menu"  class="drop-navigation drop-navigation">
 
 		<ul class="nav nav-sidebar">
 			<!-- TODO CHANGE MENU LINKS -->
 			<li class="active"><a href="./index" class="home-icon"> <span
 					class="glyphicon glyphicon-home" aria-hidden="true"></span>Home
 			</a></li>
-			<li id=RecentVideos><a  class="user-icon"> <span
-					class="glyphicon glyphicon-hourglass" aria-hidden="true"></span>Recent
-			</a></li>
-			<li id=mostPopularVideos><a  class="user-icon"> <span
-					class="glyphicon glyphicon-star" aria-hidden="true"></span>Most
-					popular
-			</a></li>
+			 <li>
+                    <a href="./index?search=recent" class="user-icon">
+                     <span class="glyphicon glyphicon-hourglass" aria-hidden="true"></span>Recent</a>
+              </li>
+			 <li>
+                    <a href="./index?search=most" class="user-icon">
+                     <span class="glyphicon glyphicon-hourglass" aria-hidden="true"></span>Most Popular</a>
+              </li>
 		</ul>
 
 <!-- TODO add links  and change if condition to  ${not empty sessionScope.user}  -->
