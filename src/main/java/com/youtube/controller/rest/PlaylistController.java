@@ -1,4 +1,4 @@
-package com.youtube.controller;
+package com.youtube.controller.rest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

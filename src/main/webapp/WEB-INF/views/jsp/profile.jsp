@@ -78,6 +78,22 @@
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 	<div id="middle" class="main-grids">
 		<div class="top-grids">
+		     <div id= subscribeButton>
+				<c:if test = "${not empty sessionScope.channelId}">
+				   <c:if test = "${ sessionScope.channelId !=profile.channelId}">
+				     <c:choose>
+				       <c:when test="${not empty subscribe}">
+				             <button onclick="unsubscribe(${profile.channelId})" class="button">SUBSCRIBED</button>
+				       </c:when>
+				       <c:otherwise>
+						      <button onclick="subscribe(${profile.channelId})"class="button ">SUBSCRIBE</button>
+						</c:otherwise>
+				     </c:choose>
+				     </c:if>
+				</c:if>
+		     </div>
+		
+		
 
 			<div class="recommended-info">
 				<h3>Videos</h3>
@@ -139,6 +155,38 @@
 <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
 
 <script>
+
+function unsubscribe(channelId){
+	  $.ajax({
+			url : 'subscribe'+ '?' + $.param({
+				"channel" : channelId
+				}),
+			type : 'delete',
+			success : function(response) {
+				$('#subscribeButton').empty();
+				 $('#subscribeButton').append(
+		     		' <button onclick="subscribe('+channelId+')" class="button">SUBSCRIBE</button>');
+			}
+	  });
+}
+function subscribe(channelId){
+	  $.ajax({
+			url : 'subscribe',
+			type : 'get',
+			data : {
+				channel : channelId
+			},
+			success : function(response) {
+				$('#subscribeButton').empty();
+				 $('#subscribeButton').append(
+		     		' <button onclick="unsubscribe('+channelId+')" class="button">SUBSCRIBED</button>');
+			}
+	  });
+}   
+
+
+
+
 	function getPlaylist(channelId) {
 		$
 				.ajax({

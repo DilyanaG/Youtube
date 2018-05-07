@@ -31,7 +31,7 @@ public class UserDAO implements IUserDAO {
 	private static final String SELECT_ALL_USERS = "SELECT u.* FROM users AS u WHERE u.isDeleted = 0;";
 
 	// insert
-	private static final String INSERT_INTO_USERS = "INSERT INTO users (user_name, password, email, photo_url) VALUES (?,sha1(?),?,?);";
+	private static final String INSERT_INTO_USERS = "INSERT INTO users (user_name, password, email, profile_picture_url) VALUES (?,sha1(?),?,?);";
 
 	private static final String INSERT_INTO_CHANNELS = "INSERT INTO channels (user_id) VALUES (?);";
 	

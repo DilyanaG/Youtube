@@ -29,6 +29,7 @@ public class ProfileController {
 	private IVideoDAO videoDao;
 	
 	
+	
 	@RequestMapping(value="/profile",method = RequestMethod.GET)
 	public String profile(Model model,HttpServletRequest req) throws IllegalInputException, DataBaseException{
 		
@@ -47,9 +48,19 @@ public class ProfileController {
 		List <Video> videos= videoDao.getVideosByChannelId(channelId);
 		
 		List<Channel> subscriptions= channelDao.getFollowedChannels(channelId);
-		
+		 
 		ProfileViewDTO profile = new ProfileViewDTO(currentUser,videos,subscriptions);
 		System.out.println(profile);
+		
+		if(req.getSession().getAttribute("channelId")!=null){
+			for(Channel folowed:channelDao.getFollowedChannels((int)(req.getSession().getAttribute("channelId")))){
+			        if(folowed.getChannelId()==channelId){
+			        	model.addAttribute("subscribe","true");
+			        }
+			}
+		}
+		
+		
 		model.addAttribute("profile",profile);
 		
 		return "profile";

@@ -48,7 +48,7 @@ public class VideoDAO implements IVideoDAO {
 
 	private static final String COUNT_OF_LIKES = "SELECT COUNT(vhld.id) as count FROM videos_has_likes_dislikes AS vhld JOIN videos AS v ON vhld.video_id = v.video_id WHERE v.video_id = ? AND v.isDeleted = 0 AND vhld.isLike = 1;";
 
-	private static final String COUNT_OF_DISLIKES = "SELECT COUNT(vhld.id) as count FROM videos_has_likes_dislikes AS vhld JOIN videos AS v ON vhld.video_id = v.video_id WHERE v.video_id = ? AND v.isDeleted = 0 AND vhld.isLike = 0;";
+	private static final String COUNT_OF_DISLIKES = "SELECT COUNT(videos_has_likes_dislikes.id) as count FROM videos_has_likes_dislikes  JOIN videos AS v ON videos_has_likes_dislikes.video_id = v.video_id WHERE v.video_id = ? AND v.isDeleted = 0 AND videos_has_likes_dislikes.isLike = 0;";
 
 	private static final String LIKE_EXISTS = "SELECT COUNT(vhld.id) as count FROM videos_has_likes_dislikes AS vhld JOIN videos AS v ON vhld.video_id = v.video_id WHERE vhld.video_id = ? AND vhld.channel_id = ? AND v.isDeleted = 0 AND vhld.isLike = 1;";
 
