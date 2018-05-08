@@ -2,6 +2,7 @@ package com.youtube.model.dao.playlist;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -62,7 +63,7 @@ public class PlaylistDAO implements IPlaylistDAO{
 			List<Playlist> playlists = dbManager.executeSelect(connection, ALL_PLAYLISTS_SORTED_FOR_CHANNEL,
 					new PlaylistResolver(), channelId);
 			dbManager.commit(connection);
-			return Collections.unmodifiableList(playlists);
+			return new ArrayList<>(playlists);
 		} catch (SQLException s) {
 			dbManager.rollback(connection, s);
 			return null;

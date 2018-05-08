@@ -1,5 +1,7 @@
 package com.youtube.controller.rest;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,14 +34,29 @@ public class PlaylistController {
 	
 	
 	@RequestMapping(value = "/playlists", method = RequestMethod.GET)
-	public Map<String, List<Object>> doGet(HttpServletRequest req) throws DataBaseException, IllegalInputException {
+	public Map<String, List<Object>> doGet(@RequestParam(value = "channelId", required = true) int channelId,
+			                               @RequestParam(value = "sortBy", required = true) String sortBy ) 
+			                            		   throws DataBaseException, IllegalInputException {
     
-		int channelId=Integer.valueOf(req.getParameter("channelId"));
+		//int channelId=Integer.valueOf(req.getParameter("channelId"));
 	    
 		List<Object> sendPlaylist= new ArrayList<>();
 		//get playlists for channel
 		List<Playlist> playlists = playlistDao.getPlaylistsByChannelAndSortByCreationDate(channelId);
 	      //create PlaylistTopViewDTO's for playlists and add in list 
+		
+		
+		switch (sortBy) {
+		case "name":
+			Collections.sort(playlists,(p1,p2)->p1.getPlaylistName().compareTo(p2.getPlaylistName()));
+			break;
+        case "last":
+        	Collections.sort(playlists,(p1,p2)->p2.getLastVideoUploaded().compareTo(p1.getLastVideoUploaded()));
+			break;
+         default:
+			break;
+		}
+		
 		for(Playlist playlist: playlists ){
 			List<Video> playlistVideos = videoDao.getAllVideosFromPlaylist(playlist);
 			sendPlaylist.add(new PlaylistTopViewDTO(playlist,playlistVideos));

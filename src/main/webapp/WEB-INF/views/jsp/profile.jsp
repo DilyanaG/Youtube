@@ -50,7 +50,7 @@
 
 
 			<li><a class="menu1"><span class="glyphicon glyphicon-film "
-					aria-hidden="true"></span>ABONOMENTI<span
+					aria-hidden="true"></span>SUBSCRIPTIONS<span
 					class="glyphicon glyphicon-menu-down" aria-hidden="true"></span> </a></li>
 
 			<ul class="cl-effect-2">
@@ -256,9 +256,20 @@ function getVideos(channelId,sortBy) {
 			});
 
 }
+
+function sortPlaylistsByName(channelId){
+	getPlaylists(channelId,"name");	
+}
+function sortPlaylistsByCreateDate(channelId){
+	getPlaylists(channelId,"date");	
+}
+function sortPlaylistsByLastAddedVideoDate(channelId){
+	getPlaylists(channelId,"last");	
+}
+
+
 function getPlaylists(channelId,sortBy) {
-	$
-			.ajax({
+	$.ajax({
 				url : 'playlists',
 				type : 'get',
 				data : {
@@ -270,22 +281,22 @@ function getPlaylists(channelId,sortBy) {
 					$('#info').empty();
 
 					$('#info').append(
-							        '<ul style="list-style-type: none" >'
+							          '<ul style="list-style-type: none" >'
 									+ '<li>'
-									+'    <p></p>'
-									+'    <h3 >PLAYLISTS</h3>'
-									+' </li>'
+									+ '    <p></p>'
+									+ '    <h3 >PLAYLISTS</h3>'
+									+ ' </li>'
 									+ '  <li>'
 									+ '	  <div class="dropdown">'
 									+ '    <button style="color: aqua" class="btn btn-default dropdown-toggle button" type="button" id="menu1"  data-toggle="dropdown">SORT BY'
 									+ '    <span class="caret"></span></button>'
 									+ '    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">'
-									+ '      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">NAME</a></li>'
-									+ '      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">CREATE DATE</a></li>'
-									+ '      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">LAST VIDEO ADD DATE</a></li>'
+									+ '      <li onclick="sortPlaylistsByName(${profile.channelId})" role="presentation"><a role="menuitem" tabindex="-1">NAME</a></li>'
+									+ '      <li onclick="sortPlaylistsByCreateDate(${profile.channelId})" role="presentation"><a role="menuitem" tabindex="-1">CREATE DATE</a></li>'
+									+ '      <li onclick="sortPlaylistsByLastAddedVideoDate(${profile.channelId})"role="presentation"><a role="menuitem" tabindex="-1">LAST VIDEO ADD DATE</a></li>'
 									+ '   </ul>'
 									+ '  </div>'
-									+' </li>'
+									+ ' </li>'
 									+ '</ul>'
 									);
 
