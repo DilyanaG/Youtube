@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
 import com.youtube.controller.upload.service.VideoService;
+import com.youtube.model.dao.channel.IChannelDAO;
 import com.youtube.model.dao.video.IVideoDAO;
 import com.youtube.model.dto.video.VideoDTO;
 import com.youtube.model.dto.video.VideoTopViewDTO;
+import com.youtube.model.pojo.Channel;
 import com.youtube.model.pojo.Video;
 
 @Controller
@@ -32,14 +34,15 @@ public class VideoController {
 	@Autowired
 	private VideoService videoService;
 	
+	@Autowired
+	private IChannelDAO channelDAO;
+	
 	@RequestMapping(value = "/videoLoader", method = RequestMethod.GET)
 	public Map<String, List<VideoTopViewDTO>> doGet(HttpServletRequest req) throws IllegalInputException, DataBaseException {
 
 		List<Video> videos = new ArrayList<>();
 		
 		String action = req.getParameter("parametyr");
-		System.out.println(req.getParameter("parametyr"));
-        System.out.println(2);
 		
 		switch (action) {
 		case "MOST":
@@ -52,12 +55,7 @@ public class VideoController {
 		      videos=videoDAO.getVideosByTagAndSortByDate(null);	
 			break;
 		}
-//		List<Video> videos = new ArrayList<>();
-//		for (int i = 0; i <MAX_VIDEOS_FOR_PAGE; i++) {
-//			videos.add(new Video(1, new Channel(i+1,new User("goshkata", "1234567", "gosho@abv.bg")), "video"+i, "photo"+i, "title"+i,LocalDateTime.now(), "description"+i, new Random().nextInt(50), 0,0));
-//		}
 		
-      System.out.println("videos size"+videos.size());
 	List<VideoTopViewDTO> sendVideos = new ArrayList<>();
 	//fill videoTopViewDTO 
 		for (int i = 0; i <MAX_VIDEOS_FOR_PAGE &&i<videos.size(); i++) {
@@ -77,6 +75,15 @@ public class VideoController {
 		int videoId = Integer.valueOf(req.getParameter("videoId"));
 		VideoDTO video = videoService.playVideo(videoId);
 
+		List<Channel> followedChannels = channelDAO.getFollowedChannels((int)(req.getSession().getAttribute("channelId")));
+		if(req.getSession().getAttribute("channelId")!=null){
+			for(Channel folowed:followedChannels){
+			        if(folowed.getChannelId()==video.getChannelId()){
+			        	model.addAttribute("subscribe","true");
+			        }
+			}
+		}
+		
 		model.addAttribute("video", video);
 		return "single";
 	}

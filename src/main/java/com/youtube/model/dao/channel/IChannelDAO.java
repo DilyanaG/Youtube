@@ -20,7 +20,10 @@ public interface IChannelDAO {
 
 	List<Channel> getFollowedChannels(int channelId) throws IllegalInputException, DataBaseException;
 
+	List<Integer> getFollowedChannelIds(int channelId) throws DataBaseException;
+
 	void followChannel(int followerChannelId, int followedChannelId) throws IllegalInputException, DataBaseException;
 
 	void unfollowChannel(int followerChannelId, int followedChannelId) throws IllegalInputException, DataBaseException;
+
 }

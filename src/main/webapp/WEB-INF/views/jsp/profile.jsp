@@ -35,6 +35,13 @@
 			<li class="active"><a href="" class="home-icon"> <span
 					aria-hidden="true" style="margin-left: 50px"> ${profile.username}</span> 
 			</a></li>
+			<!-- TODO add links  and change if condition to  ${not empty sessionScope.user}  -->
+		<c:if test="${not empty sessionScope.channelId}">
+                <li>
+                    <a href="./profile?channelId=${sessionScope.channelId}" class="user-icon">
+                        <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>MY PROFILE</a>
+                </li>
+		</c:if>
 			<li><a href="" class="user-icon"><span
 					class="glyphicon glyphicon-home glyphicon-blackboard"
 					aria-hidden="true"></span>VIDEOS</a></li>
@@ -46,7 +53,7 @@
 
 
 			<li><a class="menu1"><span class="glyphicon glyphicon-film "
-					aria-hidden="true"></span>ABONOMENTI<span
+					aria-hidden="true"></span>SUBSCRIPTIONS<span
 					class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a></li>
 			<ul class="cl-effect-2">
 				<!--  add link here got to  user profile  -->
@@ -54,6 +61,7 @@
 					<li><a href="./profile?channelId=${subscription.id}">${subscription.name}</a></li>
 				</c:forEach>
 			</ul>
+			
 			<!-- script-for-menu -->
 			<script>
 				$("li a.menu1").click(function() {
@@ -79,11 +87,12 @@
 	<div id="middle" class="main-grids">
 		<div class="top-grids">
 		     <div id= subscribeButton>
+		     <script src="FinalProject/js/subscribe.js"></script>
 				<c:if test = "${not empty sessionScope.channelId}">
 				   <c:if test = "${ sessionScope.channelId !=profile.channelId}">
 				     <c:choose>
 				       <c:when test="${not empty subscribe}">
-				             <button onclick="unsubscribe(${profile.channelId})" class="button">SUBSCRIBED</button>
+				             <button onclick="unsubscribe(${profile.channelId})" class="button">UNSUBSCRIBE</button>
 				       </c:when>
 				       <c:otherwise>
 						      <button onclick="subscribe(${profile.channelId})"class="button ">SUBSCRIBE</button>
@@ -96,6 +105,7 @@
 		
 
 			<div class="recommended-info">
+			<br><br><br>
 				<h3>Videos</h3>
 
 			</div>
@@ -155,38 +165,6 @@
 <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
 
 <script>
-
-function unsubscribe(channelId){
-	  $.ajax({
-			url : 'subscribe'+ '?' + $.param({
-				"channel" : channelId
-				}),
-			type : 'delete',
-			success : function(response) {
-				$('#subscribeButton').empty();
-				 $('#subscribeButton').append(
-		     		' <button onclick="subscribe('+channelId+')" class="button">SUBSCRIBE</button>');
-			}
-	  });
-}
-function subscribe(channelId){
-	  $.ajax({
-			url : 'subscribe',
-			type : 'get',
-			data : {
-				channel : channelId
-			},
-			success : function(response) {
-				$('#subscribeButton').empty();
-				 $('#subscribeButton').append(
-		     		' <button onclick="unsubscribe('+channelId+')" class="button">SUBSCRIBED</button>');
-			}
-	  });
-}   
-
-
-
-
 	function getPlaylist(channelId) {
 		$
 				.ajax({

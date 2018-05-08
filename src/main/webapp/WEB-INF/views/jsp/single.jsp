@@ -4,13 +4,22 @@
 <%@ page errorPage="./error"%>
 
 
+<style>
+.button {
+	background-color: #21DEEF;
+	border: none;
+	color: white;
+	border-radius: 3px;
+	padding: 10px 25px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	margin: 4px 2px;
+	cursor: pointer;
+	font-size: 16px
+}
+</style>
 
-    
-					 <!-- 
-                      <video width="420" height="300" controls> <source
-		              	src="FinalProject/uploads/videos/${video.videoUrl}" type="video/mp4"></video>
-					</div>
-					-->  
 <jsp:include page="header.jsp" />
 <jsp:include page="sideMenu.jsp" />
 
@@ -23,9 +32,7 @@
 				</div>
 				<div class="video-grid">
 					<video width="640" height="264" controls>
-						<source
-							src="${video.videoUrl}"
-							type="video/mp4">
+						<source src="${video.videoUrl}" type="video/mp4">
 					</video>
 				</div>
 			</div>
@@ -73,15 +80,37 @@
 						</p>
 
 						<div class="heading-right">
-							<a href="#small-dialog8" class="play-icon popup-with-zoom-anim">Subscribe</a>
+
+							<div id=subscribeButton>
+								<script src="FinalProject/js/subscribe.js"></script>
+								<c:if test="${not empty sessionScope.channelId}">
+									<c:if test="${ sessionScope.channelId !=video.channelId}">
+										<c:choose>
+											<c:when test="${not empty subscribe}">
+												<button onclick="unsubscribe(${video.channelId})"
+													class="button">UNSUBSCRIBE</button>
+											</c:when>
+											<c:otherwise>
+												<button onclick="subscribe(${video.channelId})"
+													class="button ">SUBSCRIBE</button>
+											</c:otherwise>
+										</c:choose>
+									</c:if>
+								</c:if>
+							</div>
+
 						</div>
 
 					</div>
 
 					<br>
 					<ul id="myList">
-						<br><br><br>
-						<br><br><br>
+						<br>
+						<br>
+						<br>
+						<br>
+						<br>
+						<br>
 						<li style="display: list-item;">
 							<p>${video.description}</p>
 						</li>
@@ -163,9 +192,7 @@
 		</div>
 		<div class="clearfix"></div>
 	</div>
-	<!-- footer -->
 	<jsp:include page="footer.jsp" />
-	<!-- //footer -->
 </div>
 <div class="clearfix"></div>
 
@@ -174,7 +201,6 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="FinalProject/js/bootstrap.min.js"></script>
 <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
-
 
 </body>
 </html>
