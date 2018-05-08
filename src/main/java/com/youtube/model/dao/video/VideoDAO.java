@@ -2,6 +2,7 @@ package com.youtube.model.dao.video;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -40,6 +41,15 @@ public class VideoDAO implements IVideoDAO {
 	private static final String SELECT_ALL_VIDEOS_BY_CHANNEL_ID = 
 			"SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id "
 			+ "WHERE v.channel_id = ? AND v.isDeleted = 0;";
+	private static final String VIDEOS_BY_CHANNEL_ID_ORDER_BY_VIEWS = 
+			"SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id "
+			+ "WHERE v.channel_id = ? AND v.isDeleted = 0 ORDER BY v.views DESC;";
+	private static final String VIDEOS_BY_CHANNEL_ID_ORDER_BY_DATE = 
+			"SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id "
+			+ "WHERE v.channel_id = ? AND v.isDeleted = 0 ORDER BY v.date DESC;";
+	private static final String VIDEOS_BY_CHANNEL_ID_ORDER_BY_TITLE = 
+			"SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id "
+			+ "WHERE v.channel_id = ? AND v.isDeleted = 0 ORDER BY v.title ;";
 
 	private static final String SELECT_ALL_VIDEOS_BY_PLAYLIST_ID = "SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id "
 			+ "JOIN  playlists_has_videos AS phv ON(v.video_id = phv.video_id) WHERE phv.playlist_id = ? AND v.isDeleted = 0;";
@@ -165,6 +175,28 @@ public class VideoDAO implements IVideoDAO {
 			return null;
 		}
 	}
+	
+	public List<Video> ByChannelIdByViews(int channel_id) throws IllegalInputException, DataBaseException, SQLException {
+		final Connection connection = dbManager.getConnection();
+			List<Video> videos = dbManager.executeSelect(connection, VIDEOS_BY_CHANNEL_ID_ORDER_BY_VIEWS,
+					new VideoResolver(), channel_id);
+			return Collections.unmodifiableList(videos);
+		
+	}
+	public List<Video> ByChannelIdByDate(int channel_id) throws IllegalInputException, DataBaseException, SQLException {
+		final Connection connection = dbManager.getConnection();
+			List<Video> videos = dbManager.executeSelect(connection, VIDEOS_BY_CHANNEL_ID_ORDER_BY_DATE,
+					new VideoResolver(), channel_id);
+			return Collections.unmodifiableList(videos);
+		
+	}
+	public List<Video> ByChannelIdByTitle(int channel_id) throws IllegalInputException, DataBaseException, SQLException {
+		final Connection connection = dbManager.getConnection();
+			List<Video> videos = dbManager.executeSelect(connection, VIDEOS_BY_CHANNEL_ID_ORDER_BY_TITLE,
+					new VideoResolver(), channel_id);
+			return Collections.unmodifiableList(videos);
+		
+	}
 
 	@Override
 	public List<Video> getVideosByChannelId(int channel_id) throws IllegalInputException, DataBaseException {
@@ -175,7 +207,7 @@ public class VideoDAO implements IVideoDAO {
 			List<Video> videos = dbManager.executeSelect(connection, SELECT_ALL_VIDEOS_BY_CHANNEL_ID,
 					new VideoResolver(), channel_id);
 			dbManager.commit(connection);
-			return Collections.unmodifiableList(videos);
+			return new ArrayList<>(videos);
 		} catch (SQLException s) {
 			dbManager.rollback(connection, s);
 			return null;

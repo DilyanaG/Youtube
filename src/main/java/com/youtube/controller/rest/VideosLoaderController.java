@@ -1,6 +1,9 @@
 package com.youtube.controller.rest;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,9 +29,25 @@ public class VideosLoaderController {
 	
 	@RequestMapping(value = "/channelVideos ", method = RequestMethod.GET)
 	public Map<String, List<Object>>  loadVideo(@RequestParam(value = "channelId", required = true) int channelId,
-			                            @RequestParam(value = "sortBy", required = true) String sortBy ) throws IllegalInputException, DataBaseException{
+			                            @RequestParam(value = "sortBy", required = true) String sortBy ) throws IllegalInputException, DataBaseException, SQLException{
 		System.out.println("videos loades"+channelId+"  "+sortBy);
-		List<Video> videos=videoDao.getVideosByChannelId(channelId);
+		List<Video> videos= new ArrayList<>();
+		switch (sortBy) {
+		case "date":
+			videos=videoDao.ByChannelIdByDate(channelId);
+			break;
+		case "title":
+			videos=videoDao.ByChannelIdByTitle(channelId);
+			break;
+		case "views":
+			videos=videoDao.ByChannelIdByViews(channelId);
+			break;
+        default:
+        	videos= videoDao.getVideosByChannelId(channelId);
+        	Collections.sort(videos,(v1,v2)->v1.getLikes()-v2.getLikes());
+			break;
+		}
+				//videoDao.getVideosByChannelId(channelId);
 		List<Object> sendVideos=new ArrayList<>();
 		for(Video v:videos){
                 sendVideos.add(new VideoTopViewDTO(v));

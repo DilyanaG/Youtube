@@ -1,5 +1,6 @@
 package com.youtube.model.dao.video;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.youtube.controller.exceptions.DataBaseException;
@@ -16,7 +17,13 @@ public interface IVideoDAO {
 	List<Video> getVideosByTagAndSortByDate(String tag) throws IllegalInputException, DataBaseException;
 
 	List<Video> getVideosByChannelId(int channel_id) throws IllegalInputException, DataBaseException;
-
+	
+	List<Video> ByChannelIdByViews(int channel_id) throws IllegalInputException, DataBaseException, SQLException;
+	
+	List<Video> ByChannelIdByDate(int channel_id) throws IllegalInputException, DataBaseException, SQLException;
+	
+	public List<Video> ByChannelIdByTitle(int channel_id) throws IllegalInputException, DataBaseException, SQLException;
+	
 	List<Video> getAllVideosFromPlaylist(Playlist playlist) throws IllegalInputException, DataBaseException;
 
 	List<Video> getMostPopularVideos() throws IllegalInputException, DataBaseException;

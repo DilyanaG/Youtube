@@ -164,6 +164,21 @@ function subscribe(channelId){
 	  });
 }   
 
+function sortVideoByViews(channelId){
+    getVideos(channelId,"views");	
+}
+function sortVideoByLikes(channelId){
+    getVideos(channelId,"likes");	
+}
+function sortVideoByUploadDate(channelId){
+    getVideos(channelId,"date");	
+}
+function sortVideoByTitle(channelId){
+    getVideos(channelId,"title");	
+}
+
+
+
 function getVideos(channelId,sortBy) {
 	$
 			.ajax({
@@ -189,9 +204,11 @@ function getVideos(channelId,sortBy) {
 									+ '    <button style="color: aqua" class="btn btn-default dropdown-toggle button" type="button" id="menu1"  data-toggle="dropdown">SORT BY'
 									+ '    <span class="caret"></span></button>'
 									+ '    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">'
-									+ '      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">TITLE</a></li>'
-									+ '      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">VIEWS</a></li>'
-									+ '      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">LIKES</a></li>'
+									+ '      <li onclick="sortVideoByViews(${profile.channelId})" role="presentation"><a role="menuitem" tabindex="-1">VIEWS</a></li>'
+									+ '      <li onclick="sortVideoByTitle(${profile.channelId})" role="presentation"><a role="menuitem" tabindex="-1">TITLE</a></li>'
+									+ '      <li onclick="sortVideoByLikes(${profile.channelId})" role="presentation"><a role="menuitem" tabindex="-1">LIKES</a></li>'
+									+ '      <li onclick="sortVideoByUploadDate(${profile.channelId})" role="presentation"><a role="menuitem" tabindex="-1">UPLOAD DATE</a></li>'
+
 									+ '   </ul>'
 									+ '  </div>'
 									+' </li>'
