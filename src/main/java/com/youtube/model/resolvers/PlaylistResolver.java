@@ -20,12 +20,12 @@ public class PlaylistResolver implements IResolver<Playlist>{
 		// If the parameter is not in the ResultSet it sets it a null value
 		// The "p." is the alias for the "playlists" table in the DB
 
-		final Integer playlistId = selectedColumns.contains("p.playlist_id") ? rs.getInt("p.playlist_id") : null;
+		final Integer playlistId = selectedColumns.contains("playlist_id") ? rs.getInt("playlist_id") : null;
 		final Channel channel = channelResolver.resolve(rs);
-		final String playlistName = selectedColumns.contains("p.name") ? rs.getString("p.name") : null;
+		final String playlistName = selectedColumns.contains("name") ? rs.getString("name") : null;
 		
-		 final LocalDateTime lastVideoUploaded = selectedColumns.contains("p.last_video_add_date") ? rs.getTimestamp("p.last_video_add_date").toLocalDateTime() : null;
-		 final LocalDateTime creationDateTime = selectedColumns.contains("p.create_date") ? rs.getTimestamp("p.create_date").toLocalDateTime() : null;
+		 final LocalDateTime lastVideoUploaded = selectedColumns.contains("last_video_add_date") ? rs.getTimestamp("last_video_add_date").toLocalDateTime() : null;
+		 final LocalDateTime creationDateTime = selectedColumns.contains("create_date") ? rs.getTimestamp("create_date").toLocalDateTime() : null;
 		
 		Playlist playlist = new Playlist(playlistId, channel, playlistName, lastVideoUploaded, creationDateTime);
 		return playlist;

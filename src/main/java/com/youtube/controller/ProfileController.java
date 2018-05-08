@@ -35,23 +35,14 @@ public class ProfileController {
 		
 		System.out.println("v momenta otivash na kanal "+req.getParameter("channelId"));
 		int channelId= Integer.valueOf(req.getParameter("channelId"));
-		/* need data 
-		            username
-		            pictureUrl
-		            all <list>videos-vidoTopViewDTO
-		            followedChannels
-		            
-		 */ 
-		        
+		    
 		Channel  currentUser =channelDao.getChannelById(channelId);
-		
-		List <Video> videos= videoDao.getVideosByChannelId(channelId);
 		
 		List<Channel> subscriptions= channelDao.getFollowedChannels(channelId);
 		 
-		ProfileViewDTO profile = new ProfileViewDTO(currentUser,videos,subscriptions);
+		ProfileViewDTO profile = new ProfileViewDTO(currentUser,subscriptions);
 		System.out.println(profile);
-		
+		//for subscribe button 
 		if(req.getSession().getAttribute("channelId")!=null){
 			for(Channel folowed:channelDao.getFollowedChannels((int)(req.getSession().getAttribute("channelId")))){
 			        if(folowed.getChannelId()==channelId){

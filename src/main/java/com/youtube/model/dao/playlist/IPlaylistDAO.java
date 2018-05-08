@@ -15,7 +15,7 @@ public interface IPlaylistDAO {
 
 	boolean createNewPlaylist(String playlistName, int channelId) throws DataBaseException;
 
-	void deletePlaylist(String playlist_name) throws DataBaseException;
+	void deletePlaylist(int  playlistId) throws DataBaseException;
 	
 	void deleteChannelPlaylists(int channelId) throws DataBaseException;
 

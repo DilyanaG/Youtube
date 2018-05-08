@@ -27,6 +27,7 @@ public class HomeController {
 
 	@RequestMapping(value = { "/index", "/" }, method = RequestMethod.GET)
 	public String homePage(Model model, HttpServletRequest req) throws IllegalInputException, DataBaseException {
+		
 		if (req.getParameter("errorMessage") != null) {
 			model.addAttribute("errorMessage", req.getParameter("errorMessage"));
 		}
@@ -37,16 +38,19 @@ public class HomeController {
 		if (req.getParameter("search") == null) {
 
 			videos = videoDao.getRecentVideos();
-			model.addAttribute("message", "RECENT VIDEOS");
+			model.addAttribute("message", "VIDEOS");
+			System.out.println("*********************videos");
 		} else {
 			switch (req.getParameter("search")) {
 			case "most":
 				videos = videoDao.getMostPopularVideos();
 				model.addAttribute("message", "MOST POPULAR VIDEOS");
+				System.out.println("*********most videos");
 				break;
 			case "recent":
 				videos = videoDao.getRecentVideos();
 				model.addAttribute("message", "RECENT VIDEOS");
+				System.out.println("********* recent videos");
 				break;
 			default:
 				videos = videoDao.getVideosByTagAndSortByDate(req.getParameter("search"));
@@ -55,7 +59,7 @@ public class HomeController {
 			}
 
 		}
-		System.out.println(" shhhh  --------videos size" + videos.size());
+		System.out.println("   --------videos size" + videos.size());
 		List<VideoTopViewDTO> sendVideos = new ArrayList<>();
 		// fill videoTopViewDTO
 		for (int i = 0; i < MAX_VIDEOS_FOR_PAGE && i < videos.size(); i++) {

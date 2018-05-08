@@ -33,10 +33,10 @@ public class PlaylistDAO implements IPlaylistDAO{
 	// delete
 	private static final String DELETE_FROM_PLAYLIST_HAS_VIDEOS_TABLE = "DELETE FROM playlists_has_videos WHERE playlist_id = ?;";
 
-	private static final String DELETE_PLAYLIST = "DELETE FROM playlists WHERE name = ?;";
+	private static final String DELETE_PLAYLIST = "DELETE FROM playlists WHERE playlist_id = ?;";
 
 	@Autowired
-	private static DBManager dbManager;
+	private  DBManager dbManager;
 
 	@Override
 	public Playlist getPlaylistByName(String playlist_name) throws DataBaseException {
@@ -100,14 +100,14 @@ public class PlaylistDAO implements IPlaylistDAO{
 	}
 
 	@Override
-	public void deletePlaylist(String playlist_name) throws DataBaseException {
+	public void deletePlaylist(int  playlistId) throws DataBaseException {
 		final Connection connection = dbManager.getConnection();
-		Playlist playlist = getPlaylistByName(playlist_name);
+		
 
 		try {
 			dbManager.startTransaction(connection);
-			dbManager.execute(connection, DELETE_FROM_PLAYLIST_HAS_VIDEOS_TABLE, playlist.getPlaylistId());
-			dbManager.execute(connection, DELETE_PLAYLIST, playlist_name);
+			dbManager.execute(connection, DELETE_FROM_PLAYLIST_HAS_VIDEOS_TABLE,playlistId );
+			dbManager.execute(connection, DELETE_PLAYLIST, playlistId);
 			dbManager.commit(connection);
 		} catch (SQLException s) {
 			dbManager.rollback(connection, s);

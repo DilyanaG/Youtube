@@ -28,10 +28,12 @@ public class VideoDAO implements IVideoDAO {
 	private static final String SEARCH_VIDEOS_BY_TAGS = "SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id JOIN videos_has_tags AS vht ON"
 			+ " (v.video_id = vht.video_id) WHERE vht.tag_id IN ( SELECT t.tag_id FROM tags AS t WHERE t.content LIKE ?) AND v.isDeleted = 0"
 			+ " ORDER BY v.date DESC;";
-	private static final String RECENT_VIDEOS = "SELECT v.*, ch.*,u.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id JOIN users AS u  "
+	private static final String RECENT_VIDEOS =
+			"SELECT v.*, ch.*,u.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id JOIN users AS u  "
 			+ "ON u.user_id=ch.user_id WHERE v.isDeleted = 0"
 			+ " ORDER BY v.date DESC;";
-	private static final String MOST_POPULAR_VIDEOS = "SELECT v.*, ch.*,u.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id  JOIN users AS u  "
+	private static final String MOST_POPULAR_VIDEOS = 
+			"SELECT v.*, ch.*,u.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id  JOIN users AS u  "
 			+ "ON u.user_id=ch.user_id WHERE v.isDeleted = 0"
 			+ " ORDER BY v.views DESC;";
 	
@@ -71,7 +73,7 @@ public class VideoDAO implements IVideoDAO {
 	private static final String INCREASE_VIEWS = "UPDATE videos SET views = views+1 WHERE video_id = ? AND isDeleted=0;";
 	
 	// deletes
-	private static final String DELETE_VIDEO = "DELETE FROM videos WHERE title = ?;";
+	private static final String DELETE_VIDEO = "DELETE FROM videos WHERE video_id = ?;";
 
 	private static final String DELETE_VIDEO_FROM_PLAYLIST = "DELETE FROM playlists_has_videos WHERE playlist_id = ? AND video_id IN("
 			+ "SELECT v.video_id FROM videos AS v WHERE v.title = ?);";
@@ -265,18 +267,19 @@ public class VideoDAO implements IVideoDAO {
 	}
 
 	@Override
-	public int deleteVideo(String videoTitle) throws IllegalInputException, DataBaseException {
+	public int deleteVideo(int videoId) throws IllegalInputException, DataBaseException {
 		final Connection connection = dbManager.getConnection();
 
 		try {
 			dbManager.startTransaction(connection);
-			int deleted = dbManager.execute(connection, DELETE_VIDEO, videoTitle);
+			int deleted = dbManager.execute(connection, DELETE_VIDEO, videoId);
 			dbManager.commit(connection);
 			return deleted;
 		} catch (SQLException s) {
 			dbManager.rollback(connection, s);
-			return -1;
+			
 		}
+		return videoId;
 	}
 
 	@Override
@@ -394,6 +397,8 @@ public class VideoDAO implements IVideoDAO {
 			dbManager.rollback(connection, s);
 		}
 	}
-
+public static void main(String[] args) {
+	
+}
 	
 }

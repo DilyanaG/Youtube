@@ -27,7 +27,7 @@ public interface IVideoDAO {
 
 	int addVideoToPlaylist(Video video, Playlist playlist) throws DataBaseException;
 
-	int deleteVideo(String videoTitle) throws IllegalInputException, DataBaseException;
+	int deleteVideo(int videoTitle) throws IllegalInputException, DataBaseException;
 
 	int deleteVideoFromPlaylist(String videoTitle, Playlist playlist) throws DataBaseException;
 

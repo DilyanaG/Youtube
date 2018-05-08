@@ -14,19 +14,15 @@ public class ProfileViewDTO {
 	private String username;
 	private String pictureUrl;
 	private List<SubscriptionDTO> subscriptions= new ArrayList<>();
-	private List <VideoTopViewDTO> videos= new ArrayList<>();
 	
 	
 	
-	public ProfileViewDTO(Channel currentUser, List<Video> videos, List<Channel> subscriptions) {
+	public ProfileViewDTO(Channel currentUser, List<Channel> subscriptions) {
 		this.channelId=currentUser.getChannelId();
 		this.username=currentUser.getUser().getUserName();
 		this.pictureUrl=currentUser.getUser().getPhotoURL()==null?"":currentUser.getUser().getPhotoURL();
 		for(Channel subs:subscriptions){
 			 this.subscriptions.add(new SubscriptionDTO(subs));
-		}
-		for(Video v:videos){
-			this.videos.add(new VideoTopViewDTO(v));
 		}
 		
 	}
@@ -47,12 +43,6 @@ public class ProfileViewDTO {
 	}
 	public void setSubscriptions(List<SubscriptionDTO> subscriptions) {
 		this.subscriptions = subscriptions;
-	}
-	public List<VideoTopViewDTO> getVideos() {
-		return videos;
-	}
-	public void setVideos(List<VideoTopViewDTO> videos) {
-		this.videos = videos;
 	}
 	public int getChannelId() {
 		return channelId;
