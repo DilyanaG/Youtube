@@ -75,7 +75,7 @@
 						<img src="${video.profilePictureUrl}" alt="user_profile_picture"
 							id="profile-pic" width="100" height="100">
 						<p class="author">
-							By <a href="#" class="author">${video.username}</a> <br> <span>Published
+							By <a href="./profile?channelId=${video.channelId}" class="author">${video.username}</a> <br> <span>Published
 								on: ${video.uploadDate}</span>
 						</p>
 

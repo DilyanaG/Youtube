@@ -75,8 +75,8 @@ public class VideoController {
 		int videoId = Integer.valueOf(req.getParameter("videoId"));
 		VideoDTO video = videoService.playVideo(videoId);
 
-		List<Channel> followedChannels = channelDAO.getFollowedChannels((int)(req.getSession().getAttribute("channelId")));
 		if(req.getSession().getAttribute("channelId")!=null){
+			List<Channel> followedChannels = channelDAO.getFollowedChannels((int)(req.getSession().getAttribute("channelId")));
 			for(Channel folowed:followedChannels){
 			        if(folowed.getChannelId()==video.getChannelId()){
 			        	model.addAttribute("subscribe","true");
