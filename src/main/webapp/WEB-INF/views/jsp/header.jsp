@@ -304,7 +304,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 											<!-- <a href="#">Forgot password ?</a>-->
 										</div>
 									</div>
-
 									<div class="clearfix"></div>
 								</div>
 							</div>
@@ -312,11 +311,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					</c:choose>
 					<div class="clearfix"></div>
 				</div>
-
 			</div>
-			<div class="clearfix"></div>
-
-		</div>
-
-
+		<div class="clearfix"></div>
+	</div>
 </nav>

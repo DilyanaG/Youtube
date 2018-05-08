@@ -35,6 +35,8 @@ public class ChannelDAO implements IChannelDAO {
 			+ " JOIN channels_followed_channels cfc ON ch.channel_id = cfc.followed_channel_id "
 			+ " WHERE cfc.follower_channel_id = ? AND ch.isDeleted = 0 ;";
 
+	private static final String FOLLOWED_CHANNELS_IDS = "SELECT follower_channel_id as id FROM channels_followed_channels WHERE followed_channel_id = ?;";
+
 	// inserts
 	private static final String FOLLOW_CHANNEL = "INSERT INTO channels_followed_channels"
 			+ " (follower_channel_id, followed_channel_id) VALUES (?,?);";
@@ -42,6 +44,7 @@ public class ChannelDAO implements IChannelDAO {
 	// delete
 
 	private static final String UNFOLLOW_CHANNEL = "DELETE FROM channels_followed_channels where follower_channel_id = ? and followed_channel_id = ? ;";
+
 
 
 	
@@ -133,6 +136,21 @@ public class ChannelDAO implements IChannelDAO {
 		}
 	}
 
+	@Override
+	public List<Integer> getFollowedChannelIds(int channelId) throws DataBaseException {
+		final Connection connection = dbManager.getConnection();
+
+		try {
+			dbManager.startTransaction(connection);
+			List<Integer> channels = dbManager.executeSelect(connection, FOLLOWED_CHANNELS_IDS, (rs) -> rs.getInt("id"), channelId);
+			dbManager.commit(connection);
+			return channels;
+		} catch (SQLException s) {
+			dbManager.rollback(connection, s);
+			return null;
+		}
+	}
+	
 	@Override
 	public void followChannel(int followerChannelId, int followedChannelId)
 			throws IllegalInputException, DataBaseException {

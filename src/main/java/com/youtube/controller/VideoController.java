@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
 import com.youtube.controller.upload.service.VideoService;
+import com.youtube.model.dao.channel.IChannelDAO;
 import com.youtube.model.dao.video.IVideoDAO;
 import com.youtube.model.dto.video.VideoDTO;
 import com.youtube.model.dto.video.VideoTopViewDTO;
+import com.youtube.model.pojo.Channel;
 import com.youtube.model.pojo.Video;
 
 @Controller
@@ -32,6 +34,8 @@ public class VideoController {
 	@Autowired
 	private VideoService videoService;
 	
+	@Autowired
+	private IChannelDAO channelDAO;
 	
 	
 	@RequestMapping(value = "/video", method = RequestMethod.GET)
@@ -40,6 +44,15 @@ public class VideoController {
 		int videoId = Integer.valueOf(req.getParameter("videoId"));
 		VideoDTO video = videoService.playVideo(videoId);
 
+		if(req.getSession().getAttribute("channelId")!=null){
+			List<Channel> followedChannels = channelDAO.getFollowedChannels((int)(req.getSession().getAttribute("channelId")));
+			for(Channel folowed:followedChannels){
+			        if(folowed.getChannelId()==video.getChannelId()){
+			        	model.addAttribute("subscribe","true");
+			        }
+			}
+		}
+		
 		model.addAttribute("video", video);
 		return "single";
 	}

@@ -39,9 +39,9 @@ public class UserDAO implements IUserDAO {
 	// update
 	private static final String UPDATE_USER_PASSWORD = "UPDATE users SET password = sha1(?) WHERE user_id = ? AND password = sha1(?);";
 
-	private static final String UPDATE_PROFILE_PICTURE = "UPDATE users SET photo_url = ? WHERE user_id = ?;";
+	private static final String UPDATE_PROFILE_PICTURE = "UPDATE users SET profile_picture_url = ? WHERE user_id = ?;";
 
-	private static final String DELETE_PROFILE_PICTURE = "UPDETE users SET photo_url = null WHERE user_id = ?;";
+	private static final String DELETE_PROFILE_PICTURE = "UPDETE users SET profile_picture_url = null WHERE user_id = ?;";
 
 	// delete
 
