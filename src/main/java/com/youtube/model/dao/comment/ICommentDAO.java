@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
+import com.youtube.model.dto.video.CommentDTO;
 import com.youtube.model.pojo.Channel;
 import com.youtube.model.pojo.Comment;
 import com.youtube.model.pojo.Video;
@@ -12,7 +13,7 @@ public interface ICommentDAO {
 
 	Comment getCommentById(int commentid) throws IllegalInputException, DataBaseException;
 
-	List<Comment> getCommentsForVideo(Video video) throws IllegalInputException, DataBaseException;
+	List<CommentDTO> getCommentsForVideo(int videoId) throws IllegalInputException, DataBaseException;
 
 	List<Comment> getAllCommentsForChannel(Channel channel) throws IllegalInputException, DataBaseException;
 
@@ -20,7 +21,7 @@ public interface ICommentDAO {
 
 	List<Comment> getResponsesForComment(Comment comment) throws DataBaseException;
 	
-	void addNewCommentToVideo(Video video, Channel channel, String comment) throws DataBaseException;
+	void addNewCommentToVideo(int videoId, int channelId, String comment) throws DataBaseException;
 
 	void addResponseToComment(Comment respondTo, String response, Video video, Channel channel) throws DataBaseException;
 
@@ -45,5 +46,6 @@ public interface ICommentDAO {
 	void removeLikeDislikeFromComment(int comment_id, int channel_id) throws DataBaseException;
 
 	void updateCommentContent(Comment comment, Channel channel, String newContent) throws DataBaseException;
+
 
 }

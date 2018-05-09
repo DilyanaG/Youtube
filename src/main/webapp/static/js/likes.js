@@ -7,7 +7,6 @@ function isLike(videoId, isLike) {
 			isLike : isLike
 		},
 		success : function(response) {
-			console.log("before empty likes");
 			$('#likes').empty();
 			$('#subscribeButton').append(likesCount);
 			$('#dislikes').empty();

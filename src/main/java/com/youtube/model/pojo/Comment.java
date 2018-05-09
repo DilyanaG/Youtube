@@ -20,7 +20,6 @@ public class Comment {
 	private Comment parentComment;
 	
 	public Comment(){
-		super();
 	}
 
 	public Comment(int commentId, Video video, Channel channel, String content, LocalDateTime publicationDate, int likes,int dislikes) {

@@ -5,21 +5,26 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
 import com.youtube.db.DBManager;
+import com.youtube.model.dto.video.CommentDTO;
 import com.youtube.model.pojo.Channel;
 import com.youtube.model.pojo.Comment;
 import com.youtube.model.pojo.Video;
+import com.youtube.model.resolvers.CommentDTOResolver;
 import com.youtube.model.resolvers.CommentResolver;
 
-//@Component
+@Component
 public class CommentDAO implements ICommentDAO {
 
 	// selects
 	private static final String GET_COMMENT_BY_ID = "SELECT c.*, ch.*, v.* FROM comments AS c JOIN channels AS ch ON c.channel_id=ch.channel_id JOIN videos AS v ON c.video_id=v.video_id WHERE c.comment_id = ?;";
 
-	private static final String SELECT_ALL_BY_VIDEO_ID = "SELECT c.*, ch.*, v.* FROM comments AS c JOIN channels AS ch ON c.channel_id=ch.channel_id JOIN videos AS v ON c.video_id=v.video_id WHERE c.video_id = ?;";
+	private static final String SELECT_ALL_BY_VIDEO_ID = "SELECT c.*, ch.channel_id, u.user_name, u.profile_picture_url FROM comments AS c JOIN channels AS ch ON c.channel_id=ch.channel_id JOIN users AS u ON ch.user_id=u.user_id WHERE c.video_id = ? ORDER BY create_date DESC;";
 
 	private static final String SELECT_ALL_BY_CHANNEL_ID = "SELECT c.*, ch.*, v.* FROM comments AS c JOIN channels AS ch ON c.channel_id=ch.channel_id JOIN videos AS v ON c.video_id=v.video_id WHERE c.channel_id = ?;";
 
@@ -37,9 +42,9 @@ public class CommentDAO implements ICommentDAO {
 
 	
 	// insert
-	private static final String CREATE_NEW_COMMENT = "INSERT INTO comments (channel_id, video_id , content , date ) VALUES (?,?,?,now());";
+	private static final String CREATE_NEW_COMMENT = "INSERT INTO comments (channel_id, video_id , content , create_date ) VALUES (?,?,?,now());";
 	
-	private static final String ADD_RESPONSE_TO_COMMENT = "INSERT INTO comments (channel_id, video_id , content , date, response_to_comment_id ) VALUES (?,?,?,now(),?);";
+	private static final String ADD_RESPONSE_TO_COMMENT = "INSERT INTO comments (channel_id, video_id , content , create_date, response_to_comment_id ) VALUES (?,?,?,now(),?);";
 	
 	private static final String LIKE_COMMENT = "INSERT INTO comment_has_likes_dislikes (isLike,comment_id,channel_id) VALUES (1,?,?)";
 	
@@ -59,8 +64,8 @@ public class CommentDAO implements ICommentDAO {
 
 
 
-	//@Autowired
-	private static DBManager dbManager;
+	@Autowired
+	private DBManager dbManager;
 
 	@Override
 	public Comment getCommentById(int commentid) throws IllegalInputException, DataBaseException {
@@ -76,15 +81,15 @@ public class CommentDAO implements ICommentDAO {
 			return null;
 		}
 	}
-
+	
 	@Override
-	public List<Comment> getCommentsForVideo(Video video) throws IllegalInputException, DataBaseException {
+	public List<CommentDTO> getCommentsForVideo(int videoId) throws IllegalInputException, DataBaseException {
 		final Connection connection = dbManager.getConnection();
 
 		try {
 			dbManager.startTransaction(connection);
-			List<Comment> comments = dbManager.executeSelect(connection, SELECT_ALL_BY_VIDEO_ID, new CommentResolver(),
-					video.getVideoId());
+			List<CommentDTO> comments = dbManager.executeSelect(connection, SELECT_ALL_BY_VIDEO_ID, new CommentDTOResolver(),
+					videoId);
 			dbManager.commit(connection);
 			return Collections.unmodifiableList(comments);
 		} catch (SQLException s) {
@@ -140,12 +145,12 @@ public class CommentDAO implements ICommentDAO {
 	}
 
 	@Override
-	public void addNewCommentToVideo(Video video, Channel channel, String comment) throws DataBaseException {
+	public void addNewCommentToVideo(int videoId, int channelId, String comment) throws DataBaseException {
 		final Connection connection = dbManager.getConnection();
 
 		try {
 			dbManager.startTransaction(connection);
-			dbManager.execute(connection, CREATE_NEW_COMMENT, channel.getChannelId(), video.getVideoId(), comment);
+			dbManager.execute(connection, CREATE_NEW_COMMENT, channelId, videoId, comment);
 			dbManager.commit(connection);
 		} catch (SQLException s) {
 			dbManager.rollback(connection, s);

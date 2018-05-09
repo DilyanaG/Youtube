@@ -60,12 +60,12 @@
 				</c:forEach>
 			</ul>
 			<c:if test="${not empty sessionScope.channelId}">
-			<c:if test="${sessionScope.channelId != profile.channelId}">
-				<li><a href="./profile?channelId=${sessionScope.channelId}"
-					class="user-icon"><span
-						class="glyphicon glyphicon-home glyphicon-blackboard"
-						aria-hidden="true"></span>GO TO MY PROFILE </a></li>
-			</c:if>
+				<c:if test="${sessionScope.channelId != profile.channelId}">
+					<li><a href="./profile?channelId=${sessionScope.channelId}"
+						class="user-icon"><span
+							class="glyphicon glyphicon-home glyphicon-blackboard"
+							aria-hidden="true"></span>GO TO MY PROFILE </a></li>
+				</c:if>
 			</c:if>
 
 			<!-- script-for-menu -->
@@ -135,6 +135,7 @@ $( document ).ready(function() {
 	getVideos( ${ profile.channelId } ,"date");
 });
 
+  
   
 function unsubscribe(channelId){
 	  $.ajax({
