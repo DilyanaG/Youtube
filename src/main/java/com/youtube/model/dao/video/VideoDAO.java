@@ -16,8 +16,10 @@ import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
 import com.youtube.db.DBManager;
 import com.youtube.model.dto.video.LikesDTO;
+import com.youtube.model.dto.video.OtherVideosDTO;
 import com.youtube.model.pojo.Playlist;
 import com.youtube.model.pojo.Video;
+import com.youtube.model.resolvers.OtherVideosDTOResolver;
 import com.youtube.model.resolvers.TagResolver;
 import com.youtube.model.resolvers.VideoResolver;
 
@@ -37,10 +39,14 @@ public class VideoDAO implements IVideoDAO {
              +"( SELECT t.tag_id FROM tags AS t WHERE t.content LIKE ?) AND v.isDeleted = 0"
 			+" ORDER BY v.upload_date DESC;";
 	private static final String RECENT_VIDEOS = "SELECT v.*, ch.*,u.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id JOIN users AS u  "
-			+ "ON u.user_id=ch.user_id WHERE v.isDeleted = 0" + " ORDER BY v.upload_date DESC;";
+			+ "ON u.user_id=ch.user_id WHERE v.isDeleted = 0" + " ORDER BY v.upload_date DESC LIMIT 15;";
 	private static final String MOST_POPULAR_VIDEOS = "SELECT v.*, ch.*,u.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id  JOIN users AS u  "
-			+ "ON u.user_id=ch.user_id WHERE v.isDeleted = 0" + " ORDER BY v.views DESC;";
+			+ "ON u.user_id=ch.user_id WHERE v.isDeleted = 0" + " ORDER BY v.views DESC LIMIT 15;";
 
+	private static final String GET_OTHER_VIDEOS = "SELECT v.video_id, v.title, v.views, ch.channel_id, u.user_name, v.photo_url FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id  JOIN users AS u  "
+			+ "ON u.user_id=ch.user_id WHERE v.isDeleted = 0 ORDER BY v.views DESC LIMIT 10;";
+
+	
 	private static final String SELECT_ALL_VIDEOS_BY_CHANNEL_ID = "SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id "
 			+ "WHERE v.channel_id = ? AND v.isDeleted = 0;";
 	private static final String VIDEOS_BY_CHANNEL_ID_ORDER_BY_VIEWS = "SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id "
@@ -237,6 +243,21 @@ public class VideoDAO implements IVideoDAO {
 		return null;
 	}
 
+	@Override
+	public List<OtherVideosDTO> getOtherVideos() throws DataBaseException {
+		final Connection connection = dbManager.getConnection();
+
+		try {
+			dbManager.startTransaction(connection);
+			List<OtherVideosDTO> otherVideos = dbManager.executeSelect(connection, GET_OTHER_VIDEOS, new OtherVideosDTOResolver());
+			dbManager.commit(connection);
+			return Collections.unmodifiableList(otherVideos);
+		} catch (SQLException s) {
+			dbManager.rollback(connection, s);
+			return null;
+		}
+	}
+	
 	@Override
 	public int addVideo(Video video, int channelId) throws DataBaseException {
 		final Connection connection = dbManager.getConnection();

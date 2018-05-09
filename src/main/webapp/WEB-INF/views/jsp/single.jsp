@@ -171,24 +171,23 @@
 			</div>
 		</div>
 		<div class="col-md-4 single-right">
-			<h3>OTHER VIDEOS</h3>
+			<h3>SUGGESTED VIDEOS</h3>
 
 			<div id="playlistVideos" class="single-grid-right">
-				<!-- here playlistVideos  -->
-				<c:forEach items="${currentVideoComments}" var="video">
+				<c:forEach items="${suggestedVideos}" var="suggestedVideo">
 					<div class="single-right-grids">
 						<div class="col-md-4 single-right-grid-left">
-							<a onclick="openVideo(${video.videoId})"> <img
-								src="images/r1.jpg" alt="">
+							<a onclick="openVideo(${suggestedVideo.videoId})"> 
+								<img src="${suggestedVideo.profilePictureUrl}" alt="" width="80" height="80">
 							</a>
 						</div>
 						<div class="col-md-8 single-right-grid-right">
-							<!-- video.title -->
-							<a href="" class="title">video title</a>
+							<a href="" class="title">${suggestedVideo.title}</a>
+							<br>
 							<p class="author">
-								<!-- video.name and video.id for link to author profile -->
-								By <a href="#" class="author">AUTHOR HERE</a>
+								By <a href="./profile?channelId=${suggestedVideo.channelId}" class="author">${suggestedVideo.username}</a>
 							</p>
+							<p class="views">${suggestedVideo.views} views</p>
 						</div>
 						<div class="clearfix"></div>
 					</div>

@@ -18,14 +18,13 @@ import com.youtube.controller.upload.service.VideoService;
 import com.youtube.model.dao.channel.IChannelDAO;
 import com.youtube.model.dao.video.IVideoDAO;
 import com.youtube.model.dto.video.LikesDTO;
+import com.youtube.model.dto.video.OtherVideosDTO;
 import com.youtube.model.dto.video.VideoDTO;
 import com.youtube.model.pojo.Channel;
 import com.youtube.model.pojo.Video;
 
 @Controller
 public class VideoController {
-
-	private static final int MAX_VIDEOS_FOR_PAGE = 15;
 
 	@Autowired
 	private IVideoDAO videoDAO;
@@ -52,6 +51,10 @@ public class VideoController {
 			}
 		}
 		model.addAttribute("video", video);
+		
+		List<OtherVideosDTO> suggestedVideos = videoDAO.getOtherVideos();
+		model.addAttribute("suggestedVideos", suggestedVideos);
+		
 		return "single";
 	}
 	
