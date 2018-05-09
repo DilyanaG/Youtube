@@ -10,8 +10,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.youtube.controller.exceptions.DataBaseException;
+import com.youtube.controller.exceptions.IllegalInputException;
+import com.youtube.controller.upload.service.VideoService;
 import com.youtube.model.dao.video.IVideoDAO;
+import com.youtube.model.dto.video.VideoDTO;
+import com.youtube.model.dto.video.VideoTopViewDTO;
 import com.youtube.model.pojo.Video;
 
 @Controller
@@ -19,19 +25,28 @@ public class SingleMenuController {
 	
 	@Autowired
 	private IVideoDAO videoDAO;
+	@Autowired
+	private VideoService videoService;
 
 	@RequestMapping(method = RequestMethod.GET, value = "/playlist")
-	public String singlePlaylist(Model model, HttpServletRequest req) {
-		System.out.println(req.getParameter("playlistId"));
-		// get playlist parametyr here
-		Integer[] videoss = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 11, 1, 1, 1, 1 };
-		List<Video> videos = new ArrayList<>();
-		for (int i = 1; i < 15; i++) {
-			Video video = new Video();
-			video.setVideoId(i);
-			videos.add(video);
-		}
-		model.addAttribute("currentVideoComments", videos);
+	public String singlePlaylist(Model model, 
+			              @RequestParam(value = "playlistId") int playlistId) throws IllegalInputException, DataBaseException {
+		
+		List<Video> playlistVideos= videoDAO.getAllVideosFromPlaylist(playlistId);
+	    VideoDTO currentVideo=videoService.playVideo(playlistVideos.get(0).getVideoId());
+	    playlistVideos.remove(playlistVideos.get(0));
+			
+	
+	    List<VideoTopViewDTO> otherVideos= new ArrayList<>();
+	     for(Video video:playlistVideos){
+	    	 otherVideos.add(new VideoTopViewDTO(video));
+	     }
+	    model.addAttribute("playlistId", playlistId);
+	    model.addAttribute("currentVideo", currentVideo);
+		model.addAttribute("currentVideoComments", otherVideos);
+		model.addAttribute("playlistVideos", otherVideos);
+		
+		
 		return "singlePlaylist";
 	}
 

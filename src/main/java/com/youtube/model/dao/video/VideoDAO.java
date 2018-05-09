@@ -47,8 +47,10 @@ public class VideoDAO implements IVideoDAO {
 	private static final String VIDEOS_BY_CHANNEL_ID_ORDER_BY_TITLE = "SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id "
 			+ "WHERE v.channel_id = ? AND v.isDeleted = 0 ORDER BY v.title ;";
 
-	private static final String SELECT_ALL_VIDEOS_BY_PLAYLIST_ID = "SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id "
-			+ "JOIN  playlists_has_videos AS phv ON(v.video_id = phv.video_id) WHERE phv.playlist_id = ? AND v.isDeleted = 0;";
+	private static final String SELECT_ALL_VIDEOS_BY_PLAYLIST_ID = "SELECT v.*, ch.*,u.* FROM videos AS v "
+			+ "JOIN channels AS ch ON v.channel_id = ch.channel_id  JOIN users AS u  "
+			+ " ON u.user_id=ch.user_id JOIN  playlists_has_videos AS phv ON(v.video_id = phv.video_id)"
+			+ " WHERE phv.playlist_id = ? AND v.isDeleted = 0;";
 
 	private static final String GET_TAG_ID = "SELECT t.* FROM tags AS t WHERE t.content = ?;";
 
@@ -74,8 +76,8 @@ public class VideoDAO implements IVideoDAO {
 	// deletes
 	private static final String DELETE_VIDEO = "DELETE FROM videos WHERE video_id = ?;";
 
-	private static final String DELETE_VIDEO_FROM_PLAYLIST = "DELETE FROM playlists_has_videos WHERE playlist_id = ? AND video_id IN("
-			+ "SELECT v.video_id FROM videos AS v WHERE v.title = ?);";
+	private static final String DELETE_VIDEO_FROM_PLAYLIST = 
+			"DELETE FROM playlists_has_videos WHERE playlist_id = ? AND video_id = ? ;";
 
 	private static final String REMOVE_LIKE_DISLIKE_FROM_VIDEO = "DELETE FROM videos_has_likes_dislikes WHERE video_id = ? AND channel_id = ?;";
 
@@ -201,15 +203,15 @@ public class VideoDAO implements IVideoDAO {
 	}
 
 	@Override
-	public List<Video> getAllVideosFromPlaylist(Playlist playlist) throws IllegalInputException, DataBaseException {
+	public List<Video> getAllVideosFromPlaylist(int playlistId) throws IllegalInputException, DataBaseException {
 		final Connection connection = dbManager.getConnection();
 
 		try {
 			dbManager.startTransaction(connection);
 			List<Video> videos = dbManager.executeSelect(connection, SELECT_ALL_VIDEOS_BY_PLAYLIST_ID,
-					new VideoResolver(), playlist.getPlaylistId());
+					new VideoResolver(), playlistId);
 			dbManager.commit(connection);
-			return Collections.unmodifiableList(videos);
+			return new ArrayList<>(videos);
 		} catch (SQLException s) {
 			dbManager.rollback(connection, s);
 			return null;
@@ -286,13 +288,13 @@ public class VideoDAO implements IVideoDAO {
 	}
 
 	@Override
-	public int deleteVideoFromPlaylist(String videoTitle, Playlist playlist) throws DataBaseException {
+	public int deleteVideoFromPlaylist(int videoId, int playlistId) throws DataBaseException {
 		final Connection connection = dbManager.getConnection();
 
 		try {
 			dbManager.startTransaction(connection);
-			int deleted = dbManager.execute(connection, DELETE_VIDEO_FROM_PLAYLIST, playlist.getPlaylistId(),
-					videoTitle);
+			int deleted = dbManager.execute(connection, DELETE_VIDEO_FROM_PLAYLIST, playlistId,
+					videoId);
 			dbManager.commit(connection);
 			return deleted;
 		} catch (SQLException s) {
@@ -350,4 +352,6 @@ public class VideoDAO implements IVideoDAO {
 			dbManager.rollback(connection, s);
 		}
 	}
+
 }
+

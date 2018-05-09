@@ -11,7 +11,7 @@
 	<div class="show-top-grids">
 		<div class="col-sm-8 single-left">
 			<div class="song">
-			     <div class="song-info">
+			     <div id="songInfo" class="song-info">
 					<h3>${currentVideo.title}</h3>
 				</div>
 				<div id="currentVideo" class="video-grid">
@@ -24,7 +24,6 @@
 				<div id="videoOptions" class="share">
 					<h5>Options</h5>
 					<ul>
-						<li><a  class="icon fb-icon">DELETE</a></li>
 						<!--   put -> {get currentVideo.views}  -->
 						<li class="view">${currentVideo.views}</li>
 						<!--   put -> {get currentVideo.likes}  -->
@@ -54,18 +53,17 @@
 				</script>
 				<div class="load_more">
 					<div id="currentVideoAuthor" class="main_video_info">
-						<img src="${currentVideo.profilePictureUrl} alt="user_profile_picture"
-							id="profile-pic">
+						<img src="${currentVideo.profilePictureUrl}" alt="user_profile_picture"
+							id="profile-pic" width="100" height="100">
 						<p class="author">
-							<!--   put -> ./profile?channelId={get currentVideo.channelId} 
-						 and {get currentVideo.username} 
-						  and {get currentVideo.createDate} -->
-							By <a href="./profile?channelId=${currentVideo.profilePictureUrl}" class="author">${currentVideo.username}</a> <br> <span></span>
+							By <a href="./profile?channelId=${currentVideo.channelId}"
+								class="author">${currentVideo.username}</a> <br> <span>Published
+								on: ${currentVideo.uploadDate}</span>
 						</p>
 
 						<div class="heading-right">
 							<!-- here ajax   -->
-							<a href="#small-dialog8" class="play-icon popup-with-zoom-anim">Subscribe</a>
+							<a  onclick="removeVideoFromPlaylist(${currentVideo.videoId},${playlistId},${playlistVideos[0].videoId })"class="play-icon popup-with-zoom-anim">REMOVE VIDEO FROM PLAYLIST</a>
 						</div>
 
 					</div>
@@ -127,19 +125,20 @@
 
 			<div id="playlistVideos" class="single-grid-right">
 				<!-- here playlistVideos  -->
-				<c:forEach items="${currentVideoComments}" var="video">
+				<c:forEach items="${playlistVideos}" var="video">
 					<div class="single-right-grids">
-						<div class="col-md-4 single-right-grid-left">
-							<a onclick="openVideo(${video.videoId})"> <img
-								src="/FinalProject/images/r1.jpg" alt="">
+						<div  class="col-md-4 single-right-grid-left">
+						
+							<a onclick="openVideo(${video.videoId},${playlistId})"> <img 
+								src="${video.photoUrl}" alt="">
 							</a>
 						</div>
 						<div class="col-md-8 single-right-grid-right">
 							<!-- video.title -->
-							<a href="" class="title">video title</a>
+							<a class="title">${video.title}</a>
 							<p class="author">
 								<!-- video.name and video.id for link to author profile -->
-								By <a href="#" class="author">AUTHOR HERE</a>
+								By <a href="./profile?channelId=${video.channelId}" class="author">${video.username}</a>
 							</p>
 						</div>
 						<div class="clearfix"></div>
@@ -159,49 +158,63 @@
 <!-- Bootstrap core JavaScript
     ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="/FinalProject/js/bootstrap.min.js"></script>
+<script src="FinalProject/js/bootstrap.min.js"></script>
 <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
 <script>
-function openVideo(id) {
+
+
+function removeVideoFromPlaylist(videoId,playlistId,nextVideoId){
+	$.ajax({
+		url : 'removeVideoFromPlaylist',
+		type : 'post',
+		data: {videoId: videoId, playlistId: playlistId},
+		success: function(response){
+			openVideo(nextVideoId,playlistId);
+			}
+
+    });
+}
+
+
+function openVideo(videoId,playlistId) {
 	var video;
 	$.ajax({
 		url : 'changeVideo',
 		type : 'get',
-		data: {videoId: id },
+		data: {videoId: videoId, playlistId: playlistId},
 		success: function(response){
-			
-		       console.log(response.currentVideo[0].videoId)
-		       console.log(response.comments[0].commentId)
-		       console.log(response.playlistVideos[0].videoId)
                 video=response.currentVideo[0]; 
+                $('#songInfo').empty();
+				$('#songInfo').append(
+						'<h3>'+video.title+'</h3>'
+						);
 				$('#currentVideo').empty();
 				$('#currentVideo').append(
-						      '<iframe src="https://www.youtube.com/embed/oYiT-vLjhC4"'
-							 +'allowfullscreen=""></iframe>'
-						);
+								'<video width="640" height="264" controls>'
+								 +'  <source src="'+video.videoUrl+'" type="video/mp4">'
+							     +'</video>'
+								);
 				$('#videoOptions').empty();
 				$('#videoOptions').append(
 						'	<h5>Options</h5>'
 						+'   <ul>'
-						+'	    <li><a href="#" class="icon fb-icon">Share</a></li>'
-						+'	 	<!--   put -> video.views -->'
-						+'	 	<li class="view">200 Views</li>'
-						+'	 	<!--   put -> video.likes  -->'
-						+'	 	<li><a href="#" class="icon like">26 Likes</a></li>'
-						+'		<!--   put -> {get currentVideo.dislikes}  -->'
-						+'  	<li><a href="#" class="icon dribbble-icon">9 Dislikes</a></li>'
+						
+						+'	 	<li class="view">'+video.views+'</li>'
+						
+						+'	 	<li><a class="icon like">'+video.likes+'</a></li>'
+					
+						+'  	<li><a class="icon dribbble-icon">'+video.dislikes+'</a></li>'
 						+'  </ul>'
 						);
 				$('#currentVideoAuthor').empty();
 				$('#currentVideoAuthor').append(
-						' <img src="images/male.png" alt="user_profile_picture"'
+						' <img src= "'+video.profilePictureUrl+'" alt="user_profile_picture width="100" height="100" "'
 						+' 	id="profile-pic">'
 						+'  <p class="author">'
-						+'       	By <a href="#" class="author">John Maniya</a> <br> <span>Published'
-						+' 		on: 5 June 2015</span>'
+						+'       	By <a href="./profile?channelId='+video.channelId+'" class="author">'+video.username+'</a> <br> <span></span>'
 						+' </p>'
 						+' <div class="heading-right">'
-						+' 	<a href="#small-dialog8" class="play-icon popup-with-zoom-anim">Subscribe</a>'
+						+' 	<a onclick="removeVideoFromPlaylist('+video.videoId+',${playlistId},'+response.playlistVideos[0].videoId+')" class="play-icon popup-with-zoom-anim">REMOVE VIDEO FROM PLAYLIST</a>'
 						+' </div>'
 						);
 				
@@ -210,18 +223,14 @@ function openVideo(id) {
 				$('#comments').append(
 							'<div class="media-grids">'
 							+' <div class="media">'
-							+'	 <h5>'+response.comments[i].content+'</h5>'
+							+'	 <h5>'+response.comments[i].title+'</h5>'
 							+'	<div class="media-left">'
-							+'		<a href="#"> </a>'
+							+'		<a> </a>'
 							+'	</div>'
 							+'	<div class="media-body">'		
-							+'		<p>'+response.comments[i].content+'</p>'	
-							+'		<span>Posted on :'+response.comments[i].publicationDate.hour+':'
-							                          +response.comments[i].publicationDate.minute+' ' 
-							                          +response.comments[i].publicationDate.dayOfMonth+'  '
-							                          +response.comments[i].publicationDate.month+' '
-							                          +response.comments[i].publicationDate.year+' '
-							
+							+'		<p>'+response.comments[i].title+'</p>'	
+							+'		<span>Posted on :'+response.comments[i].uploadDate
+
 							+'</span>'
 							+'		</div>'
 							+' 	</div>'
@@ -235,12 +244,12 @@ function openVideo(id) {
 						
 						'	<div class="single-right-grids">'
 						+'	<div class="col-md-4 single-right-grid-left">'
-						+'		<a onclick="openVideo('+response.playlistVideos[i].videoId+')"> <img'
-						+'			src="images/r1.jpg" alt="">'
+						+'		<a onclick="openVideo('+response.playlistVideos[i].videoId+',${playlistId})"> <img'
+						+'			src="'+response.playlistVideos[i].photoUrl+'" alt="">'
 						+'		</a>'
 						+'	</div>'
 						+'	<div class="col-md-8 single-right-grid-right">'
-						+'		<a href="" class="title">video title</a>'
+						+'		<a href="" class="title">'+response.playlistVideos[i].title+'</a>'
 						+'		<p class="author">'
 						+'			By <a href="'+response.playlistVideos[i].username+'" class="author">'
 						           +response.playlistVideos[i].username+'</a>'

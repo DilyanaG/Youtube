@@ -17,9 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
+import com.youtube.controller.upload.service.VideoService;
 import com.youtube.model.dao.playlist.IPlaylistDAO;
 import com.youtube.model.dao.video.IVideoDAO;
 import com.youtube.model.dto.playlist.PlaylistTopViewDTO;
+import com.youtube.model.dto.video.VideoDTO;
+import com.youtube.model.dto.video.VideoTopViewDTO;
 import com.youtube.model.pojo.Comment;
 import com.youtube.model.pojo.Playlist;
 import com.youtube.model.pojo.Video;
@@ -31,7 +34,8 @@ public class PlaylistController {
 	private IPlaylistDAO playlistDao;
 	@Autowired
 	private IVideoDAO videoDao;
-	
+	@Autowired
+	private VideoService videoService;
 	
 	@RequestMapping(value = "/playlists", method = RequestMethod.GET)
 	public Map<String, List<Object>> doGet(@RequestParam(value = "channelId", required = true) int channelId,
@@ -58,7 +62,7 @@ public class PlaylistController {
 		}
 		
 		for(Playlist playlist: playlists ){
-			List<Video> playlistVideos = videoDao.getAllVideosFromPlaylist(playlist);
+			List<Video> playlistVideos = videoDao.getAllVideosFromPlaylist(playlist.getPlaylistId());
 			sendPlaylist.add(new PlaylistTopViewDTO(playlist,playlistVideos));
 		}
 		System.out.println(sendPlaylist);
@@ -71,33 +75,49 @@ public class PlaylistController {
 	
 	
 	@RequestMapping(value = "/changeVideo", method = RequestMethod.GET)
-	public Map<String, List<Object>> getVideoByID(HttpServletRequest req) {
-		System.out.println(req.getParameter("videoId"));
-		Map<String, List<Object>> result = new HashMap<String, List<Object>>();
+	public Map<String, List<Object>> getVideoByID(@RequestParam(value = "playlistId", required = true) int playlistId,
+                                                    @RequestParam(value = "videoId", required = true) int videoId) throws DataBaseException, IllegalInputException {
+      
 		
-		List<Object> videos = new ArrayList<>();
-		List<Object> comments = new ArrayList<>();
-		List<Object> currentVideo = new ArrayList<>();
-		Video video = new Video();
-		video.setVideoId(333);
-		currentVideo.add(video);
-		for(int i=0;i<10;i++){
-			Video video1 = new Video();
-			video1.setVideoId(i);
-			videos.add(video1);
-			comments.add(new Comment());
-		}
-		result.put("playlistVideos",videos);
-		result.put("comments",comments);
-		result.put("currentVideo",currentVideo);
+		
+		
+		List<Video> playlistVideos= videoDao.getAllVideosFromPlaylist(playlistId);
+		 List<Object> otherVideos= new ArrayList<>();
+		 int currentVideoIndex = 0;
+	     for(int i=0;i<playlistVideos.size();i++){
+	    	 otherVideos.add(new VideoTopViewDTO(playlistVideos.get(i)));
+	    	 if(playlistVideos.get(i).getVideoId()==videoId){
+	    		 currentVideoIndex=i;
+	    	 }
+	     }
+	     List<Object> currentVideo= new ArrayList<>();
+	    currentVideo.add(videoService.playVideo(videoId));
+	    otherVideos.remove(currentVideoIndex);
+			
+	
+	   
+	     Map<String, List<Object>>  result = new HashMap<>();
+	     result.put("currentVideo", currentVideo);
+	     result.put("comments", otherVideos);
+	     result.put("playlistVideos", otherVideos); 
+		
 		return result;
 	}
 	
 	@RequestMapping(value = "/deletePlaylist ", method = RequestMethod.DELETE)
-	public String  deleteVideo(@RequestParam(value = "playlistId", required = true) int playlistId,
+	public String  deletePlaylist(@RequestParam(value = "playlistId", required = true) int playlistId,
 			                       HttpSession session) throws IllegalInputException, DataBaseException{
 		
 		playlistDao.deletePlaylist(playlistId);
 		return "";
 	}
+	@RequestMapping(value = "/removeVideoFromPlaylist ", method = RequestMethod.POST)
+	public String  deleteVideoFromPlaylist(@RequestParam(value = "playlistId", required = true) int playlistId,
+			                                @RequestParam(value = "videoId", required = true) int videoId )
+			                		  throws IllegalInputException, DataBaseException{
+		
+		videoDao.deleteVideoFromPlaylist(videoId, playlistId);
+		return "";
+	}
+	
 }

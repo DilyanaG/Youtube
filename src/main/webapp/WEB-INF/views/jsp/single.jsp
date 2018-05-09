@@ -203,9 +203,7 @@
 </div>
 <div class="clearfix"></div>
 
-<!-- Bootstrap core JavaScript
-    ================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
+
 <script src="FinalProject/js/bootstrap.min.js"></script>
 <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
 

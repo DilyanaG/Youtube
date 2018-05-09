@@ -25,7 +25,7 @@ public interface IVideoDAO {
 	
 	public List<Video> ByChannelIdByTitle(int channel_id) throws IllegalInputException, DataBaseException, SQLException;
 	
-	List<Video> getAllVideosFromPlaylist(Playlist playlist) throws IllegalInputException, DataBaseException;
+	List<Video> getAllVideosFromPlaylist(int playlistId) throws IllegalInputException, DataBaseException;
 
 	List<Video> getMostPopularVideos() throws IllegalInputException, DataBaseException;
 
@@ -39,7 +39,7 @@ public interface IVideoDAO {
 
 	int deleteVideo(int videoTitle) throws IllegalInputException, DataBaseException;
 
-	int deleteVideoFromPlaylist(String videoTitle, Playlist playlist) throws DataBaseException;
+	int deleteVideoFromPlaylist(int videoId, int playlistId) throws DataBaseException;
 
 	LikesDTO likeDislikeVideo(int video_id, int channel_id, boolean isLike) throws DataBaseException;
 
