@@ -52,9 +52,6 @@ public class VideoController {
 				}
 			}
 		}
-		List<Video> videos = videoDAO.getMostPopularVideos();
-//		model.addAttribute("suggestions", videos);
-		model.addAttribute("suggestions", Collections.singletonList(videos.get(0)));
 		model.addAttribute("video", video);
 		return "single";
 	}

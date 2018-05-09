@@ -3,8 +3,11 @@ package com.youtube.model.dao.video;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,9 +32,9 @@ public class VideoDAO implements IVideoDAO {
 
 	private static final String SEARCH_VIDEOS_BY_TAGS = "SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id JOIN videos_has_tags AS vht ON"
 			+ " (v.video_id = vht.video_id) WHERE vht.tag_id IN ( SELECT t.tag_id FROM tags AS t WHERE t.content LIKE ?) AND v.isDeleted = 0"
-			+ " ORDER BY v.date DESC;";
+			+ " ORDER BY v.upload_date DESC;";
 	private static final String RECENT_VIDEOS = "SELECT v.*, ch.*,u.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id JOIN users AS u  "
-			+ "ON u.user_id=ch.user_id WHERE v.isDeleted = 0" + " ORDER BY v.date DESC;";
+			+ "ON u.user_id=ch.user_id WHERE v.isDeleted = 0" + " ORDER BY v.upload_date DESC;";
 	private static final String MOST_POPULAR_VIDEOS = "SELECT v.*, ch.*,u.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id  JOIN users AS u  "
 			+ "ON u.user_id=ch.user_id WHERE v.isDeleted = 0" + " ORDER BY v.views DESC;";
 
@@ -40,7 +43,7 @@ public class VideoDAO implements IVideoDAO {
 	private static final String VIDEOS_BY_CHANNEL_ID_ORDER_BY_VIEWS = "SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id "
 			+ "WHERE v.channel_id = ? AND v.isDeleted = 0 ORDER BY v.views DESC;";
 	private static final String VIDEOS_BY_CHANNEL_ID_ORDER_BY_DATE = "SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id "
-			+ "WHERE v.channel_id = ? AND v.isDeleted = 0 ORDER BY v.date DESC;";
+			+ "WHERE v.channel_id = ? AND v.isDeleted = 0 ORDER BY v.upload_date DESC;";
 	private static final String VIDEOS_BY_CHANNEL_ID_ORDER_BY_TITLE = "SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id "
 			+ "WHERE v.channel_id = ? AND v.isDeleted = 0 ORDER BY v.title ;";
 
@@ -55,7 +58,7 @@ public class VideoDAO implements IVideoDAO {
 			+ "(SELECT COUNT(1) FROM videos_has_likes_dislikes WHERE video_id = ? AND NOT isLike) AS dislikes;";
 
 	// inserts
-	private static final String ADD_VIDEO_TO_CHANNEL = " INSERT INTO videos (channel_id, video_url, photo_url, title, date, description, views) VALUES (?,?,?,?,now(),?,?);";
+	private static final String ADD_VIDEO_TO_CHANNEL = " INSERT INTO videos (channel_id, video_url, photo_url, title, upload_date, description, views) VALUES (?,?,?,?,now(),?,?);";
 
 	private static final String WRITE_IN_VIDEOS_HAS_TAGS = "INSERT INTO videos_has_tags (video_id,tag_id) VALUES (?,?)";
 
@@ -251,9 +254,10 @@ public class VideoDAO implements IVideoDAO {
 	}
 
 	private void writeInVideosHasTagsTable(Connection connection, String videoTags, int video_id) throws SQLException {
-		String[] tags = videoTags.split("[^a-zA-Z0-9]");
+		String[] tags = videoTags.split("\\s");
+		Set<String> uniqueTags = new HashSet<>(Arrays.asList(tags));
 
-		for (String tag : tags) {
+		for (String tag : uniqueTags) {
 
 			int tagCount = dbManager.executeSingleSelect(connection, GET_TAG_COUNT, (rs) -> rs.getInt("count"), tag);
 			if (tagCount == 0) {

@@ -46,7 +46,7 @@
 
 						<c:if test="${not empty sessionScope.channelId}">
 							<c:choose>
-								<c:when test="${not empty subscribe}">
+								<c:when test="${sessionScope.channelId != video.channelId}">
 									<li><a href="./addToPlaylist" class="icon pinterest-icon">To
 											Playlist</a></li>
 									<li><a href="#" onclick="isLike(${video.videoId}, true)"
@@ -172,17 +172,23 @@
 		</div>
 		<div class="col-md-4 single-right">
 			<h3>OTHER VIDEOS</h3>
+			<!-- alvideosForPlaylist  -->
 
-			<div class="single-grid-right">
-				<c:forEach items="${suggestions}" var="suggestion">
+			<div id="playlistVideos" class="single-grid-right">
+				<!-- here playlistVideos  -->
+				<c:forEach items="${currentVideoComments}" var="video">
 					<div class="single-right-grids">
 						<div class="col-md-4 single-right-grid-left">
-						
+							<a onclick="openVideo(${video.videoId})"> <img
+								src="images/r1.jpg" alt="">
+							</a>
 						</div>
 						<div class="col-md-8 single-right-grid-right">
-							
+							<!-- video.title -->
+							<a href="" class="title">video title</a>
 							<p class="author">
-									${suggestion.username}
+								<!-- video.name and video.id for link to author profile -->
+								By <a href="#" class="author">AUTHOR HERE</a>
 							</p>
 						</div>
 						<div class="clearfix"></div>
