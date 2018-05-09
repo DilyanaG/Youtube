@@ -10,14 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.youtube.controller.exceptions.DataBaseException;
+import com.youtube.controller.exceptions.IllegalInputException;
 import com.youtube.db.DBManager;
+import com.youtube.model.dao.video.VideoDAO;
+import com.youtube.model.dto.playlist.PlaylistTopViewDTO;
 import com.youtube.model.pojo.Playlist;
 import com.youtube.model.resolvers.PlaylistResolver;
 @Component
 public class PlaylistDAO implements IPlaylistDAO{
 
 	// selects
-	private static final String SELECT_BY_NAME = "SELECT p.*,ch.* FROM playlists AS p JOIN channels AS ch ON ch.channel_id=p.channel_id WHERE p.name=?;";
+	private static final String SELECT_BY_NAME = "SELECT p.*,ch.* FROM playlists AS p JOIN channels AS ch ON ch.channel_id=p.channel_id WHERE p.name LIKE ?;";
 
 	private static final String ALL_PLAYLISTS_SORTED_FOR_CHANNEL = "SELECT p.*,ch.* FROM playlists AS p JOIN channels AS ch ON ch.channel_id=p.channel_id WHERE p.channel_id = ? ORDER BY p.create_date DESC;";
 
@@ -38,16 +41,24 @@ public class PlaylistDAO implements IPlaylistDAO{
 
 	@Autowired
 	private  DBManager dbManager;
+	@Autowired
+	private  VideoDAO videoDao;
 
 	@Override
-	public Playlist getPlaylistByName(String playlist_name) throws DataBaseException {
+	public List<PlaylistTopViewDTO> getPlaylistByName(String playlistName) throws DataBaseException, IllegalInputException {
 		final Connection connection = dbManager.getConnection();
 		try {
+			playlistName="%"+playlistName+"%";
 			dbManager.startTransaction(connection);
-			Playlist playlist = dbManager.executeSingleSelect(connection, SELECT_BY_NAME, new PlaylistResolver(),
-					playlist_name);
+			List<Playlist> playlists = dbManager.executeSelect(connection, SELECT_BY_NAME, new PlaylistResolver(),
+					playlistName);
 			dbManager.commit(connection);
-			return playlist;
+			List<PlaylistTopViewDTO> playlistViews= new ArrayList<PlaylistTopViewDTO>();
+			for(Playlist p:playlists){
+				
+				playlistViews.add(new PlaylistTopViewDTO(p,videoDao.getAllVideosFromPlaylist(p.getPlaylistId())));
+			}
+			return playlistViews;
 		} catch (SQLException s) {
 			dbManager.rollback(connection, s);
 			return null;

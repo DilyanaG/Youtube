@@ -31,7 +31,7 @@
 					    <div class="col-md-4 resent-grid recommended-grid slider-top-grids">
 						 <div class="resent-grid-img recommended-grid-img">
 					    		<a href="./video?videoId=${video.videoId}">
-									<img src= "${video.photoUrl}"></img>
+									<img src= "${video.photoUrl} " width="222" height="222"></img>
 				      		</a>
 
 								<div class="time">
@@ -51,6 +51,51 @@
 							</div>
 							</div>
 						</c:forEach> 
+				<c:if test="${not empty playlist}">
+						   <c:forEach items="${playlist}" var="playlist">
+					    <div class="col-md-4 resent-grid recommended-grid slider-top-grids">
+						 <div class="resent-grid-img recommended-grid-img">
+					    		<a href="./playlist?playlistId=${playlist.playlistId}">
+									<img src= "${playlist.photoUrl}" width="240" height="240"></img>
+				      		</a>
+
+								<div class="time">
+									<p></p>
+								</div>
+							<div class="clck"></div>
+							</div>
+							<div class="resent-grid-info recommended-grid-info">
+								<h3><a href="./playlist?playlistId=${playlist.playlistId}" class="title title-info">${playlist.playlistName}</a></h3>
+								<ul>
+								     <li class="right-list"><p class="views views-info"></p>#PLAYLIST</li>
+									<li class="right-list"><p class="views views-info"></p>CREATE DATE ${playlist.createDate}</li>
+								</ul>
+							</div>
+							</div>
+						</c:forEach>
+					</c:if>
+					<c:if test="${not empty channels}">
+						   <c:forEach items="${channels}" var="channel">
+					    <div class="col-md-4 resent-grid recommended-grid slider-top-grids">
+						 <div class="resent-grid-img recommended-grid-img">
+					    		<a href="./profile?channelId=${channel.channelId}">
+									<img src= "${channel.pictureUrl}" width="240" height="240" ></img>
+				      		</a>
+
+								<div class="time">
+									<p></p>
+								</div>
+							<div class="clck"></div>
+							</div>
+							<div class="resent-grid-info recommended-grid-info">
+								<h3><a href="./profile?channelId=${channel.channelId}" class="title title-info">${channel.username}</a></h3>
+								<ul>
+									<li class="right-list"><p class="views views-info"></p>#CHANNEL</li>
+								</ul>
+							</div>
+							</div>
+						</c:forEach>
+					</c:if> 
 			     <div class="clearfix"> </div>
 			</div>
 		</div>
