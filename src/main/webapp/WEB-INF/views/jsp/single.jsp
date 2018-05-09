@@ -83,7 +83,7 @@
 				<div class="load_more">
 					<div class="main_video_info">
 						<img src="${video.profilePictureUrl}" alt="user_profile_picture"
-							id="profile-pic" width="100" height="100">
+							id="profile-pic" width="100" height="100" style="border-radius:50%">
 						<p class="author">
 							By <a href="./profile?channelId=${video.channelId}"
 								class="author">${video.username}</a> <br> <span>Published
@@ -138,31 +138,31 @@
 			<div class="all-comments">
 				<div class="all-comments-info">
 					<h3>COMMENTS</h3>
+					<script src="FinalProject/js/comments.js"></script>
 					<div class="box">
-						<form>
-
-							<textarea placeholder="Message" required=" "></textarea>
-							<input type="submit" value="SEND">
+						<c:if test="${not empty sessionScope.channelId}">
+							<textarea id="message" placeholder="Message" name="message"></textarea>
+							<br>
+							<button onclick="writeComment(${video.videoId})" class="button">SEND</button>
 							<div class="clearfix"></div>
-						</form>
+						</c:if>
 					</div>
 					<div class="all-comments-buttons"></div>
 				</div>
 				<div id="comments">
-					<c:forEach items="${currentVideoComments}" var="comment">
-
+					<c:forEach items="${video.comments}" var="comment">
+						<hr>
 						<div class="media-grids">
 							<div class="media">
-								<!-- currentVideoComments.username or channelname here  -->
-								<h5>Tom Brown</h5>
+								<h5>${comment.username}</h5>
 								<div class="media-left">
-									<a href="#"> </a>
+									<a href="./profile?channelId=${comment.channelId}">
+										<img src="${comment.profilePicture}" width="65" height="65" style="border-radius: 50%"></img>
+									</a>
 								</div>
 								<div class="media-body">
-									<!-- currentVideoComments.content  here  -->
-									<p>Maecenas ssdasd</p>
-									<!-- currentVideoComments.date  -->
-									<span>Posted on : 12 June 2015 </span>
+									<p>${comment.message}</p>
+									<span>Posted on : ${comment.uploadDate} </span>
 								</div>
 							</div>
 						</div>
@@ -172,7 +172,6 @@
 		</div>
 		<div class="col-md-4 single-right">
 			<h3>OTHER VIDEOS</h3>
-			<!-- alvideosForPlaylist  -->
 
 			<div id="playlistVideos" class="single-grid-right">
 				<!-- here playlistVideos  -->

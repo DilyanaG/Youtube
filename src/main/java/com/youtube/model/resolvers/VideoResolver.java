@@ -20,7 +20,6 @@ public class VideoResolver implements IResolver<Video> {
 		// If the parameter is not in the ResultSet it sets it a null value
 
 		final Integer videoId = selectedColumns.contains("video_id") ? rs.getInt("video_id") : null;
-		System.out.println("resolversss" + videoId);
 		final Channel channel = channelResolver.resolve(rs);
 		final String videoUrl = selectedColumns.contains("video_url") ? rs.getString("video_url") : null;
 		final String photoUrl = selectedColumns.contains("photo_url") ? rs.getString("photo_url") : null;
@@ -37,8 +36,7 @@ public class VideoResolver implements IResolver<Video> {
 		final LocalDateTime uploadDate = selectedColumns.contains("upload_date") ? rs.getTimestamp("upload_date").toLocalDateTime()
 				: null;
 
-		Video video = new Video(videoId, channel, videoUrl, photoUrl, title, uploadDate, description, views,
-				countOfLikes, countOfDislikes);
+		Video video = new Video(videoId, channel, videoUrl, photoUrl, title, uploadDate, description, views, countOfLikes, countOfDislikes);
 		return video;
 	}
 

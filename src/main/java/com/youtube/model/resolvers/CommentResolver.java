@@ -22,14 +22,14 @@ public class CommentResolver implements IResolver<Comment> {
 		// If the parameter is not in the ResultSet it sets it a null value
 		// The "c." is the alias for the "comments" table in the DB
 
-		final Integer commentId = selectedColumns.contains("c.comment_id") ? rs.getInt("c.comment_id") : null;
+		final Integer commentId = selectedColumns.contains("comment_id") ? rs.getInt("comment_id") : null;
 		final Video video = videoResolver.resolve(rs);
 		final Channel channel = channelResolver.resolve(rs);
-		final String content = selectedColumns.contains("c.content") ? rs.getString("c.content") : null;
-		final LocalDateTime publicationDate = selectedColumns.contains("c.date") ? rs.getTimestamp("c.date").toLocalDateTime() : null;
+		final String content = selectedColumns.contains("content") ? rs.getString("content") : null;
+		final LocalDateTime publicationDate = selectedColumns.contains("create_date") ? rs.getTimestamp("create_date").toLocalDateTime() : null;
 
-		final Integer likes = selectedColumns.contains("c.views") ? rs.getInt("c.views") : null;
-		final Integer dislikes = selectedColumns.contains("c.isDeleted") ? rs.getInt("c.isDeleted") : null;
+		final Integer likes = selectedColumns.contains("views") ? rs.getInt("views") : null;
+		final Integer dislikes = selectedColumns.contains("isDeleted") ? rs.getInt("isDeleted") : null;
 
 		Comment comment = new Comment(commentId, video, channel, content, publicationDate, likes, dislikes);
 		return comment;

@@ -1,9 +1,13 @@
 package com.youtube.model.dto.video;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class VideoDTO {
 
+	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+	
 	private int videoId;
 	private int channelId;
 	private String username;
@@ -11,13 +15,15 @@ public class VideoDTO {
 	private String videoUrl;
 	private String title;
 	private String description;
-	private LocalDate uploadDate;
+	private String uploadDate;
 	private int views;
 	private int likes;
 	private int dislikes;
+	private List<CommentDTO> comments;
 
 	public VideoDTO(int videoId, int channelId, String username, String profilePictureUrl, String videoUrl, String title,
-			String description, LocalDate uploadDate, int views, int likes, int dislikes) {
+			String description, LocalDate uploadDate, int views, int likes, int dislikes, List<CommentDTO> comments) {
+		
 		this.videoId = videoId;
 		this.channelId = channelId;
 		this.username = username;
@@ -25,10 +31,11 @@ public class VideoDTO {
 		this.videoUrl = videoUrl;
 		this.title = title;
 		this.description = description;
-		this.uploadDate = uploadDate;
+		this.uploadDate = uploadDate.format(formatter);
 		this.views = views;
 		this.likes = likes;
 		this.dislikes = dislikes;
+		this.comments = comments;
 	}
 
 	public int getVideoId() {
@@ -87,11 +94,11 @@ public class VideoDTO {
 		this.description = description;
 	}
 
-	public LocalDate getUploadDate() {
+	public String getUploadDate() {
 		return uploadDate;
 	}
 
-	public void setUploadDate(LocalDate uploadDate) {
+	public void setUploadDate(String uploadDate) {
 		this.uploadDate = uploadDate;
 	}
 
@@ -117,6 +124,14 @@ public class VideoDTO {
 
 	public void setDislikes(int dislikes) {
 		this.dislikes = dislikes;
+	}
+
+	public List<CommentDTO> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<CommentDTO> comments) {
+		this.comments = comments;
 	}
 
 }

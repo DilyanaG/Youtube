@@ -1,13 +1,16 @@
 package com.youtube.controller.upload.service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
+import com.youtube.model.dao.comment.ICommentDAO;
 import com.youtube.model.dao.video.IVideoDAO;
+import com.youtube.model.dto.video.CommentDTO;
 import com.youtube.model.dto.video.LikesDTO;
 import com.youtube.model.dto.video.VideoDTO;
 import com.youtube.model.pojo.Video;
@@ -17,6 +20,9 @@ public class VideoService {
 
 	@Autowired
 	private IVideoDAO videoDAO;
+	
+	@Autowired
+	private ICommentDAO commentDAO;
 
 	public VideoDTO playVideo(int videoId) throws DataBaseException, IllegalInputException {
 		videoDAO.increaseViewsForVideo(videoId);
@@ -35,7 +41,9 @@ public class VideoService {
 		int likes = likesDislikes.getLikesCount();
 		int dislikes =  likesDislikes.getDislikesCount();
 		
-		return new VideoDTO(videoId, channelId, username, profilePictureUrl, videoUrl, title, description, uploadDate, views, likes, dislikes);
+		List<CommentDTO> comments = commentDAO.getCommentsForVideo(videoId);
+		
+		return new VideoDTO(videoId, channelId, username, profilePictureUrl, videoUrl, title, description, uploadDate, views, likes, dislikes, comments);
 	}
 	
 }
