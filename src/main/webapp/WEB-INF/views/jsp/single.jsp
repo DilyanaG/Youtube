@@ -38,14 +38,24 @@
 			</div>
 			<div class="song-grid-right">
 				<div class="share">
+					<script src="FinalProject/js/likes.js"></script>
 					<h5>Options</h5>
 					<ul>
 						<li><a href="#" class="icon fb-icon">Share</a></li>
-						<li><a href="./addToPlaylist" class="icon pinterest-icon">To
-								Playlist</a></li>
 						<li class="view">${video.views}</li>
-						<li><a href="#" class="icon like">${video.likes}</a></li>
-						<li><a href="#" class="icon dribbble-icon">${video.dislikes}</a></li>
+
+						<c:if test="${not empty sessionScope.channelId}">
+							<c:choose>
+								<c:when test="${not empty subscribe}">
+									<li><a href="./addToPlaylist" class="icon pinterest-icon">To
+											Playlist</a></li>
+									<li><a href="#" onclick="isLike(${video.videoId}, true)"
+										class="icon like"><div id="likes">${video.likes}</div></a></li>
+									<li><a href="#" onclick="isLike(${video.videoId}, false)"
+										class="icon dribbble-icon"><div id="dislikes">${video.dislikes}</div></a></li>
+								</c:when>
+							</c:choose>
+						</c:if>
 					</ul>
 
 				</div>
@@ -75,7 +85,8 @@
 						<img src="${video.profilePictureUrl}" alt="user_profile_picture"
 							id="profile-pic" width="100" height="100">
 						<p class="author">
-							By <a href="./profile?channelId=${video.channelId}" class="author">${video.username}</a> <br> <span>Published
+							By <a href="./profile?channelId=${video.channelId}"
+								class="author">${video.username}</a> <br> <span>Published
 								on: ${video.uploadDate}</span>
 						</p>
 
@@ -116,12 +127,8 @@
 						</li>
 						<li>
 							<div class="load-grids">
-								<div class="load-grid">
-									<p>Category</p>
-								</div>
-								<div class="load-grid">
-									<a href="movies.html">Entertainment</a>
-								</div>
+								<div class="load-grid"></div>
+								<div class="load-grid"></div>
 								<div class="clearfix"></div>
 							</div>
 						</li>
@@ -165,23 +172,17 @@
 		</div>
 		<div class="col-md-4 single-right">
 			<h3>OTHER VIDEOS</h3>
-			<!-- alvideosForPlaylist  -->
 
-			<div id="playlistVideos" class="single-grid-right">
-				<!-- here playlistVideos  -->
-				<c:forEach items="${currentVideoComments}" var="video">
+			<div class="single-grid-right">
+				<c:forEach items="${suggestions}" var="suggestion">
 					<div class="single-right-grids">
 						<div class="col-md-4 single-right-grid-left">
-							<a onclick="openVideo(${video.videoId})"> <img
-								src="images/r1.jpg" alt="">
-							</a>
+						
 						</div>
 						<div class="col-md-8 single-right-grid-right">
-							<!-- video.title -->
-							<a href="" class="title">video title</a>
+							
 							<p class="author">
-								<!-- video.name and video.id for link to author profile -->
-								By <a href="#" class="author">AUTHOR HERE</a>
+									${suggestion.username}
 							</p>
 						</div>
 						<div class="clearfix"></div>
