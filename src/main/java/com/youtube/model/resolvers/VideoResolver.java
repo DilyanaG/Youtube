@@ -34,7 +34,7 @@ public class VideoResolver implements IResolver<Video> {
 		final Integer countOfLikes = selectedColumns.contains("likes") ? rs.getInt("likes") : 0;
 		final Integer countOfDislikes = selectedColumns.contains("dislikes") ? rs.getInt("dislikes") : 0;
 
-		final LocalDateTime uploadDate = selectedColumns.contains("date") ? rs.getTimestamp("date").toLocalDateTime()
+		final LocalDateTime uploadDate = selectedColumns.contains("upload_date") ? rs.getTimestamp("upload_date").toLocalDateTime()
 				: null;
 
 		Video video = new Video(videoId, channel, videoUrl, photoUrl, title, uploadDate, description, views,

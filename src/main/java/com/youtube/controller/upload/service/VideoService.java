@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
 import com.youtube.model.dao.video.IVideoDAO;
+import com.youtube.model.dto.video.LikesDTO;
 import com.youtube.model.dto.video.VideoDTO;
 import com.youtube.model.pojo.Video;
 
@@ -30,8 +31,9 @@ public class VideoService {
 		LocalDate uploadDate = video.getUploadDate().toLocalDate();
 		int views = video.getViews();
 		
-		int likes = videoDAO.getLikesForVideo(videoId);
-		int dislikes = videoDAO.getDislikesForVideo(videoId);
+		LikesDTO likesDislikes = videoDAO.getLikesDislikes(videoId);
+		int likes = likesDislikes.getLikesCount();
+		int dislikes =  likesDislikes.getDislikesCount();
 		
 		return new VideoDTO(videoId, channelId, username, profilePictureUrl, videoUrl, title, description, uploadDate, views, likes, dislikes);
 	}

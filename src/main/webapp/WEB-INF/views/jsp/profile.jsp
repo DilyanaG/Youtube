@@ -229,7 +229,6 @@ function getVideos(channelId,sortBy) {
 												+ '			<p></p>'
 												+ '		</div>'
 												+ '		<div class="clck">'
-												+ '			<span class="glyphicon glyphicon-time" aria-hidden="true"></span>'
 												+ '		</div>'
 												+ '	</div>'
 												+ '	<div class="resent-grid-info recommended-grid-info">'
@@ -310,10 +309,8 @@ function getPlaylists(channelId,sortBy) {
 												+ response.playlists[i].playlistId
 												+ '"><img src="'+response.playlists[i].photoUrl+'" alt=""></a>'
 												+ '		<div class="time">'
-												+ '			<p></p>'
 												+ '		</div>'
 												+ '		<div class="clck">'
-												+ '			<span class="glyphicon glyphicon-time" aria-hidden="true"></span>'
 												+ '		</div>'
 												+ '	</div>'
 												+ '	<div class="resent-grid-info recommended-grid-info">'

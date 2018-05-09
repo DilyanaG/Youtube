@@ -3,8 +3,11 @@ package com.youtube.model.dao.video;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Component;
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
 import com.youtube.db.DBManager;
+import com.youtube.model.dto.video.LikesDTO;
 import com.youtube.model.pojo.Playlist;
 import com.youtube.model.pojo.Video;
 import com.youtube.model.resolvers.TagResolver;
@@ -28,27 +32,19 @@ public class VideoDAO implements IVideoDAO {
 
 	private static final String SEARCH_VIDEOS_BY_TAGS = "SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id JOIN videos_has_tags AS vht ON"
 			+ " (v.video_id = vht.video_id) WHERE vht.tag_id IN ( SELECT t.tag_id FROM tags AS t WHERE t.content LIKE ?) AND v.isDeleted = 0"
-			+ " ORDER BY v.date DESC;";
-	private static final String RECENT_VIDEOS =
-			"SELECT v.*, ch.*,u.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id JOIN users AS u  "
-			+ "ON u.user_id=ch.user_id WHERE v.isDeleted = 0"
-			+ " ORDER BY v.date DESC;";
-	private static final String MOST_POPULAR_VIDEOS = 
-			"SELECT v.*, ch.*,u.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id  JOIN users AS u  "
-			+ "ON u.user_id=ch.user_id WHERE v.isDeleted = 0"
-			+ " ORDER BY v.views DESC;";
-	
-	private static final String SELECT_ALL_VIDEOS_BY_CHANNEL_ID = 
-			"SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id "
+			+ " ORDER BY v.upload_date DESC;";
+	private static final String RECENT_VIDEOS = "SELECT v.*, ch.*,u.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id JOIN users AS u  "
+			+ "ON u.user_id=ch.user_id WHERE v.isDeleted = 0" + " ORDER BY v.upload_date DESC;";
+	private static final String MOST_POPULAR_VIDEOS = "SELECT v.*, ch.*,u.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id  JOIN users AS u  "
+			+ "ON u.user_id=ch.user_id WHERE v.isDeleted = 0" + " ORDER BY v.views DESC;";
+
+	private static final String SELECT_ALL_VIDEOS_BY_CHANNEL_ID = "SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id "
 			+ "WHERE v.channel_id = ? AND v.isDeleted = 0;";
-	private static final String VIDEOS_BY_CHANNEL_ID_ORDER_BY_VIEWS = 
-			"SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id "
+	private static final String VIDEOS_BY_CHANNEL_ID_ORDER_BY_VIEWS = "SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id "
 			+ "WHERE v.channel_id = ? AND v.isDeleted = 0 ORDER BY v.views DESC;";
-	private static final String VIDEOS_BY_CHANNEL_ID_ORDER_BY_DATE = 
-			"SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id "
-			+ "WHERE v.channel_id = ? AND v.isDeleted = 0 ORDER BY v.date DESC;";
-	private static final String VIDEOS_BY_CHANNEL_ID_ORDER_BY_TITLE = 
-			"SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id "
+	private static final String VIDEOS_BY_CHANNEL_ID_ORDER_BY_DATE = "SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id "
+			+ "WHERE v.channel_id = ? AND v.isDeleted = 0 ORDER BY v.upload_date DESC;";
+	private static final String VIDEOS_BY_CHANNEL_ID_ORDER_BY_TITLE = "SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id "
 			+ "WHERE v.channel_id = ? AND v.isDeleted = 0 ORDER BY v.title ;";
 
 	private static final String SELECT_ALL_VIDEOS_BY_PLAYLIST_ID = "SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id "
@@ -58,16 +54,11 @@ public class VideoDAO implements IVideoDAO {
 
 	private static final String GET_TAG_COUNT = "SELECT COUNT(t.tag_id) as count FROM tags AS t WHERE t.content = ?;";
 
-	private static final String COUNT_OF_LIKES = "SELECT COUNT(vhld.id) as count FROM videos_has_likes_dislikes AS vhld JOIN videos AS v ON vhld.video_id = v.video_id WHERE v.video_id = ? AND v.isDeleted = 0 AND vhld.isLike = 1;";
-
-	private static final String COUNT_OF_DISLIKES = "SELECT COUNT(videos_has_likes_dislikes.id) as count FROM videos_has_likes_dislikes  JOIN videos AS v ON videos_has_likes_dislikes.video_id = v.video_id WHERE v.video_id = ? AND v.isDeleted = 0 AND videos_has_likes_dislikes.isLike = 0;";
-
-	private static final String LIKE_EXISTS = "SELECT COUNT(vhld.id) as count FROM videos_has_likes_dislikes AS vhld JOIN videos AS v ON vhld.video_id = v.video_id WHERE vhld.video_id = ? AND vhld.channel_id = ? AND v.isDeleted = 0 AND vhld.isLike = 1;";
-
-	private static final String DISLIKE_EXISTS = "SELECT COUNT(vhld.id) as count FROM videos_has_likes_dislikes AS vhld JOIN videos AS v ON vhld.video_id = v.video_id WHERE vhld.video_id = ? AND vhld.channel_id = ? AND v.isDeleted = 0 AND vhld.isLike = 0;";
+	private static final String COUNT_OF_LIKES_DISLIKES = "SELECT (SELECT COUNT(1) FROM videos_has_likes_dislikes WHERE video_id = ? AND isLike) AS likes, "
+			+ "(SELECT COUNT(1) FROM videos_has_likes_dislikes WHERE video_id = ? AND NOT isLike) AS dislikes;";
 
 	// inserts
-	private static final String ADD_VIDEO_TO_CHANNEL = " INSERT INTO videos (channel_id, video_url, photo_url, title, date, description, views) VALUES (?,?,?,?,now(),?,?);";
+	private static final String ADD_VIDEO_TO_CHANNEL = " INSERT INTO videos (channel_id, video_url, photo_url, title, upload_date, description, views) VALUES (?,?,?,?,now(),?,?);";
 
 	private static final String WRITE_IN_VIDEOS_HAS_TAGS = "INSERT INTO videos_has_tags (video_id,tag_id) VALUES (?,?)";
 
@@ -75,13 +66,11 @@ public class VideoDAO implements IVideoDAO {
 
 	private static final String INSERT_VIDEO_IN_PLAYLIST = "INSERT INTO playlists_has_videos (video_id,playlist_id) VALUES (?,?)";
 
-	private static final String LIKE_VIDEO = "INSERT INTO videos_has_likes_dislikes (isLike,video_id,channel_id) VALUES (1,?,?)";
+	private static final String LIKE_DISLIKE_VIDEO = "INSERT INTO videos_has_likes_dislikes (video_id,channel_id,isLike) VALUES (?,?,?)";
 
-	private static final String DISLIKE_VIDEO = "INSERT INTO videos_has_likes_dislikes (isLike,video_id,channel_id) VALUES (0,?,?)";;
-
-	//updates
+	// updates
 	private static final String INCREASE_VIEWS = "UPDATE videos SET views = views+1 WHERE video_id = ? AND isDeleted=0;";
-	
+
 	// deletes
 	private static final String DELETE_VIDEO = "DELETE FROM videos WHERE video_id = ?;";
 
@@ -90,14 +79,8 @@ public class VideoDAO implements IVideoDAO {
 
 	private static final String REMOVE_LIKE_DISLIKE_FROM_VIDEO = "DELETE FROM videos_has_likes_dislikes WHERE video_id = ? AND channel_id = ?;";
 
-
-
-	
-
-	
-	
 	@Autowired
-	private DBManager dbManager; 
+	private DBManager dbManager;
 
 	@Override
 	public Video getVideoById(int video_id) throws IllegalInputException, DataBaseException {
@@ -127,7 +110,7 @@ public class VideoDAO implements IVideoDAO {
 			return null;
 		}
 	}
- 
+
 	@Override
 	public List<Video> getMostPopularVideos() throws IllegalInputException, DataBaseException {
 		final Connection connection = dbManager.getConnection();
@@ -141,7 +124,7 @@ public class VideoDAO implements IVideoDAO {
 			return null;
 		}
 	}
-	
+
 	@Override
 	public List<Video> getRecentVideos() throws IllegalInputException, DataBaseException {
 		final Connection connection = dbManager.getConnection();
@@ -155,8 +138,7 @@ public class VideoDAO implements IVideoDAO {
 			return null;
 		}
 	}
-	
-	
+
 	@Override
 	public List<Video> getVideosByTagAndSortByDate(String tag) throws IllegalInputException, DataBaseException {
 		final Connection connection = dbManager.getConnection();
@@ -175,27 +157,31 @@ public class VideoDAO implements IVideoDAO {
 			return null;
 		}
 	}
-	
-	public List<Video> ByChannelIdByViews(int channel_id) throws IllegalInputException, DataBaseException, SQLException {
+
+	public List<Video> ByChannelIdByViews(int channel_id)
+			throws IllegalInputException, DataBaseException, SQLException {
 		final Connection connection = dbManager.getConnection();
-			List<Video> videos = dbManager.executeSelect(connection, VIDEOS_BY_CHANNEL_ID_ORDER_BY_VIEWS,
-					new VideoResolver(), channel_id);
-			return Collections.unmodifiableList(videos);
-		
+		List<Video> videos = dbManager.executeSelect(connection, VIDEOS_BY_CHANNEL_ID_ORDER_BY_VIEWS,
+				new VideoResolver(), channel_id);
+		return Collections.unmodifiableList(videos);
+
 	}
+
 	public List<Video> ByChannelIdByDate(int channel_id) throws IllegalInputException, DataBaseException, SQLException {
 		final Connection connection = dbManager.getConnection();
-			List<Video> videos = dbManager.executeSelect(connection, VIDEOS_BY_CHANNEL_ID_ORDER_BY_DATE,
-					new VideoResolver(), channel_id);
-			return Collections.unmodifiableList(videos);
-		
+		List<Video> videos = dbManager.executeSelect(connection, VIDEOS_BY_CHANNEL_ID_ORDER_BY_DATE,
+				new VideoResolver(), channel_id);
+		return Collections.unmodifiableList(videos);
+
 	}
-	public List<Video> ByChannelIdByTitle(int channel_id) throws IllegalInputException, DataBaseException, SQLException {
+
+	public List<Video> ByChannelIdByTitle(int channel_id)
+			throws IllegalInputException, DataBaseException, SQLException {
 		final Connection connection = dbManager.getConnection();
-			List<Video> videos = dbManager.executeSelect(connection, VIDEOS_BY_CHANNEL_ID_ORDER_BY_TITLE,
-					new VideoResolver(), channel_id);
-			return Collections.unmodifiableList(videos);
-		
+		List<Video> videos = dbManager.executeSelect(connection, VIDEOS_BY_CHANNEL_ID_ORDER_BY_TITLE,
+				new VideoResolver(), channel_id);
+		return Collections.unmodifiableList(videos);
+
 	}
 
 	@Override
@@ -229,21 +215,37 @@ public class VideoDAO implements IVideoDAO {
 			return null;
 		}
 	}
-
+	
 	@Override
-	public int addVideo(Video video, int channelId) throws DataBaseException  {
+	public LikesDTO getLikesDislikes(int video_id) throws DataBaseException {
 		final Connection connection = dbManager.getConnection();
 
 		try {
 			dbManager.startTransaction(connection);
-			int inserted = dbManager.execute(connection, ADD_VIDEO_TO_CHANNEL, channelId,
-					video.getVideoUrl(), video.getPhotoUrl(), video.getTitle(), video.getDescription(), 0);
+			final LikesDTO likesDislikesCount = dbManager.executeSingleSelect(connection, COUNT_OF_LIKES_DISLIKES,
+					(rs) -> new LikesDTO(rs.getInt("likes"), rs.getInt("dislikes")), video_id, video_id);
+			dbManager.commit(connection);
+			return likesDislikesCount;
+		} catch (SQLException s) {
+			dbManager.rollback(connection, s);
+		}
+		return null;
+	}
+
+	@Override
+	public int addVideo(Video video, int channelId) throws DataBaseException {
+		final Connection connection = dbManager.getConnection();
+
+		try {
+			dbManager.startTransaction(connection);
+			int inserted = dbManager.execute(connection, ADD_VIDEO_TO_CHANNEL, channelId, video.getVideoUrl(),
+					video.getPhotoUrl(), video.getTitle(), video.getDescription(), 0);
 			Video addedVideo = dbManager.executeSingleSelect(connection, GET_VIDEO_BY_TITLE, new VideoResolver(),
 					video.getTitle());
 			writeInVideosHasTagsTable(connection, addedVideo.getTitle() + " " + addedVideo.getDescription(),
 					addedVideo.getVideoId());
 			dbManager.commit(connection);
-			
+
 			return inserted;
 		} catch (SQLException s) {
 			dbManager.rollback(connection, s);
@@ -252,9 +254,10 @@ public class VideoDAO implements IVideoDAO {
 	}
 
 	private void writeInVideosHasTagsTable(Connection connection, String videoTags, int video_id) throws SQLException {
-		String[] tags = videoTags.split("[^a-zA-Z0-9]");
+		String[] tags = videoTags.split("\\s");
+		Set<String> uniqueTags = new HashSet<>(Arrays.asList(tags));
 
-		for (String tag : tags) {
+		for (String tag : uniqueTags) {
 
 			int tagCount = dbManager.executeSingleSelect(connection, GET_TAG_COUNT, (rs) -> rs.getInt("count"), tag);
 			if (tagCount == 0) {
@@ -309,114 +312,32 @@ public class VideoDAO implements IVideoDAO {
 			return deleted;
 		} catch (SQLException s) {
 			dbManager.rollback(connection, s);
-			
+
 		}
 		return videoId;
 	}
 
 	@Override
-	public int getLikesForVideo(int video_id) throws DataBaseException {
-		final Connection connection = dbManager.getConnection();
-
-		try {
-			dbManager.startTransaction(connection);
-			final int likesCount = dbManager.executeSingleSelect(connection, COUNT_OF_LIKES, (rs) -> rs.getInt("count"),
-					video_id);
-			dbManager.commit(connection);
-			return likesCount;
-		} catch (SQLException s) {
-			dbManager.rollback(connection, s);
-			return -1;
-		}
-	}
-
-	@Override
-	public int getDislikesForVideo(int video_id) throws DataBaseException {
-		final Connection connection = dbManager.getConnection();
-
-		try {
-			dbManager.startTransaction(connection);
-			final int dislikesCount = dbManager.executeSingleSelect(connection, COUNT_OF_DISLIKES,
-					(rs) -> rs.getInt("count"), video_id);
-			dbManager.commit(connection);
-			return dislikesCount;
-		} catch (SQLException s) {
-			dbManager.rollback(connection, s);
-			return -1;
-		}
-	}
-
-	@Override
-	public void likeVideo(int video_id, int channel_id) throws DataBaseException {
-		final Connection connection = dbManager.getConnection();
-
-		try {
-			dbManager.startTransaction(connection);
-			dbManager.execute(connection, LIKE_VIDEO, video_id, channel_id);
-			dbManager.commit(connection);
-		} catch (SQLException s) {
-			dbManager.rollback(connection, s);
-		}
-	}
-
-	@Override
-	public void dislikeVideo(int video_id, int channel_id) throws DataBaseException {
-		final Connection connection = dbManager.getConnection();
-
-		try {
-			dbManager.startTransaction(connection);
-			dbManager.execute(connection, DISLIKE_VIDEO, video_id, channel_id);
-			dbManager.commit(connection);
-		} catch (SQLException s) {
-			dbManager.rollback(connection, s);
-		}
-	}
-
-	@Override
-	public boolean likeExists(int video_id, int channel_id) throws DataBaseException {
-		final Connection connection = dbManager.getConnection();
-
-		try {
-			dbManager.startTransaction(connection);
-			final int likeCount = dbManager.executeSingleSelect(connection, LIKE_EXISTS, (rs) -> rs.getInt("count"),
-					video_id, channel_id);
-			dbManager.commit(connection);
-			return (likeCount == 1) ? true : false;
-		} catch (SQLException s) {
-			dbManager.rollback(connection, s);
-			return false;
-		}
-	}
-
-	@Override
-	public boolean dislikeExists(int video_id, int channel_id) throws DataBaseException {
-		final Connection connection = dbManager.getConnection();
-
-		try {
-			dbManager.startTransaction(connection);
-			final int likeCount = dbManager.executeSingleSelect(connection, DISLIKE_EXISTS, (rs) -> rs.getInt("count"),
-					video_id, channel_id);
-			dbManager.commit(connection);
-			return (likeCount == 1) ? true : false;
-		} catch (SQLException s) {
-			dbManager.rollback(connection, s);
-			return false;
-		}
-	}
-
-	@Override
-	public void removeLikeDislikeFromVideo(int video_id, int channel_id) throws DataBaseException {
+	public LikesDTO likeDislikeVideo(int video_id, int channel_id, boolean isLike) throws DataBaseException {
 		final Connection connection = dbManager.getConnection();
 
 		try {
 			dbManager.startTransaction(connection);
 			dbManager.execute(connection, REMOVE_LIKE_DISLIKE_FROM_VIDEO, video_id, channel_id);
+			int inserted = dbManager.execute(connection, LIKE_DISLIKE_VIDEO, video_id, channel_id, isLike);
+			if (inserted != 1) {
+				throw new DataBaseException("Like or dislike coudn`t be updated.");
+			}
+			final LikesDTO likesDislikesCount = dbManager.executeSingleSelect(connection, COUNT_OF_LIKES_DISLIKES,
+					(rs) -> new LikesDTO(rs.getInt("likes"), rs.getInt("dislikes")), video_id, video_id);
 			dbManager.commit(connection);
+			return likesDislikesCount;
 		} catch (SQLException s) {
 			dbManager.rollback(connection, s);
 		}
+		return null;
 	}
-	
+
 	@Override
 	public void increaseViewsForVideo(int video_id) throws DataBaseException {
 		final Connection connection = dbManager.getConnection();
@@ -429,8 +350,4 @@ public class VideoDAO implements IVideoDAO {
 			dbManager.rollback(connection, s);
 		}
 	}
-public static void main(String[] args) {
-	
-}
-	
 }
