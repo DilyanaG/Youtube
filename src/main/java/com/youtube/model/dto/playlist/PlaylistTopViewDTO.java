@@ -14,8 +14,8 @@ public class PlaylistTopViewDTO {
 	private int channelId;
 	private String playlistName;
 	private String photoUrl;
-	private LocalDateTime createDate;
-	private LocalDateTime lastVideoAddDate;
+	private String createDate;
+	private String lastVideoAddDate;
 	
 	
 	
@@ -23,8 +23,8 @@ public class PlaylistTopViewDTO {
           this.playlistId = playlist.getPlaylistId();
           this.channelId=playlist.getChannel().getChannelId();
           this.playlistName=playlist.getPlaylistName();
-          this.createDate=playlist.getCreationDateTime();
-          this.lastVideoAddDate=playlist.getLastVideoUploaded();
+          this.createDate=playlist.getCreationDateTime().toString();
+          this.lastVideoAddDate=playlist.getLastVideoUploaded().toString();
           this.photoUrl=playlistVideos==null||playlistVideos.isEmpty()?DEFOULT_PLAYLIST_PHOTO:playlistVideos.get(new Random().nextInt(playlistVideos.size())).getPhotoUrl();
 	}
 	public int getPlaylistId() {
@@ -51,16 +51,16 @@ public class PlaylistTopViewDTO {
 	public void setPhotoUrl(String photoUrl) {
 		this.photoUrl = photoUrl;
 	}
-	public LocalDateTime getCreateDate() {
+	public String getCreateDate() {
 		return createDate;
 	}
-	public void setCreateDate(LocalDateTime createDate) {
+	public void setCreateDate(String createDate) {
 		this.createDate = createDate;
 	}
-	public LocalDateTime getLastVideoAddDate() {
+	public String getLastVideoAddDate() {
 		return lastVideoAddDate;
 	}
-	public void setLastVideoAddDate(LocalDateTime lastVideoAddDate) {
+	public void setLastVideoAddDate(String lastVideoAddDate) {
 		this.lastVideoAddDate = lastVideoAddDate;
 	}
 	

@@ -306,7 +306,7 @@ function getPlaylists(channelId,sortBy) {
 						$('#content').append(
 										'<div class="col-md-4 resent-grid recommended-grid slider-top-grids">'
 												+ '    <div class="resent-grid-img recommended-grid-img">'
-												+ '		<a href="./video?videoId='
+												+ '		<a href="./playlist?playlistId='
 												+ response.playlists[i].playlistId
 												+ '"><img src="'+response.playlists[i].photoUrl+'" alt=""></a>'
 												+ '		<div class="time">'
@@ -318,11 +318,15 @@ function getPlaylists(channelId,sortBy) {
 												+ '	</div>'
 												+ '	<div class="resent-grid-info recommended-grid-info">'
 												+ '		<h3>'
-												+ '			<a href="./video?videoId='
+												+ '			<a href="./playlist?playlistId='
 												+ response.playlists[i].playlistId
 												+ '" class="title title-info" >'
 												+ response.playlists[i].playlistName
 												+ '</a> </h3>'
+												+ '	<ul>'
+												+ '		<li class="right-list"><p class="views views-info"></p> create date : '+response.playlists[i].createDate+'</li>'
+												+ '		<li class="right-list"><p class="views views-info"></p> last added  : '+response.playlists[i].lastVideoAddDate+'</li>'
+												+ '	</ul>'
 												+ '	</div>'
 												+ '	<p id="deleteButton">'
 												+ '  <c:if test="${ sessionScope.channelId == profile.channelId  }">'

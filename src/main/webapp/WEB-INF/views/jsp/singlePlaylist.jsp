@@ -11,29 +11,32 @@
 	<div class="show-top-grids">
 		<div class="col-sm-8 single-left">
 			<div class="song">
+			     <div class="song-info">
+					<h3>${currentVideo.title}</h3>
+				</div>
 				<div id="currentVideo" class="video-grid">
-					<!--  in src put -> {get currentVideo.videoUrl}  -->
-					<iframe src="https://www.youtube.com/embed/oYiT-vLjhC4"
-						allowfullscreen=""></iframe>
+					<video width="640" height="264" controls>
+						<source src="${currentVideo.videoUrl}" type="video/mp4">
+					</video>
 				</div>
 			</div>
 			<div class="song-grid-right">
 				<div id="videoOptions" class="share">
 					<h5>Options</h5>
 					<ul>
-						<li><a href="#" class="icon fb-icon">Share</a></li>
+						<li><a  class="icon fb-icon">DELETE</a></li>
 						<!--   put -> {get currentVideo.views}  -->
-						<li class="view">200 Views</li>
+						<li class="view">${currentVideo.views}</li>
 						<!--   put -> {get currentVideo.likes}  -->
-						<li><a href="#" class="icon like">26 Likes</a></li>
+						<li><a  class="icon like">${currentVideo.likes}</a></li>
 						<!--   put -> {get currentVideo.dislikes}  -->
-						<li><a href="#" class="icon dribbble-icon">9 Dislikes</a></li>
+						<li><a  class="icon dribbble-icon">${currentVideo.dislikes}</a></li>
 					</ul>
 				</div>
 			</div>
 			<div class="clearfix"></div>
 			<div class="published">
-				<script src="/FinalProject/js/jquery.min.js"></script>
+				<script src="FinalProject/js/jquery.min.js"></script>
 				<script>
 					$(document).ready(function() {
 						size_li = $("#myList li").size();
@@ -51,14 +54,13 @@
 				</script>
 				<div class="load_more">
 					<div id="currentVideoAuthor" class="main_video_info">
-						<img src="images/male.png" alt="user_profile_picture"
+						<img src="${currentVideo.profilePictureUrl} alt="user_profile_picture"
 							id="profile-pic">
 						<p class="author">
 							<!--   put -> ./profile?channelId={get currentVideo.channelId} 
 						 and {get currentVideo.username} 
 						  and {get currentVideo.createDate} -->
-							By <a href="#" class="author">John Maniya</a> <br> <span>Published
-								on: 5 June 2015</span>
+							By <a href="./profile?channelId=${currentVideo.profilePictureUrl}" class="author">${currentVideo.username}</a> <br> <span></span>
 						</p>
 
 						<div class="heading-right">
@@ -76,19 +78,9 @@
 						<br>
 						<br>
 						<li style="display: list-item;">
-							<p>Nullam fringilla sagittis tortor ut rhoncus.</p>
+							<p>${currentVideo.description}</p>
 						</li>
-						<li>
-							<div class="load-grids">
-								<div class="load-grid">
-									<p>Category</p>
-								</div>
-								<div class="load-grid">
-									<a href="movies.html">Entertainment</a>
-								</div>
-								<div class="clearfix"></div>
-							</div>
-						</li>
+						
 					</ul>
 				</div>
 			</div>
