@@ -12,6 +12,7 @@ import com.youtube.model.dao.comment.ICommentDAO;
 import com.youtube.model.dao.video.IVideoDAO;
 import com.youtube.model.dto.video.CommentDTO;
 import com.youtube.model.dto.video.LikesDTO;
+import com.youtube.model.dto.video.OtherVideosDTO;
 import com.youtube.model.dto.video.VideoDTO;
 import com.youtube.model.pojo.Video;
 
