@@ -12,9 +12,11 @@ import org.springframework.stereotype.Component;
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
 import com.youtube.db.DBManager;
+import com.youtube.model.dto.playlist.ChannelPlaylistDTO;
 import com.youtube.model.dao.video.VideoDAO;
 import com.youtube.model.dto.playlist.PlaylistTopViewDTO;
 import com.youtube.model.pojo.Playlist;
+import com.youtube.model.resolvers.ChannelPlaylistDTOResolver;
 import com.youtube.model.resolvers.PlaylistResolver;
 @Component
 public class PlaylistDAO implements IPlaylistDAO{
@@ -26,6 +28,9 @@ public class PlaylistDAO implements IPlaylistDAO{
 
 	private static final String ALL_PLAYLISTS = "SELECT p.*,ch.* FROM playlists AS p JOIN channels AS ch ON ch.channel_id=p.channel_id ;";
 
+	private static final String CHANNEL_PLAYLISTS = "SELECT p.name, p.playlist_id, ch.channel_id FROM playlists AS p JOIN channels AS ch ON ch.channel_id=p.channel_id WHERE p.channel_id = ?;";
+
+	
 	// updates
 	private static final String UPDATE_NAME = "UPDATE playlists SET name = ? WHERE playlist_id = ?; ";
 
@@ -88,6 +93,21 @@ public class PlaylistDAO implements IPlaylistDAO{
 		try {
 			dbManager.startTransaction(connection);
 			List<Playlist> playlists = dbManager.executeSelect(connection, ALL_PLAYLISTS, new PlaylistResolver());
+			dbManager.commit(connection);
+			return Collections.unmodifiableList(playlists);
+		} catch (SQLException s) {
+			dbManager.rollback(connection, s);
+			return null;
+		}
+	}
+	
+	@Override
+	public List<ChannelPlaylistDTO> getAllChannelPlaylists(int channelId) throws DataBaseException {
+		final Connection connection = dbManager.getConnection();
+
+		try {
+			dbManager.startTransaction(connection);
+			List<ChannelPlaylistDTO> playlists = dbManager.executeSelect(connection, CHANNEL_PLAYLISTS, new ChannelPlaylistDTOResolver(), channelId);
 			dbManager.commit(connection);
 			return Collections.unmodifiableList(playlists);
 		} catch (SQLException s) {

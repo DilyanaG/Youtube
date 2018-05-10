@@ -33,7 +33,6 @@ public class ProfileController {
 	@RequestMapping(value="/profile",method = RequestMethod.GET)
 	public String profile(Model model,HttpServletRequest req) throws IllegalInputException, DataBaseException{
 		
-		System.out.println("v momenta otivash na kanal "+req.getParameter("channelId"));
 		int channelId= Integer.valueOf(req.getParameter("channelId"));
 		    
 		Channel  currentUser =channelDao.getChannelById(channelId);
@@ -41,7 +40,7 @@ public class ProfileController {
 		List<Channel> subscriptions= channelDao.getFollowedChannels(channelId);
 		 
 		ProfileViewDTO profile = new ProfileViewDTO(currentUser,subscriptions);
-		System.out.println(profile);
+
 		//for subscribe button 
 		if(req.getSession().getAttribute("channelId")!=null){
 			for(Channel folowed:channelDao.getFollowedChannels((int)(req.getSession().getAttribute("channelId")))){

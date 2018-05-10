@@ -44,7 +44,7 @@ public class VideoDAO implements IVideoDAO {
 			+ "ON u.user_id=ch.user_id WHERE v.isDeleted = 0" + " ORDER BY v.views DESC LIMIT 15;";
 
 	private static final String GET_OTHER_VIDEOS = "SELECT v.video_id, v.title, v.views, ch.channel_id, u.user_name, v.photo_url FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id  JOIN users AS u  "
-			+ "ON u.user_id=ch.user_id WHERE v.isDeleted = 0 ORDER BY v.views DESC LIMIT 10;";
+			+ "ON u.user_id=ch.user_id WHERE v.isDeleted = 0 AND v.video_id <> ? ORDER BY v.views DESC LIMIT 10;";
 
 	
 	private static final String SELECT_ALL_VIDEOS_BY_CHANNEL_ID = "SELECT v.*, ch.* FROM videos AS v JOIN channels AS ch ON v.channel_id = ch.channel_id "
@@ -244,12 +244,12 @@ public class VideoDAO implements IVideoDAO {
 	}
 
 	@Override
-	public List<OtherVideosDTO> getOtherVideos() throws DataBaseException {
+	public List<OtherVideosDTO> getOtherVideos(int videoId) throws DataBaseException {
 		final Connection connection = dbManager.getConnection();
 
 		try {
 			dbManager.startTransaction(connection);
-			List<OtherVideosDTO> otherVideos = dbManager.executeSelect(connection, GET_OTHER_VIDEOS, new OtherVideosDTOResolver());
+			List<OtherVideosDTO> otherVideos = dbManager.executeSelect(connection, GET_OTHER_VIDEOS, new OtherVideosDTOResolver(), videoId);
 			dbManager.commit(connection);
 			return Collections.unmodifiableList(otherVideos);
 		} catch (SQLException s) {
@@ -296,13 +296,13 @@ public class VideoDAO implements IVideoDAO {
 	}
 
 	@Override
-	public int addVideoToPlaylist(Video video, Playlist playlist) throws DataBaseException {
+	public int addVideoToPlaylist(int videoId, int playlistId) throws DataBaseException {
 		final Connection connection = dbManager.getConnection();
 
 		try {
 			dbManager.startTransaction(connection);
-			int inserted = dbManager.execute(connection, INSERT_VIDEO_IN_PLAYLIST, video.getVideoId(),
-					playlist.getPlaylistId());
+			int inserted = dbManager.execute(connection, INSERT_VIDEO_IN_PLAYLIST, videoId,
+					playlistId);
 			dbManager.commit(connection);
 			return inserted;
 		} catch (SQLException s) {

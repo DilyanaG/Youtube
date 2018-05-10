@@ -52,7 +52,7 @@ public class VideoController {
 		}
 		model.addAttribute("video", video);
 		
-		List<OtherVideosDTO> suggestedVideos = videoDAO.getOtherVideos();
+		List<OtherVideosDTO> suggestedVideos = videoDAO.getOtherVideos(videoId);
 		model.addAttribute("suggestedVideos", suggestedVideos);
 		
 		return "single";

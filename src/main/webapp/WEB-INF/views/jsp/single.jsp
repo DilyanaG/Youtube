@@ -63,7 +63,7 @@
 						<c:if test="${not empty sessionScope.channelId}">
 							<c:choose>
 								<c:when test="${sessionScope.channelId != video.channelId}">
-									<li><a href="./addToPlaylist" class="icon pinterest-icon">To
+									<li><a href="./addToPlaylist?videoId=${video.videoId}" class="icon pinterest-icon">To
 											Playlist</a></li>
 									<li><a href="#" onclick="isLike(${video.videoId}, true)"
 										class="icon like"><div id="likes">${video.likes}</div></a></li>
@@ -198,7 +198,7 @@
 							</a>
 						</div>
 						<div class="col-md-8 single-right-grid-right">
-							<a href="" class="title">${suggestedVideo.title}</a>
+							<a href="./video?videoId=${suggestedVideo.videoId}" class="title">${suggestedVideo.title}</a>
 							<br>
 							<p class="author">
 								By <a href="./profile?channelId=${suggestedVideo.channelId}" class="author">${suggestedVideo.username}</a>
