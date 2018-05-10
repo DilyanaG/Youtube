@@ -3,11 +3,27 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page errorPage="./error"%>
 
-
+<style>
+.button {
+	background-color: #21DEEF;
+	border: none;
+	color: white;
+	border-radius: 3px;
+	padding: 10px 25px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	margin: 4px 2px;
+	cursor: pointer;
+	font-size: 16px
+}
+</style>
 <jsp:include page="header.jsp" />
 <jsp:include page="sideMenu.jsp" />
 
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+	<c:if test="${ not empty currentVideo}">
 	<div class="show-top-grids">
 		<div class="col-sm-8 single-left">
 			<div class="song">
@@ -85,31 +101,37 @@
 			<div class="all-comments">
 				<div class="all-comments-info">
 					<h3>COMMENTS</h3>
+					<script src="FinalProject/js/comments.js"></script>
 					<div class="box">
-						<form>
-
-							<textarea placeholder="Message" required=" "></textarea>
-							<input type="submit" value="SEND">
+					<c:if test="${not empty sessionScope.channelId}">
+						<textarea id="message" placeholder="Message" name="message"></textarea>
+							<br>
+							<div id ="commentButton">
+							    <button onclick="writeComment2(${currentVideo.videoId},${playlistId})" class="button">SEND</button>
+							</div>
+							
 							<div class="clearfix"></div>
-						</form>
+					</c:if>
 					</div>
 					<div class="all-comments-buttons"></div>
 				</div>
 				<div id="comments">
-					<c:forEach items="${currentVideoComments}" var="comment">
+					<c:forEach items="${currentVideo.comments}" var="comment">
 
 						<div class="media-grids">
 							<div class="media">
 								<!-- currentVideoComments.username or channelname here  -->
-								<h5>Tom Brown</h5>
+								<h5>${comment.username}</h5>
 								<div class="media-left">
-									<a href="#"> </a>
+									<a href="./profile?channelId=${comment.channelId}">
+										<img src="${comment.profilePicture}" width="65" height="65" style="border-radius: 50%"></img>
+									</a>
 								</div>
 								<div class="media-body">
 									<!-- currentVideoComments.content  here  -->
-									<p>Maecenas ssdasd</p>
+									<p>${comment.message}</p>
 									<!-- currentVideoComments.date  -->
-									<span>Posted on : 12 June 2015 </span>
+									<span>Posted on : ${comment.uploadDate} </span>
 								</div>
 							</div>
 						</div>
@@ -149,6 +171,13 @@
 		</div>
 		<div class="clearfix"></div>
 	</div>
+	</c:if>
+	<c:if test="${empty currentVideo}">
+	   <div class="show-top-grids">
+	   <h3>PLAYLIST IS EMPTY</h3>
+	   <div class="clearfix"></div>
+	</div>
+	</c:if>
 	<!-- footer -->
 	<jsp:include page="footer.jsp" />
 	<!-- //footer -->
@@ -205,7 +234,7 @@ function openVideo(videoId,playlistId) {
 					
 						+'  	<li><a class="icon dribbble-icon">'+video.dislikes+'</a></li>'
 						+'  </ul>'
-						);
+						); 
 				$('#currentVideoAuthor').empty();
 				$('#currentVideoAuthor').append(
 						' <img src= "'+video.profilePictureUrl+'" alt="user_profile_picture width="100" height="100" "'
@@ -218,24 +247,30 @@ function openVideo(videoId,playlistId) {
 						+' </div>'
 						);
 				
+				$('#commentButton').empty();
+				$('#commentButton').append(
+						'<button onclick="writeComment2('+video.videoId+',${playlistId})" class="button">SEND</button>'
+						);
 				$('#comments').empty();
-				for (i = 0; i < response.comments.length; i++) {
+				for (i = 0; i < video.comments.length; i++) {
 				$('#comments').append(
-							'<div class="media-grids">'
-							+' <div class="media">'
-							+'	 <h5>'+response.comments[i].title+'</h5>'
-							+'	<div class="media-left">'
-							+'		<a> </a>'
-							+'	</div>'
-							+'	<div class="media-body">'		
-							+'		<p>'+response.comments[i].title+'</p>'	
-							+'		<span>Posted on :'+response.comments[i].uploadDate
-
-							+'</span>'
-							+'		</div>'
-							+' 	</div>'
+						'<div class="media-grids">'
+						+'<div class="media">'
+							<!-- currentVideoComments.username or channelname here  -->
+							+'	<h5>'+video.comments[i].username+'</h5>'
+							+'<div class="media-left">'
+							+'	<a href="./profile?channelId=${comment.channelId}">'
+							+'		<img src="'+video.comments[i].profilePicture+'" width="65" height="65" style="border-radius: 50%"></img>'
+							+'	</a>'
 							+'</div>'
+							+'<div class="media-body">'
 						
+							+'	<p>'+video.comments[i].message+'</p>'
+								<!-- currentVideoComments.date  -->
+							+'	<span>Posted on : '+video.comments[i].uploadDate+' </span>'
+							+'</div>'
+							+'</div>'
+							+'</div>'
 					);
 				}
 				$('#playlistVideos').empty();
@@ -262,7 +297,7 @@ function openVideo(videoId,playlistId) {
 				}
 		}
 	});				
-};	
+}	
 </script>
 
 </body>

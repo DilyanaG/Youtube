@@ -33,18 +33,20 @@ public class SingleMenuController {
 			              @RequestParam(value = "playlistId") int playlistId) throws IllegalInputException, DataBaseException {
 		
 		List<Video> playlistVideos= videoDAO.getAllVideosFromPlaylist(playlistId);
-	    VideoDTO currentVideo=videoService.playVideo(playlistVideos.get(0).getVideoId());
-	    playlistVideos.remove(playlistVideos.get(0));
+		if(playlistVideos!=null&& !playlistVideos.isEmpty()){
+			  VideoDTO currentVideo=videoService.playVideo(playlistVideos.get(0).getVideoId());
+			    playlistVideos.remove(playlistVideos.get(0));
+					
 			
-	
-	    List<VideoTopViewDTO> otherVideos= new ArrayList<>();
-	     for(Video video:playlistVideos){
-	    	 otherVideos.add(new VideoTopViewDTO(video));
-	     }
-	    model.addAttribute("playlistId", playlistId);
-	    model.addAttribute("currentVideo", currentVideo);
-		model.addAttribute("currentVideoComments", otherVideos);
-		model.addAttribute("playlistVideos", otherVideos);
+			    List<VideoTopViewDTO> otherVideos= new ArrayList<>();
+			     for(Video video:playlistVideos){
+			    	 otherVideos.add(new VideoTopViewDTO(video));
+			     }
+			    model.addAttribute("playlistId", playlistId);
+			    model.addAttribute("currentVideo", currentVideo);
+				model.addAttribute("playlistVideos", otherVideos);
+		};
+	  
 		
 		
 		return "singlePlaylist";

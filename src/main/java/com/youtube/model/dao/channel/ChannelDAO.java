@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
 import com.youtube.db.DBManager;
+import com.youtube.model.dto.channel.ProfileViewDTO;
+import com.youtube.model.dto.playlist.PlaylistTopViewDTO;
 import com.youtube.model.pojo.Channel;
 import com.youtube.model.resolvers.ChannelResolver;
 
@@ -21,7 +23,7 @@ import com.youtube.model.resolvers.ChannelResolver;
 public class ChannelDAO implements IChannelDAO {
 
 	// selects
-	private static final String ALL_CHANNELS = "SELECT ch.channel_id, ch.user_id FROM channels AS ch WHERE ch.isDeleted = 0;";
+	private static final String ALL_CHANNELS = "SELECT ch.*,u.* FROM channels AS ch JOIN users u ON ch.user_id=u.user_id WHERE u.user_name LIKE ? AND ch.isDeleted = 0;";
 
 	private static final String BY_CHANNEL_ID = "SELECT ch.*, u.* FROM channels AS ch JOIN users AS u ON u.user_id=ch.user_id WHERE ch.channel_id = ? AND ch.isDeleted = 0;";
 
@@ -42,8 +44,7 @@ public class ChannelDAO implements IChannelDAO {
 			+ " (follower_channel_id, followed_channel_id) VALUES (?,?);";
 
 	// delete
-
-	private static final String UNFOLLOW_CHANNEL = "DELETE FROM channels_followed_channels where follower_channel_id = ? and followed_channel_id = ? ;";
+private static final String UNFOLLOW_CHANNEL = "DELETE FROM channels_followed_channels where follower_channel_id = ? and followed_channel_id = ? ;";
 
 
 
@@ -67,25 +68,18 @@ public class ChannelDAO implements IChannelDAO {
 	}
 
 	@Override
-	public Map<String, Channel> getAllChannels() throws IllegalInputException, DataBaseException {
+	public List<ProfileViewDTO> getAllChannels(String searchWord) throws IllegalInputException, DataBaseException, SQLException {
 		final Connection connection = dbManager.getConnection();
 
-		Map<String, Channel> allChannels = new HashMap<String, Channel>();
 		List<Channel> channels = new ArrayList<Channel>();
-
-		try {
-			dbManager.startTransaction(connection);
-			channels = dbManager.executeSelect(connection, ALL_CHANNELS, new ChannelResolver());
-			dbManager.commit(connection);
-		} catch (SQLException s) {
-			dbManager.rollback(connection, s);
+        searchWord="%"+searchWord+"%";
+		channels = dbManager.executeSelect(connection, ALL_CHANNELS, new ChannelResolver(),searchWord);
+		List<ProfileViewDTO> channelViews= new ArrayList<>();
+		for(Channel c:channels){
+			System.out.println("chanels:"+c);
+			channelViews.add(new ProfileViewDTO(c));
 		}
-
-		for (Channel channel : channels) {
-			allChannels.put(channel.getUser().getUserName(), channel);
-		}
-
-		return Collections.unmodifiableMap(allChannels);
+		return Collections.unmodifiableList(channelViews);
 	}
 
 	@Override

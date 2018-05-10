@@ -4,11 +4,13 @@ import java.util.List;
 
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.model.dto.playlist.ChannelPlaylistDTO;
+import com.youtube.controller.exceptions.IllegalInputException;
+import com.youtube.model.dto.playlist.PlaylistTopViewDTO;
 import com.youtube.model.pojo.Playlist;
 
 public interface IPlaylistDAO {
 
-	Playlist getPlaylistByName(String playlist_name) throws DataBaseException;
+	List<PlaylistTopViewDTO> getPlaylistByName(String playlist_name) throws DataBaseException, IllegalInputException;
 
 	List<Playlist> getPlaylistsByChannelAndSortByCreationDate(int channelId) throws DataBaseException;
 

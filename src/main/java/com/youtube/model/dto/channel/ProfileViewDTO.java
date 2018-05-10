@@ -15,12 +15,16 @@ public class ProfileViewDTO {
 	private String pictureUrl;
 	private List<SubscriptionDTO> subscriptions= new ArrayList<>();
 	
-	
-	
-	public ProfileViewDTO(Channel currentUser, List<Channel> subscriptions) {
+	public ProfileViewDTO(Channel currentUser) {
 		this.channelId=currentUser.getChannelId();
 		this.username=currentUser.getUser().getUserName();
 		this.pictureUrl=currentUser.getUser().getPhotoURL()==null?"":currentUser.getUser().getPhotoURL();
+		
+		
+	}
+	
+	public ProfileViewDTO(Channel currentUser, List<Channel> subscriptions) {
+		this(currentUser);
 		for(Channel subs:subscriptions){
 			 this.subscriptions.add(new SubscriptionDTO(subs));
 		}

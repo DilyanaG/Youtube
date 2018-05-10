@@ -1,5 +1,6 @@
 package com.youtube.controller;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.youtube.controller.exceptions.DataBaseException;
 import com.youtube.controller.exceptions.IllegalInputException;
+import com.youtube.model.dao.channel.IChannelDAO;
+import com.youtube.model.dao.playlist.IPlaylistDAO;
 import com.youtube.model.dao.video.IVideoDAO;
+import com.youtube.model.dto.channel.ProfileViewDTO;
+import com.youtube.model.dto.playlist.PlaylistTopViewDTO;
 import com.youtube.model.dto.video.VideoTopViewDTO;
 import com.youtube.model.pojo.Video;
 
@@ -24,9 +29,15 @@ public class HomeController {
 
 	@Autowired
 	private IVideoDAO videoDao;
+	
+	@Autowired
+	private IChannelDAO channelDao;
+	
+	@Autowired
+	private IPlaylistDAO playlistDao;
 
 	@RequestMapping(value = { "/index", "/" }, method = RequestMethod.GET)
-	public String homePage(Model model, HttpServletRequest req) throws IllegalInputException, DataBaseException {
+	public String homePage(Model model, HttpServletRequest req) throws IllegalInputException, DataBaseException, SQLException {
 		
 		if (req.getParameter("errorMessage") != null) {
 			model.addAttribute("errorMessage", req.getParameter("errorMessage"));
@@ -35,6 +46,8 @@ public class HomeController {
 			model.addAttribute("successMessage", req.getParameter("successMessage"));
 		}
 		List<Video> videos = new ArrayList<>();
+		List<PlaylistTopViewDTO> playlist = new ArrayList<>();
+		List<ProfileViewDTO> channels = new ArrayList<>();
 		if (req.getParameter("search") == null) {
 
 			videos = videoDao.getRecentVideos();
@@ -54,7 +67,11 @@ public class HomeController {
 				break;
 			default:
 				videos = videoDao.getVideosByTagAndSortByDate(req.getParameter("search"));
-				model.addAttribute("message", "SEARCH RESULTS ");
+				playlist = playlistDao.getPlaylistByName(req.getParameter("search"));
+				channels=channelDao.getAllChannels(req.getParameter("search"));
+				model.addAttribute("playlist",playlist);
+				model.addAttribute("channels",channels);
+				
 				break;
 			}
 
