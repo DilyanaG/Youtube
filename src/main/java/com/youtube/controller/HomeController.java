@@ -64,6 +64,7 @@ public class HomeController {
 				break;
 			default:
 				videos = videoDao.getVideosByTagAndSortByDate(req.getParameter("search"));
+				System.out.println(videos.size());
 				playlist = playlistDao.getPlaylistByName(req.getParameter("search"));
 				channels=channelDao.getAllChannels(req.getParameter("search"));
 				model.addAttribute("playlist",playlist);
@@ -79,7 +80,7 @@ public class HomeController {
 
 			sendVideos.add(new VideoTopViewDTO(videos.get(i)));
 		}
-
+        
 		model.addAttribute("videos", sendVideos);
 
 		return "index";
