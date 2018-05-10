@@ -79,7 +79,11 @@
 
 						<div class="heading-right">
 							<!-- here ajax   -->
-							<a  onclick="removeVideoFromPlaylist(${currentVideo.videoId},${playlistId},${playlistVideos[0].videoId })"class="play-icon popup-with-zoom-anim">REMOVE VIDEO FROM PLAYLIST</a>
+							<c:if test="${not empty sessionScope.channelId}">
+							        <c:if test="${not empty logged}">
+							       <a  onclick="removeVideoFromPlaylist(${currentVideo.videoId},${playlistId},${playlistVideos[0].videoId })"class="play-icon popup-with-zoom-anim">REMOVE VIDEO FROM PLAYLIST</a>
+						           </c:if>
+						   </c:if>
 						</div>
 
 					</div>
