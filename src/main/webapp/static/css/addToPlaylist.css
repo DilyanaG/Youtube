@@ -10,7 +10,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 
 .icon {
     padding: 10px;
-    background: dodgerblue;
+    background: #21DEEF;
     color: white;
     min-width: 50px;
     text-align: center;
@@ -23,12 +23,12 @@ body {font-family: Arial, Helvetica, sans-serif;}
 }
 
 .input-field:focus {
-    border: 2px solid dodgerblue;
+    border: 1px solid #21DEEF;
 }
 
 /* Set a style for the submit button */
 .btn {
-    background-color: dodgerblue;
+    background-color: #21DEEF;
     color: white;
     padding: 15px 20px;
     border: none;
@@ -38,11 +38,18 @@ body {font-family: Arial, Helvetica, sans-serif;}
 }
 
 .btn:hover {
-    opacity: 1;
+	 background-color: #21DEEF;
+    color: white;
+    padding: 15px 20px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    opacity: 0.9;
 }
 
 /* The container */
 .container {
+	background-color: #21DEEF;
     display: block;
     position: relative;
     padding-left: 35px;
@@ -74,12 +81,12 @@ body {font-family: Arial, Helvetica, sans-serif;}
 
 /* On mouse-over, add a grey background color */
 .container:hover input ~ .checkmark {
-    background-color: #ccc;
+    background-color: #21DEEF;
 }
 
 /* When the checkbox is checked, add a blue background */
 .container input:checked ~ .checkmark {
-    background-color: #2196F3;
+    background-color: #21DEEF;
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
