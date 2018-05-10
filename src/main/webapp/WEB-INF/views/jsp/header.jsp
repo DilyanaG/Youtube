@@ -92,10 +92,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 										<br>
 
 										<div class="upload-image">
-											<img id="profileImage" src="http://lorempixel.com/100/100" width="150" heigth="150">
+											<img id="profileImage" src="${photoUrl}" width="150" heigth="150">
 											<form action="./changeProfilePic" method="post" enctype="multipart/form-data">
 												<input id="imageUpload" type="file" name="profile_photo"
-													placeholder="Photo" required="" capture=""> <br>
+													placeholder="Photo" required="" capture="" accept="image/*"> <br>
 												<script type="text/javascript" src="FinalProject/js/uploading.js"></script>
 												<input type="submit" value="Apply New Photo">
 											</form>

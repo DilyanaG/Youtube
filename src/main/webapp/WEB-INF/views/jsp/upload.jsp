@@ -3,6 +3,23 @@
 <%@page errorPage="./error"%>
 
 
+<style>
+#progress {
+    width: 100%;
+    background-color: grey;
+}
+#bar {
+    width: 1%;
+    height: 30px;
+    background-color: green;
+ 
+}
+#percent {
+    width: 100%;
+    background-color: grey;
+}
+</style>
+
 
 
 
@@ -12,11 +29,11 @@
 <div class="upload">
 	<!-- container -->
 	<div class="container">
-	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-	<c:if test="${not empty errorMessage}">
-		<h2 style="color:red">${errorMessage}</h2>
-	</c:if>
-	
+		<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+		<c:if test="${not empty errorMessage}">
+			<h2 style="color: red">${errorMessage}</h2>
+		</c:if>
+
 		<form action="./upload" method="post" enctype="multipart/form-data">
 			<div class="upload-grids">
 				<div class="upload-right">
@@ -26,14 +43,47 @@
 						</div>
 
 						<input type="file" value="Choose file" name="file"
-							accept="video/*" />
+							accept="video/*" required="" capture="" />
+
+                <script>
+                $(function() {
+
+                    var bar = $('.bar');
+                    var percent = $('.percent');
+                    var status = $('#status');
+
+                    $('form').ajaxForm({
+                        beforeSend: function() {
+                            status.empty();
+                            var percentVal = '0%';
+                            bar.width(percentVal);
+                            percent.html(percentVal);
+                        },
+                        uploadProgress: function(event, position, total, percentComplete) {
+                            var percentVal = percentComplete + '%';
+                            bar.width(percentVal);
+                            percent.html(percentVal);
+                        },
+                        complete: function(xhr) {
+                            status.html(xhr.responseText);
+                        }
+                    });
+                });
+                </script>
 					</div>
 					<div class="upload-info">
 						<h5>Select files to upload</h5>
 						<span>or</span>
 						<p>Drag and drop files</p>
 					</div>
+					<div class="progress">
+						<div class="bar"></div>
+						<div class="percent">0%</div>
+					</div>
+
+					<div id="status"></div>
 				</div>
+
 				<div class="upload-right-bottom-grids">
 
 					<div class="col-md-4 upload-right-bottom-left">

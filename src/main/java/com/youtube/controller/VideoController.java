@@ -58,7 +58,7 @@ public class VideoController {
 		return "single";
 	}
 	
-	@RequestMapping(value = "/likes ", method = RequestMethod.POST)
+	@RequestMapping(value = "/ggglikes ", method = RequestMethod.POST)
 	public LikesDTO like(@RequestParam(value = "videoId") int videoId,
 						@RequestParam(value = "isLike") boolean isLike,
 						HttpSession session) throws IllegalInputException, DataBaseException {
