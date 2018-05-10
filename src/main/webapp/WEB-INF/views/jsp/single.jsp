@@ -57,7 +57,7 @@
 					}  </script>
 					<h5>Options</h5>
 					<ul>
-						<li><a href="#" class="icon fb-icon">Share</a></li>
+						
 						<li class="view">${video.views}</li>
 
 						<c:if test="${not empty sessionScope.channelId}">

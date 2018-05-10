@@ -247,7 +247,12 @@ function openVideo(videoId,playlistId) {
 						+'       	By <a href="./profile?channelId='+video.channelId+'" class="author">'+video.username+'</a> <br> <span></span>'
 						+' </p>'
 						+' <div class="heading-right">'
-						+' 	<a onclick="removeVideoFromPlaylist('+video.videoId+',${playlistId},'+response.playlistVideos[0].videoId+')" class="play-icon popup-with-zoom-anim">REMOVE VIDEO FROM PLAYLIST</a>'
+						+'    <c:if test="${not empty sessionScope.channelId}">'
+						+'     <c:if test="${not empty logged}">'
+				             +'       <a  onclick="removeVideoFromPlaylist('+video.videoId+',${playlistId},'+response.playlistVideos[0].videoId+')"class="play-icon popup-with-zoom-anim">REMOVE VIDEO FROM PLAYLIST</a>'
+				             +'      </c:if>'
+				             +'   </c:if>'
+						
 						+' </div>'
 						);
 				

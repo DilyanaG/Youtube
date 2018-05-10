@@ -25,13 +25,13 @@
 	<div class="top-navigation">
 		<div class="t-menu"></div>
 		<div class="t-img">
-			<img src="${sessionScope.photoUrl}" alt="">
+			<img src="${profile.pictureUrl}" alt="">
 		</div>
 		<div class="clearfix"></div>
 	</div>
 	<div class="drop-navigation drop-navigation">
 		<ul class="nav nav-sidebar">
-			<img src="${sessionScope.photoUrl}" alt="" width="150" height="150"
+			<img src="${profile.pictureUrl}" alt="" width="150" height="150"
 				style="margin-left: 50px" />
 			<li class="active"><a href="" class="home-icon"> <span
 					aria-hidden="true" style="margin-left: 50px">

@@ -163,24 +163,23 @@ public class VideoDAO implements IVideoDAO {
 					newTag);
 			int [] dublicates = new int[videos.size()];
 			int index=0;
+			List<Video> sendvideos = new ArrayList<>();
 			for(int i=0;i<videos.size();i++){
 				boolean checker=true;
 				for(int x=0;x<videos.size();x++){
 					if(dublicates[x]==videos.get(i).getVideoId()){
 					  checker=false;
+					  break;
 					}
 				}
 				if(checker){
-				 dublicates[index++]=videos.get(i).getVideoId();
+				  dublicates[index++]=videos.get(i).getVideoId();
+				  sendvideos.add(videos.get(i));
 				}
 				
 			}
-			List<Video> sendvideos = new ArrayList<>();
-			for(int z=0;z<index;z++){
-				sendvideos.add(videos.get(dublicates[z]));
-			}
 			
-			dbManager.commit(connection);
+		  dbManager.commit(connection);
 			return Collections.unmodifiableList(sendvideos);
 		} catch (SQLException s) {
 			dbManager.rollback(connection, s);

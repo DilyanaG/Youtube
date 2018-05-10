@@ -42,9 +42,7 @@ public class HomeController {
 		if (req.getParameter("errorMessage") != null) {
 			model.addAttribute("errorMessage", req.getParameter("errorMessage"));
 		}
-		if (req.getParameter("successMessage") != null) {
-			model.addAttribute("successMessage", req.getParameter("successMessage"));
-		}
+		
 		List<Video> videos = new ArrayList<>();
 		List<PlaylistTopViewDTO> playlist = new ArrayList<>();
 		List<ProfileViewDTO> channels = new ArrayList<>();
@@ -64,9 +62,9 @@ public class HomeController {
 				break;
 			default:
 				videos = videoDao.getVideosByTagAndSortByDate(req.getParameter("search"));
-				System.out.println(videos.size());
 				playlist = playlistDao.getPlaylistByName(req.getParameter("search"));
 				channels=channelDao.getAllChannels(req.getParameter("search"));
+				model.addAttribute("message","YOUR RESULT FOR SEARCH '"+req.getParameter("search")+"'!");
 				model.addAttribute("playlist",playlist);
 				model.addAttribute("channels",channels);
 				

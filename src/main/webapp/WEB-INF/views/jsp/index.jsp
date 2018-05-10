@@ -68,7 +68,7 @@
 								<h3><a href="./playlist?playlistId=${playlist.playlistId}" class="title title-info">${playlist.playlistName}</a></h3>
 								<ul>
 								     <li class="right-list"><p class="views views-info"></p>#PLAYLIST</li>
-									<li class="right-list"><p class="views views-info"></p>CREATE DATE ${playlist.createDate}</li>
+									
 								</ul>
 							</div>
 							</div>
