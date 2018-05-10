@@ -13,7 +13,6 @@
 	<div id="side_menu"  class="drop-navigation drop-navigation">
 
 		<ul class="nav nav-sidebar">
-			<!-- TODO CHANGE MENU LINKS -->
 			<li class="active"><a href="./index" class="home-icon"> <span
 					class="glyphicon glyphicon-home" aria-hidden="true"></span>Home
 			</a></li>
@@ -23,7 +22,7 @@
               </li>
 			 <li>
                     <a href="./index?search=most" class="user-icon">
-                     <span class="glyphicon glyphicon-hourglass" aria-hidden="true"></span>Most Popular</a>
+                     <span class="glyphicon glyphicon-star" aria-hidden="true"></span>Most Popular</a>
               </li>
 		</ul>
 
@@ -35,7 +34,7 @@
                 
                 <li>
                     <a href="./profile?channelId=${sessionScope.channelId}" class="user-icon">
-                        <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>PROFILE</a>
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>PROFILE</a>
                 </li>
             </ul>
 		</c:if>

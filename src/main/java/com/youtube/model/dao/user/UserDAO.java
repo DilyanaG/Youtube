@@ -121,7 +121,6 @@ public class UserDAO implements IUserDAO {
 			dbManager.commit(connection);
 			return user;
 		} catch (SQLException s) {
-			System.out.println("SQL exception");
 			dbManager.rollback(connection, s);
 			return null;
 		}
