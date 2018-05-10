@@ -52,18 +52,15 @@ public class HomeController {
 
 			videos = videoDao.getRecentVideos();
 			model.addAttribute("message", "VIDEOS");
-			System.out.println("*********************videos");
 		} else {
 			switch (req.getParameter("search")) {
 			case "most":
 				videos = videoDao.getMostPopularVideos();
 				model.addAttribute("message", "MOST POPULAR VIDEOS");
-				System.out.println("*********most videos");
 				break;
 			case "recent":
 				videos = videoDao.getRecentVideos();
 				model.addAttribute("message", "RECENT VIDEOS");
-				System.out.println("********* recent videos");
 				break;
 			default:
 				videos = videoDao.getVideosByTagAndSortByDate(req.getParameter("search"));
@@ -76,12 +73,10 @@ public class HomeController {
 			}
 
 		}
-		System.out.println("   --------videos size" + videos.size());
 		List<VideoTopViewDTO> sendVideos = new ArrayList<>();
 		// fill videoTopViewDTO
 		for (int i = 0; i < MAX_VIDEOS_FOR_PAGE && i < videos.size(); i++) {
 
-			System.out.println(videos.get(i));
 			sendVideos.add(new VideoTopViewDTO(videos.get(i)));
 		}
 

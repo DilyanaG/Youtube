@@ -188,10 +188,4 @@ public class PlaylistDAO implements IPlaylistDAO{
 			dbManager.rollback(connection, s);
 		}
 	}
-	
-	public static void main(String[] args) throws DataBaseException {
-		System.out.println(new PlaylistDAO().getPlaylistsByChannelAndSortByCreationDate(1));
-		
-	}
-	
 }

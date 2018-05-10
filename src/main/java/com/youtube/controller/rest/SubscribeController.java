@@ -23,8 +23,6 @@ public class SubscribeController {
 	@RequestMapping(value = "/subscribe ", method = RequestMethod.POST)
 	public String subscribe(@RequestParam(value = "channel", required = true) int channelId, HttpSession session)
 			throws IllegalInputException, DataBaseException {
-		System.out.println(channelId);
-		System.out.println("subscribe user ");
 		int follower = (int) session.getAttribute("channelId");
 		List<Integer> followers = channelDAO.getFollowedChannelIds(channelId);
 		if (!followers.contains(follower)) {
@@ -36,8 +34,6 @@ public class SubscribeController {
 	@RequestMapping(value = "/subscribe ", method = RequestMethod.DELETE)
 	public String unSubscribe(@RequestParam(value = "channel", required = true) int followed, HttpSession session)
 			throws IllegalInputException, DataBaseException {
-		System.out.println(followed);
-		System.out.println("UNSubscribe user ");
 
 		int follower = (int) session.getAttribute("channelId");
 		channelDAO.unfollowChannel(follower, followed);

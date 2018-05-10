@@ -2,7 +2,6 @@ package com.youtube.controller.rest;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +29,6 @@ public class VideosLoaderController {
 	@RequestMapping(value = "/channelVideos ", method = RequestMethod.GET)
 	public Map<String, List<Object>>  loadVideo(@RequestParam(value = "channelId", required = true) int channelId,
 			                            @RequestParam(value = "sortBy", required = true) String sortBy ) throws IllegalInputException, DataBaseException, SQLException{
-		System.out.println("videos loades"+channelId+"  "+sortBy);
 		List<Video> videos= new ArrayList<>();
 		switch (sortBy) {
 		case "date":

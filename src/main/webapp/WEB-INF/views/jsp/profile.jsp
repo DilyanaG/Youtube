@@ -39,17 +39,17 @@
 			</a></li>
 			<li onclick="getVideos(${profile.channelId},'date')"><a
 				class="user-icon"><span
-					class="glyphicon glyphicon-home glyphicon-blackboard"
+					class="glyphicon glyphicon-film"
 					aria-hidden="true"></span>VIDEOS </a></li>
 			<li onclick="getPlaylists(${profile.channelId},'createDate')"><a
 				class="sub-icon"> <span
-					class="glyphicon glyphicon-home glyphicon-hourglass"
+					class="glyphicon glyphicon-home glyphicon-blackboard"
 					aria-hidden="true"> </span>PLAYLISTS
 			</a></li>
 
 
 
-			<li><a class="menu1"><span class="glyphicon glyphicon-film "
+			<li><a class="menu1"><span class="glyphicon glyphicon-globe "
 					aria-hidden="true"></span>SUBSCRIPTIONS<span
 					class="glyphicon glyphicon-menu-down" aria-hidden="true"></span> </a></li>
 
@@ -63,7 +63,7 @@
 				<c:if test="${sessionScope.channelId != profile.channelId}">
 					<li><a href="./profile?channelId=${sessionScope.channelId}"
 						class="user-icon"><span
-							class="glyphicon glyphicon-home glyphicon-blackboard"
+							class="glyphicon glyphicon-user"
 							aria-hidden="true"></span>GO TO MY PROFILE </a></li>
 				</c:if>
 			</c:if>

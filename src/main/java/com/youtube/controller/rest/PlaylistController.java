@@ -1,7 +1,6 @@
 package com.youtube.controller.rest;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -24,9 +23,7 @@ import com.youtube.model.dao.playlist.IPlaylistDAO;
 import com.youtube.model.dao.video.IVideoDAO;
 import com.youtube.model.dto.playlist.ChannelPlaylistDTO;
 import com.youtube.model.dto.playlist.PlaylistTopViewDTO;
-import com.youtube.model.dto.video.VideoDTO;
 import com.youtube.model.dto.video.VideoTopViewDTO;
-import com.youtube.model.pojo.Comment;
 import com.youtube.model.pojo.Playlist;
 import com.youtube.model.pojo.Video;
 
@@ -67,7 +64,6 @@ public class PlaylistController {
 			List<Video> playlistVideos = videoDao.getAllVideosFromPlaylist(playlist.getPlaylistId());
 			sendPlaylist.add(new PlaylistTopViewDTO(playlist, playlistVideos));
 		}
-		System.out.println(sendPlaylist);
 
 		Map<String, List<Object>> result = new HashMap<String, List<Object>>();
 		result.put("playlists", sendPlaylist);

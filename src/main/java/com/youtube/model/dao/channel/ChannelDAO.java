@@ -76,7 +76,6 @@ private static final String UNFOLLOW_CHANNEL = "DELETE FROM channels_followed_ch
 		channels = dbManager.executeSelect(connection, ALL_CHANNELS, new ChannelResolver(),searchWord);
 		List<ProfileViewDTO> channelViews= new ArrayList<>();
 		for(Channel c:channels){
-			System.out.println("chanels:"+c);
 			channelViews.add(new ProfileViewDTO(c));
 		}
 		return Collections.unmodifiableList(channelViews);

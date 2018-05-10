@@ -40,7 +40,6 @@ public class DBManager {
 			URL = "jdbc:mysql://" + DB_IP + ":" + DB_PORT + "/" + DB_NAME + "?useSSL=false";
 
 		} catch (IOException e) {
-			System.out.println("Sorry,connection failed! Maybe wrong credentials!");
 			throw new RuntimeException(e);
 		}
 	}
