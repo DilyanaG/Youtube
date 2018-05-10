@@ -12,20 +12,21 @@
 			<div class="song">
 				<div class="video-grid">
 					<br> <br>
-					<form action="./addToPlaylist" method="post">
+					<div id="createPlaylistId">
 						<h2 style="font-family: Book Antiqua">Add new playlist</h2>
 						<br>
 						<div class="input-container">
 							<i class="fal fa-calendar-edit icon"
-								style="background-color: #21DEEF; color: white;"></i> <input
+								style="background-color: #21DEEF; color: white;"></i>
+								<input id ="playlistName"
 								class="input-field" type="text" placeholder="Playlist Name"
 								name="playlistName" style="border: 2px solid #21DEEF;">
 						</div>
 
-						<button type="submit" class="btn"
+						<button id="aa" class="btn"
 							style="background-color: #21DEEF; color: white;">Create
 							playlist</button>
-					</form>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -36,16 +37,20 @@
 			<h2 style="font-family: Book Antiqua">Add video to Playlist</h2>
 			<hr>
 			<div class="single-grid-right" id="playlists">
-				<c:forEach items="${playlists}" var="playlist">
-					<div class="single-right-grids">
-						<label class="container" style="font-family: Book Antiqua">
-							${playlist.playlistName} <input type="checkbox"> <span
-							class="checkmark"
-							style="background-color: #21DEEF; color: white;"></span>
-						</label> <input type="submit" class="btn" value="Add to playlist"
+				
+					<div  class="single-right-grids">
+					<form action="./addVideoToPlaylist?videoId=${videoId}" method="post">
+					<div id="allPlaylists">
+					<c:forEach items="${playlists}" var="playlist">
+                        <input type="radio" name="playlistId" value="${playlist.playlistId}" checked>${ playlist.playlistName} <br>
+                     </c:forEach>
+                     </div>
+                         <input type="submit" class="btn" value="Add to playlist"
 							style="background-color: #21DEEF; color: white;" />
+                     </form>
+						
 					</div>
-				</c:forEach>
+				
 			</div>
 
 
@@ -58,6 +63,29 @@
 <div class="clearfix"></div>
 
 <script src="FinalProject/js/bootstrap.min.js"></script>
+ 
+  <script>
+  $( "#aa" ).click(function() {
+	  var playlistName=$( "#playlistName" ).val();
+	  $.ajax({
+			url : 'addNewPlaylist',
+			type : 'post',
+			data : {
+				playlistName : playlistName
+			},
+			success : function(response) {
+				$('#allPlaylists').empty();
+				 for (i = 0; i < response.playlists.length; i++) {
+					 $('#allPlaylists').append(
+							 '<input type="radio" name="playlistId" value="'+response.playlists[i].playlistId+'" checked>'+response.playlists[i].playlistName+' <br>'		 
+					 );
+				 }
+			
+
+			}
+	  });
+	});
+  </script>
 
 </body>
 </html>

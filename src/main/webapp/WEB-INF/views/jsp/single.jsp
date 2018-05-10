@@ -61,16 +61,14 @@
 						<li class="view">${video.views}</li>
 
 						<c:if test="${not empty sessionScope.channelId}">
-							<c:choose>
-								<c:when test="${sessionScope.channelId != video.channelId}">
+						
 									<li><a href="./addToPlaylist?videoId=${video.videoId}" class="icon pinterest-icon">To
 											Playlist</a></li>
 									<li><a href="#" onclick="isLike(${video.videoId}, true)"
 										class="icon like"><div id="likes">${video.likes}</div></a></li>
 									<li><a href="#" onclick="isLike(${video.videoId}, false)"
 										class="icon dribbble-icon"><div id="dislikes">${video.dislikes}</div></a></li>
-								</c:when>
-							</c:choose>
+							
 						</c:if>
 					</ul>
 

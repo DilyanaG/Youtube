@@ -308,7 +308,7 @@ function getPlaylists(channelId,sortBy) {
 												+ '    <div class="resent-grid-img recommended-grid-img">'
 												+ '		<a href="./playlist?playlistId='
 												+ response.playlists[i].playlistId
-												+ '"><img src="'+response.playlists[i].photoUrl+'" alt=""></a>'
+												+ '"><img src="'+response.playlists[i].photoUrl+'" width="240" height="240" alt=""></a>'
 												+ '		<div class="time">'
 												+ '		</div>'
 												+ '		<div class="clck">'

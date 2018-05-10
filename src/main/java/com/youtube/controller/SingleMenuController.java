@@ -52,8 +52,5 @@ public class SingleMenuController {
 		return "singlePlaylist";
 	}
 
-	@RequestMapping(value = { "/addToPlaylist", "/videos/addToPlaylist" }, method = RequestMethod.GET)
-	public String addToPlaylist() {
-		return "addToPlaylist";
-	}
+
 }

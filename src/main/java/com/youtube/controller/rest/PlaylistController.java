@@ -100,26 +100,16 @@ public class PlaylistController {
 		return result;
 	}
 
-	@RequestMapping(value = "/addToPlaylist", method = RequestMethod.GET)
-	public String addToPlaylist(Model model, HttpServletRequest req, HttpSession session)
-			throws IllegalInputException, DataBaseException {
-
-		int videoId = Integer.valueOf(req.getParameter("videoId"));
-		int channelId = (int) session.getAttribute("channelId");
-		List<ChannelPlaylistDTO> playlists = playlistDao.getAllChannelPlaylists(channelId);
-		model.addAttribute("playlists", playlists);
-		model.addAttribute("videoId", videoId);
-		return "";
-	}
-	
-	@RequestMapping(value = "/addToPlaylist", method = RequestMethod.POST)
-	public String createNewPlaylist(@RequestParam(value = "playlistName") String playlistName, Model model, HttpServletRequest req, HttpSession session)
+	@RequestMapping(value = "/addNewPlaylist", method = RequestMethod.POST)
+	public Map<String, List<ChannelPlaylistDTO>> createNewPlaylist(@RequestParam(value = "playlistName") String playlistName, Model model, HttpServletRequest req, HttpSession session)
 			throws IllegalInputException, DataBaseException {
 
 		int channelId = (int) session.getAttribute("channelId");
 		playlistDao.createNewPlaylist(playlistName, channelId);
-		
-		return "addToPlaylist";
+		List<ChannelPlaylistDTO> playlists = playlistDao.getAllChannelPlaylists(channelId);
+		Map<String,List<ChannelPlaylistDTO>> result = new HashMap<>();
+		result.put("playlists",playlists );
+		return result;
 	}
 	
 	@RequestMapping(value = "/deletePlaylist ", method = RequestMethod.DELETE)
